@@ -1,104 +1,122 @@
-const data = [];
+const width = 960, height = 600;
 
+const svg = d3.select("#world-map")
+    .attr("width", width)
+    .attr("height", height);
 
+// tooltip, hidden by default
+const tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0)
+    .style("position", "absolute")
+    .style("background", "rgba(0, 0, 0, 0.8)")
+    .style("color", "#fff")
+    .style("padding", "8px")
+    .style("border-radius", "5px")
+    .style("font-size", "14px")
+    .style("pointer-events", "none");
 
-// helper function to render info of building selected
-function renderInfo(d) {
-  // show building info based on selection
-  d3.select("#buildings-info").html(`
-        <img src="img/${d.image}" alt="Image of ${d.building}" />
-    <h3 class="building-info-title">${d.building}</h3>
-                  <hr />
-   <div class="building-info-container">
-  <div class="building-info-text">
-    <div class="building-label">Height</div>
-    <div class="building-info">${d.height_m}m</div>
-  </div>
-  <hr />
-  <div class="building-info-text">
-    <div class="building-label">City</div>
-    <div class="building-info">${d.city}</div>
-  </div>
-  <hr />
-  <div class="building-info-text">
-    <div class="building-label">Country</div>
-    <div class="building-info">${d.country}</div>
-  </div>
-  <hr />
-   <div class="building-info-text">
-    <div class="building-label">Floors</div>
-    <div class="building-info">${d.floors}</div>
-  </div>
-  <hr />
-  <div class="building-info-text">
-    <div class="building-label">Completed</div>
-    <div class="building-info">${d.completed}</div>
-  </div>
-  <hr />
-  <div class="building-link">
-         >> <a href="https://en.wikipedia.org/wiki/${d.building.replace(/ /g, '_')}" target="_blank">Read more on Wikipedia</a>
-        </div>
-</div>
+const projection = d3.geoMercator()
+    .scale(170)
+    .translate([width / 1.5, height / 1.5]);
 
-  `);
-}
+const path = d3.geoPath().projection(projection);
 
-d3.csv("data/buildings.csv").then(function (data) {
-  data = data;
+// name fixes
+const countryNameFixes = {
+    "USA": "United States of America",
+    "UK": "United Kingdom",
+    "Russia": "Russian Federation",
+    "South Korea": "Korea, Republic of",
+    "Iran": "Iran, Islamic Republic of",
+    "Venezuela": "Venezuela, Bolivarian Republic of",
+    "Vietnam": "Viet Nam"
+};
 
-  
+// load the world map and dataset
+Promise.all([
+    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
+    d3.csv("data/sustainable_fashion_trends.csv")
+]).then(([world, data]) => {
+    console.log("World data loaded:", world);
+    console.log("Dataset loaded:", data);
 
+    const countries = topojson.feature(world, world.objects.countries).features;
 
-  // Log to the console to check the data
-  console.log(data);
+    let countryDataMap = new Map();
+    data.forEach(d => {
+        let countryName = d.Country.trim();
+        if (countryNameFixes[countryName]) {
+            countryName = countryNameFixes[countryName]; // fix name if necessary
+        }
 
-  // sort data
-  data.sort((a, b) => b.height_px - a.height_px); 
+        // parse numeric values
+        let waste = parseFloat(d.Waste_Production_KG) || 0;
+        let carbonFootprint = parseFloat(d.Carbon_Footprint_MT) || 0;
+        let water_usage = parseFloat(d.Water_Usage_Liters) || 0;
 
-  const svg = d3.select(".col svg");
+        if (!countryDataMap.has(countryName)) {
+            countryDataMap.set(countryName, {
+                waste: 0, carbonFootprint: 0, water_usage: 0, count: 0
+            });
+        }
 
-  // Create the bars and bind data to each rect element
-  svg
-    .selectAll("rect")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("class", "bar")
-    .attr("x", 265) 
-    .attr("y", (d, i) => i * 50 + 20) 
-    .attr("width", (d) => d.height_px) 
-    .attr("height", 40)
-    .on("click", function (event, d) {
-      // render building info
-      renderInfo(d);
-    }); 
+        // accumulate sums and count
+        let countryStats = countryDataMap.get(countryName);
+        countryStats.waste += waste;
+        countryStats.water_usage += water_usage;
+        countryStats.carbonFootprint += carbonFootprint;
+        countryStats.count += 1;
+    });
 
-    // add building labels to left of bar
-  svg
-    .selectAll("text")
-    .data(data)
-    .enter()
-    .append("text")
-    .attr("class", "bar-text")
-    .attr("x", (d, i) => 250) 
-    .attr("y", (d, i) => i * 50 + 43)
-    .attr("text-anchor", "end") 
-    .text((d) => d.building).on("click", function (event, d) {
-      // render building info
-      renderInfo(d);
-    }); 
-  // add height text to bar
-  svg
-    .selectAll("rect.height-text")
-    .data(data)
-    .enter()
-    .append("text")
-    .attr("class", "height-text")
-    .attr("x", (d) => 260 + Number(d.height_px))
-    .attr("y", (d, i) => i * 50 + 45) 
-    .attr("text-anchor", "end")
-    .text((d) => d.height_m).on("click", function (event, d) {
-      // render building info
-      renderInfo(d);
-    }); 
+    // ensure USA & UK are included
+    countryDataMap.set("United States of America", countryDataMap.get("United States of America") || { waste: 0, water_usage: 0, carbonFootprint: 0, count: 0 });
+    countryDataMap.set("United Kingdom", countryDataMap.get("United Kingdom") || { waste: 0, water_usage: 0, carbonFootprint: 0, count: 0 });
+
+    // draw Countries
+    svg.append("g")
+        .selectAll("path")
+        .data(countries)
+        .join("path")
+        .attr("d", path)
+        .attr("fill", d => countryDataMap.has(d.properties.name) ? "red" : "#ccc")
+        .attr("stroke", "#333")
+        .on("mouseover", function(event, d) {
+            let countryName = d.properties.name;
+            let stats = countryDataMap.get(countryName);
+
+            tooltip.transition().duration(200).style("opacity", 1);
+
+            if (stats) {
+                // calculate averages
+                let avgWaste = stats.waste / stats.count;
+                let avgWaterUsage = stats.water_usage / stats.count;
+                let avgCarbonFootprint = stats.carbonFootprint / stats.count;
+
+                // format numbers with commas and no decimals
+                tooltip.html(
+                    `<strong>${countryName}</strong><br>
+                    Waste: ${avgWaste.toLocaleString(undefined, { maximumFractionDigits: 0 })} KG<br>
+                    Water Usage: ${avgWaterUsage.toLocaleString(undefined, { maximumFractionDigits: 0 })} Liters<br>
+                    Carbon Footprint: ${avgCarbonFootprint.toLocaleString(undefined, { maximumFractionDigits: 0 })} MT (megatonnes)`
+                );
+            } else {
+                // ff no data, show "data not collected"
+                tooltip.html(
+                    `<strong>${countryName}</strong><br>Data Not Collected`
+                );
+            }
+
+            tooltip.style("left", (event.pageX + 10) + "px")
+                   .style("top", (event.pageY - 10) + "px");
+
+            d3.select(this).style("stroke", "black");
+        })
+        .on("mouseout", function() {
+            tooltip.transition().duration(200).style("opacity", 0);
+            d3.select(this).style("stroke", "#333");
+        });
+
+}).catch(error => {
+    console.error("Error loading data:", error);
 });
