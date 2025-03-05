@@ -1,13 +1,13 @@
-const margin = { top: 40, right: 100, bottom: 50, left: 60 };
-const width = 700 - margin.left - margin.right;
-const height = 450 - margin.top - margin.bottom;
+const chartMargin = { top: 40, right: 100, bottom: 50, left: 60 };
+const chartWidth = 700 - chartMargin.left - chartMargin.right;
+const chartHeight = 450 - chartMargin.top - chartMargin.bottom;
 
 // SVG container
-const svg = d3.select("#global-line-chart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+const chartsvg = d3.select("#global-line-chart")
+    .attr("width", chartWidth + chartMargin.left + chartMargin.right)
+    .attr("height", chartHeight + chartMargin.top + chartMargin.bottom)
+    .append("g") 
+    .attr("transform", `translate(${chartMargin.left},${chartMargin.top})`);
 
 d3.csv("data/plasticTextilesData.csv").then(data => {
     // Parse and prepare the data
@@ -59,7 +59,7 @@ d3.csv("data/plasticTextilesData.csv").then(data => {
 
     // Draw lines for each metric
     metrics.forEach(metric => {
-        svg.append("path")
+        chartsvg.append("path")
             .datum(aggregatedData)  
             .attr("fill", "none")
             .attr("stroke", metric.color)
@@ -68,11 +68,11 @@ d3.csv("data/plasticTextilesData.csv").then(data => {
     });
 
     // Add axes
-    svg.append("g")
+    chartsvg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(xScale));
 
-    svg.append("g")
+    chartsvg.append("g")
         .call(d3.axisLeft(yScale));
 
     // Add legend
@@ -99,7 +99,7 @@ d3.csv("data/plasticTextilesData.csv").then(data => {
     });
 
     // Chart title
-    svg.append("text")
+    chartsvg.append("text")
         .attr("x", width / 2)
         .attr("y", -10)
         .attr("text-anchor", "middle")
