@@ -1,0 +1,10 @@
+#line-chart-container {
+    display: flex;
+}
+
+.placeholder-text {
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
