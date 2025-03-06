@@ -1,5 +1,5 @@
-// TO-DO (Activity I): instantiate visualization objects
 let linechart;
+let globalVisLineChart;
 
 let parseDate = d3.timeParse("%Y-%m");
 loadData();
@@ -24,5 +24,32 @@ function loadData() {
     let distinctCategories = [...new Set(data.map((d) => d.color))];
 
     console.log("#distinctCategories", distinctCategories);
+
+    d3.csv("data/plasticTextilesData.csv").then(data => {
+      data.forEach(d => {
+          d.Production_Year = +d.Production_Year;  
+          d.Greenhouse_Gas_Emissions = +d.Greenhouse_Gas_Emissions;
+          d.Pollutants_Emitted = +d.Pollutants_Emitted;
+          d.Waste_Generation = +d.Waste_Generation;
+          d.Water_Consumption = +d.Water_Consumption;
+      });
+  
+      // group data and calculate averages for each measure 
+      aggregatedData = Array.from(d3.group(data, d => d.Production_Year), ([year, values]) => ({
+          Production_Year: year,
+          averageGreenhouseGasEmissions: d3.mean(values, v => v.Greenhouse_Gas_Emissions),
+          averagePollutantsEmitted: d3.mean(values, v => v.Pollutants_Emitted),
+          averageWasteGeneration: d3.mean(values, v => v.Waste_Generation),
+          averageWaterConsumption: d3.mean(values, v => v.Water_Consumption)
+      }));
+  
+      globalVisLineChart = new GlobalLineChart("global-line-chart", aggregatedData);
+  
+      globalVisLineChart.initVis();
+  
+      console.log(aggregatedData);
+    }
+  )
   });
 }
+
