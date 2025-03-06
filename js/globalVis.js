@@ -116,7 +116,7 @@ d3.csv("data/plasticTextilesData.csv").then(data => {
 
     // Chart title
     chartsvg.append("text")
-        .attr("x", width / 2)
+        .attr("x", chartWidth / 2)
         .attr("y", -10)
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
