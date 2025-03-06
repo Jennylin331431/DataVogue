@@ -1,3 +1,10 @@
+.placeholder-text {
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -21,6 +28,7 @@ svg {
     background-color: #f0f0f0;
 }
 
+<<<<<<< HEAD
 .tooltip-line {
     color: purple;
 }
@@ -43,3 +51,10 @@ svg {
     white-space: pre;
     line-height: 1.2;
   }
+=======
+#global-line-chart {
+    width: 1000px !important;
+    height: 450px !important;
+    max-width: 100%;
+}
+>>>>>>> aa46c11653c59135685991bce0d236292e44290c
