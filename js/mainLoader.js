@@ -1,5 +1,9 @@
 let linechart;
+<<<<<<< HEAD
 let globalVisLineChart;
+=======
+let worldMap;
+>>>>>>> 3f8d6b068d458d358bd80273b1b07641a5a3637c
 
 let parseDate = d3.timeParse("%Y-%m");
 loadData();
@@ -50,6 +54,21 @@ function loadData() {
       console.log(aggregatedData);
     }
   )
+  });
+
+    d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
+      csv.forEach(function (d) {
+          d.Waste_Production_KG = +d.Waste_Production_KG;
+          d.Carbon_Footprint_MT = +d.Carbon_Footprint_MT;
+          d.Water_Usage_Liters = +d.Water_Usage_Liters;
+      });
+
+      data = csv;
+
+      console.log("#data loaded", data);
+
+      worldMap = new WorldMap("#world-map", data);
+      worldMap.initVis();
   });
 }
 
