@@ -30,16 +30,31 @@
     />
   </head>
   <body>
-    <div class="container-content text-center">
-      <h1>Global Environmental Implications of Fast Fashion Production</h1>
+    <div class="container text-center">
+      <h1 class="my-4">Global Environmental Implications of Fast Fashion Production</h1>
+
+      <!-- Row for Global Info Visualization -->
+      <div class="row">
+        <div class="col-12">
+          <div class="line-chart-container">
+            <svg id="global-line-chart"></svg>
+            <div class="legend-container"></div>
+            <div class="insight-text mt-3">
+              <strong>Insight:</strong> Placeholder: Environmental Impact Insight 
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row for World Map -->
+      <div class="row">
+        <div class="col-12">
+          <div class="map-container">
+            <svg id="world-map"></svg>
+          </div>
+        </div>
+      </div>
     </div>
-
-    SVG Container for World Map
-    <div class="map-container">
-      <svg id="world-map"></svg>
-    </div>
-
-
 
     <!-- Load Bootstrap JS -->
     <script
@@ -52,7 +67,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
 
-    <!-- Custom JavaScript for D3 Map -->
+    <!-- Custom JavaScript for D3 Visualizations -->
     <script src="js/main.js"></script>
+    <script src="js/globalVis.js"></script>
   </body>
 </html>
