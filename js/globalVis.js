@@ -1,5 +1,5 @@
 const chartMargin = { top: 40, right: 100, bottom: 50, left: 60 };
-const chartWidth = 700 - chartMargin.left - chartMargin.right;
+const chartWidth = 900 - chartMargin.left - chartMargin.right;
 const chartHeight = 450 - chartMargin.top - chartMargin.bottom;
 
 // SVG container
@@ -42,7 +42,7 @@ d3.csv("data/plasticTextilesData.csv").then(data => {
             d.averageWasteGeneration,
             d.averageWaterConsumption
         ))])
-        .range([height, 0]);
+        .range([chartHeight, 0]);
 
     // Define line generators for each metric
     const lineGenerator = metric => d3.line()
@@ -69,11 +69,27 @@ d3.csv("data/plasticTextilesData.csv").then(data => {
 
     // Add axes
     chartsvg.append("g")
-        .attr("transform", `translate(0,${height})`)
+        .attr("transform", `translate(0,${chartHeight})`)
         .call(d3.axisBottom(xScale));
 
     chartsvg.append("g")
         .call(d3.axisLeft(yScale));
+
+    // Axes abels
+    chartsvg.append("text")
+        .attr("x", chartWidth / 2)
+        .attr("y", chartHeight + chartMargin.bottom - 10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "14px")
+        .text("Production Year");
+
+    chartsvg.append("text")
+        .attr("x", -chartHeight / 2)
+        .attr("y", -chartMargin.left + 15)
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)")
+        .style("font-size", "14px")
+        .text("Average Environmental Impact Metrics");
 
     // Add legend
     const legendContainer = d3.select(".legend-container")
