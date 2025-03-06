@@ -8,6 +8,11 @@ h1 {
     margin: 20px 0;
 }
 
+h4 {
+    color: purple;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 svg {
     width: 100vw;
     height: 600px;
@@ -15,3 +20,26 @@ svg {
     margin: auto;
     background-color: #f0f0f0;
 }
+
+.tooltip-line {
+    color: purple;
+}
+
+#tooltip-line-chart {
+    position: absolute;
+    background-color: white;
+    font-size: 10px;
+    width: 70px;
+
+}
+
+.dropdown {
+    max-width: 250px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}
+
+.x-axis text {
+    white-space: pre;
+    line-height: 1.2;
+  }

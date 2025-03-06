@@ -55,9 +55,57 @@ class Trends {
         "translate(" + vis.margin.left + "," + vis.margin.top + ")"
       );
 
+    vis.svg
+      .append("rect")
+      .attr("width", vis.width + vis.margin.left + vis.margin.right)
+      .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+      .style("opacity", 0)
+      .on("touchmouse mousemove", function (event) {
+        const mousePos = d3.pointer(event, this);
+        console.log(mousePos);
+        const date = vis.x.invert(mousePos[0]);
+        const index = d3.bisect(vis.displayData, date); // highlight-line
+
+        // Custom Bisector - left, center, right <= bisector options
+        vis.xAccessor = (d) => d.time;
+        vis.yAccessor = (d) => d.sales_count;
+
+        const dateBisector = d3.bisector(vis.xAccessor).left;
+        const bisectionIndex = dateBisector(vis.displayData, date);
+        const hoveredIndexData = vis.displayData[bisectionIndex - 1];
+
+        let xPosition = vis.x(hoveredIndexData.time);
+        let yPosition = vis.y(hoveredIndexData.sales_count);
+
+        vis.tooltip
+          .style("display", "block")
+          .style("left", `${event.pageX + 15}px`)
+          .style("top", `${event.pageY - 30}px`);
+
+        vis.tooltip
+          .select(".tooltip-sales")
+          .text(`$${hoveredIndexData.sales_count}`);
+
+        const dateFormatter = d3.timeFormat("%b, %Y");
+
+        vis.tooltip
+          .select(".tooltip-date")
+          .text(`${dateFormatter(hoveredIndexData.time)}`);
+
+        // Update tooltip line position
+        vis.tooltipLine
+          .attr("x1", xPosition) // x position of the first end of the line
+          .attr("y1", 0) // y position of the first end of the line
+          .attr("x2", xPosition) // x position of the second end of the line
+          .attr("y2", vis.height)
+          .style("opacity", 1);
+      })
+      .on("mouseleave", function (event) {
+        vis.tooltipLine.style("opacity", 0);
+      });
+
     // scales
     vis.x = d3.scaleTime().range([0, vis.width]);
-
     vis.y = d3.scaleLinear().range([vis.height, 0]);
 
     // axis
@@ -68,24 +116,42 @@ class Trends {
       .append("g")
       .attr("class", "x-axis axis")
       .attr("transform", "translate(0," + vis.height + ")");
-
     vis.svg.append("g").attr("class", "y-axis axis");
 
-    // TO-DO (Activity II): Line generator
+    // line generator
     vis.line = d3
       .line()
-      .curve(d3.curveLinear) // Adjust curve as necessary
+      .curve(d3.curveLinear)
       .x((d) => vis.x(d.time))
       .y((d) => vis.y(d.sales_count));
 
-    // TO-DO (Activity IV): Add Tooltip placeholder
-    vis.tooltip = vis.svg
-      .append("text")
-      .attr("x", 5)
-      .attr("y", 5)
-      .attr("class", "tooltip-custom");
+    // tooltip line
+    vis.tooltip = d3.select("#tooltip-line-chart");
+    vis.tooltipLine = vis.svg
+      .append("line")
+      .attr("class", "tooltip-line")
+      .attr("stroke", "#fc8781")
+      .attr("stroke-width", 2)
+      .style("opacity", 1);
 
-    // TO-DO: (Filter, aggregate, modify data)
+    // axis labels
+    vis.svg
+      .append("text")
+      .attr("class", "x-axis-label")
+      .attr("x", vis.width / 2)
+      .attr("y", vis.height + vis.margin.bottom - 10)
+      .attr("text-anchor", "middle")
+      .text("Date");
+
+    vis.svg
+      .append("text")
+      .attr("class", "y-axis-label")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -vis.height / 2)
+      .attr("y", -vis.margin.left + 20)
+      .attr("text-anchor", "middle")
+      .text("Sales Count");
+
     vis.wrangleData();
   }
 
@@ -106,33 +172,25 @@ class Trends {
         sales_count: d3.sum(sales, (d) => d.sales_count), // Sum the sales_count for each year
       };
     });
-    console.log("#dis", vis.displayData);
+
     // Update the visualization
     vis.updateVis();
   }
 
-  /*
-   * The drawing function - should use the D3 update sequence (enter, update, exit)
-   * Function parameters only needed if different kinds of updates are needed
-   */
   updateVis() {
-    console.log("#updateVis");
     let vis = this;
 
-    // Update domain
+    // Update domains
     vis.y.domain([
       0,
       d3.max(vis.displayData, function (d) {
         return d.sales_count;
       }),
     ]);
-
     vis.x.domain(d3.extent(vis.displayData, (d) => d.time));
 
-    // Draw the line
-    // let line = vis.svg.selectAll(".line").data(vis.displayData);
-    // Bind data as a single array and update line
-    const lines = vis.svg.selectAll(".line").data([vis.displayData]); // Data as array of arrays
+    // draw lines
+    let lines = vis.svg.selectAll(".line").data([vis.displayData]);
 
     lines
       .enter()
@@ -147,42 +205,18 @@ class Trends {
     lines.exit().remove();
 
     // Update axes
-    vis.svg.select(".x-axis").call(vis.xAxis); // Rotate the text 45 degrees counterclockwise
+    vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
 
-    vis.xAxis.tickFormat(d3.timeFormat("%b %Y")); // Format as "Month Day, Year"
-
-
-    // Rotate X tick labels
-    vis.svg.select(".x-axis")
-      .selectAll("text")  // Select all the text elements of the x-axis
-      .attr("transform", "rotate(-45)")  // Rotate the text 45 degrees counterclockwise
-      .style("text-anchor", "end");  // Align the text to the end (bottom-right for readability)
-
-
-      // Add mouseover and mouseout events for tooltip
+    // Configure axis with explicit tick formatting
+    vis.xAxis
+      .ticks(d3.timeMonth.every(3))
+      .tickFormat(d3.timeFormat("%b\n%Y")); // Add newline between month and year
+    // rotate x ticks
     vis.svg
-      .selectAll(".line")
-      .on("mouseover", function (event, d) {
-        console.log("#d on mouse", d)
-        // Make the tooltip visible
-        vis.tooltip
-          .style("visibility", "visible")
-          .text(
-            `Time: ${d.time.getMonth() + 1}/${d.time.getFullYear()} - Sales: ${d.sales_count}`
-          );
-      })
-      .on("mousemove", function (event, d) {
-        // Position the tooltip near the mouse
-        vis.tooltip
-          .attr("x", event.pageX + 10)
-          .attr("y", event.pageY - 10);
-      })
-      .on("mouseout", function (event, d) {
-        // Hide the tooltip
-        vis.tooltip.style("visibility", "hidden");
-      });
- 
-
-}
+      .select(".x-axis")
+      .selectAll("text")
+      .attr("transform", "rotate(-45)")
+      .style("text-anchor", "end");
+  }
 }

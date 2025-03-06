@@ -34,15 +34,50 @@
       <h1>Global Environmental Implications of Fast Fashion Production</h1>
     </div>
 
-    <h3>Placeholder text for hook</h3>
+    <h4> Can you believe that fast fashion is responsible for 10% of the global annual carbon footprint, which is more 
+      than the emissions from all international flights and maritime shipping combined? 
+    </h4>
 
-    <div id="trends-container"> </div>
+    <div class="row">
+      <h2> What are the current fashion trends? </h2>
+      <div id="trends-container" class="col-md-8">
+        <div id="tooltip-line-chart">
+          <div class="tooltip-date"></div>
+          <div class="tooltip-sales"></div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="dropdown row" >
+          Pattern (placeholder so far)
+          <select name="pattern" id="pattern">
+            <option value="volvo">Geometric</option>
+            <option value="polka-dots">Polka Dots</option>
+            <option value="plain">Plain</option>
+            <option value="heart">Heart</option>
+            <option value="striped">Striped</option>
+            <option value="floral">Floral</option>
+          </select>
+        </div>
+        <div class="dropdown row">
+          Color (placeholder so far)
+          <select name="color" id="color">
+            <option value="volvo">White</option>
+            <option value="saab">Beige</option>
+            <option value="mercedes">Brown</option>
+            <option value="audi">Red</option>
+            <option value="audi">Pink</option>
+            <option value="audi">Yellow</option>
+            <option value="audi">Sky Blue</option>
+            <option value="audi">Orange</option>
+          </select>
+        </div>
+        <div class="row"> placeholder text for insights from this visual  </div>
+      </div>
+    </div>
     SVG Container for World Map
     <div class="map-container">
       <svg id="world-map"></svg>
     </div>
-
-
 
     <!-- Load Bootstrap JS -->
     <script
@@ -57,10 +92,8 @@
 
     <script src="js/trends.js"></script>
 
-
     <!-- Custom JavaScript for D3 Map -->
     <script src="js/main.js"></script>
     <script src="js/mainLoader.js"></script>
-
   </body>
 </html>
