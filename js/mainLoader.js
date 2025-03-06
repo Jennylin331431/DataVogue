@@ -1,9 +1,6 @@
 let linechart;
-<<<<<<< HEAD
 let globalVisLineChart;
-=======
 let worldMap;
->>>>>>> 3f8d6b068d458d358bd80273b1b07641a5a3637c
 
 let parseDate = d3.timeParse("%Y-%m");
 loadData();
