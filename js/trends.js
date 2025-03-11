@@ -4,6 +4,7 @@ class Trends {
     this.parentElement = parentElement;
     this.data = data;
     this.displayData = [];
+    this.filteredData = [];
 
     // Set colors (for multiple categories if needed)
     let colors = [
@@ -19,6 +20,9 @@ class Trends {
       "#6a3d9a",
     ];
 
+    this.selectedPattern = "None"; // could be '2019', '2020', etc. for filtering by year
+    this.selectedColor = "None"; // could be 'Male', 'Female', or 'all'
+
     // Set the color scale for different categories, if you plan to use categories
     this.colorScale = d3.scaleOrdinal().range(colors);
   }
@@ -29,17 +33,15 @@ class Trends {
   initVis() {
     let vis = this;
 
-    vis.margin = { top: 40, right: 40, bottom: 60, left: 70 };
+    vis.margin = { top: 40, right: 40, bottom: 60, left: 150 };
 
     vis.width =
-      800 -
-      //   document.getElementById(vis.parentElement).getBoundingClientRect().width -
+      document.getElementById(vis.parentElement).getBoundingClientRect().width -
       vis.margin.left -
       vis.margin.right;
     vis.height =
-      500 -
-      //   document.getElementById(vis.parentElement).getBoundingClientRect()
-      // .height -
+      document.getElementById(vis.parentElement).getBoundingClientRect()
+        .height -
       vis.margin.top -
       vis.margin.bottom;
 
@@ -59,50 +61,50 @@ class Trends {
       .append("rect")
       .attr("width", vis.width + vis.margin.left + vis.margin.right)
       .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-      .style("opacity", 0)
-      .on("touchmouse mousemove", function (event) {
-        const mousePos = d3.pointer(event, this);
-        console.log(mousePos);
-        const date = vis.x.invert(mousePos[0]);
-        const index = d3.bisect(vis.displayData, date); // highlight-line
+      .style("opacity", 0);
+    // .on("touchmouse mousemove", function (event) {
+    //   const mousePos = d3.pointer(event, this);
+    //   console.log(mousePos);
+    //   const date = vis.x.invert(mousePos[0]);
+    //   const index = d3.bisect(vis.displayData, date); // highlight-line
 
-        // Custom Bisector - left, center, right <= bisector options
-        vis.xAccessor = (d) => d.time;
-        vis.yAccessor = (d) => d.sales_count;
+    //   // Custom Bisector - left, center, right <= bisector options
+    //   vis.xAccessor = (d) => d.time;
+    //   vis.yAccessor = (d) => d.sales_count;
 
-        const dateBisector = d3.bisector(vis.xAccessor).left;
-        const bisectionIndex = dateBisector(vis.displayData, date);
-        const hoveredIndexData = vis.displayData[bisectionIndex - 1];
+    //   const dateBisector = d3.bisector(vis.xAccessor).left;
+    //   const bisectionIndex = dateBisector(vis.displayData, date);
+    //   const hoveredIndexData = vis.displayData[bisectionIndex - 1];
 
-        let xPosition = vis.x(hoveredIndexData.time);
-        let yPosition = vis.y(hoveredIndexData.sales_count);
+    //   let xPosition = vis.x(hoveredIndexData.time);
+    //   let yPosition = vis.y(hoveredIndexData.sales_count);
 
-        vis.tooltip
-          .style("display", "block")
-          .style("left", `${event.pageX + 15}px`)
-          .style("top", `${event.pageY - 30}px`);
+    //   vis.tooltip
+    //     .style("display", "block")
+    //     .style("left", `${event.pageX + 15}px`)
+    //     .style("top", `${event.pageY - 30}px`);
 
-        vis.tooltip
-          .select(".tooltip-sales")
-          .text(`$${hoveredIndexData.sales_count}`);
+    //   vis.tooltip
+    //     .select(".tooltip-sales")
+    //     .text(`$${hoveredIndexData.sales_count}`);
 
-        const dateFormatter = d3.timeFormat("%b, %Y");
+    //   const dateFormatter = d3.timeFormat("%b, %Y");
 
-        vis.tooltip
-          .select(".tooltip-date")
-          .text(`${dateFormatter(hoveredIndexData.time)}`);
+    //   vis.tooltip
+    //     .select(".tooltip-date")
+    //     .text(`${dateFormatter(hoveredIndexData.time)}`);
 
-        // Update tooltip line position
-        vis.tooltipLine
-          .attr("x1", xPosition) // x position of the first end of the line
-          .attr("y1", 0) // y position of the first end of the line
-          .attr("x2", xPosition) // x position of the second end of the line
-          .attr("y2", vis.height)
-          .style("opacity", 1);
-      })
-      .on("mouseleave", function (event) {
-        vis.tooltipLine.style("opacity", 0);
-      });
+    //   // Update tooltip line position
+    //   vis.tooltipLine
+    //     .attr("x1", xPosition) // x position of the first end of the line
+    //     .attr("y1", 0) // y position of the first end of the line
+    //     .attr("x2", xPosition) // x position of the second end of the line
+    //     .attr("y2", vis.height)
+    //     .style("opacity", 1);
+    // })
+    // .on("mouseleave", function (event) {
+    //   vis.tooltipLine.style("opacity", 0);
+    // });
 
     // scales
     vis.x = d3.scaleTime().range([0, vis.width]);
@@ -148,10 +150,11 @@ class Trends {
       .attr("class", "y-axis-label")
       .attr("transform", "rotate(-90)")
       .attr("x", -vis.height / 2)
-      .attr("y", -vis.margin.left + 20)
+      .attr("y", -vis.margin.left + 100)
       .attr("text-anchor", "middle")
       .text("Sales Count");
 
+    vis.createLegend();
     vis.wrangleData();
   }
 
@@ -161,20 +164,110 @@ class Trends {
   wrangleData() {
     let vis = this;
 
-    // Aggregate sales count by time
-    let salesByTime = d3.group(vis.data, (d) => d.time);
+    vis.filteredData = vis.data;
 
-    // Sum sales count for each time
-    vis.displayData = Array.from(salesByTime, ([time, sales]) => {
-      console.log("#time", time);
-      return {
+    if (vis.selectedPattern !== "None") {
+      // If a specific pattern is selected, filter data accordingly
+      vis.filteredData = vis.filteredData.filter(
+        (d) => d.pattern === vis.selectedPattern
+      ); // assuming selectedPattern is a year
+    }
+
+    // Filter data based on selectedColor (e.g., Male or Female)
+    if (vis.selectedColor !== "None") {
+      vis.filteredData = vis.filteredData.filter(
+        (d) => d.color === vis.selectedColor
+      );
+    }
+
+    // Aggregate sales count by time
+    let salesByGenderAndTime = d3.group(
+      vis.filteredData,
+      (d) => d.time,
+      (d) => d.gender
+    );
+
+    // Prepare the data for each gender (male, female)
+    let maleData = [];
+    let femaleData = [];
+
+    // Loop through the time groups and separate by gender
+    salesByGenderAndTime.forEach((genderGroup, time) => {
+      let maleSales = genderGroup.get("Male") || []; // Get male sales for this time, default to empty array
+      let femaleSales = genderGroup.get("Female") || []; // Get female sales for this time, default to empty array
+
+      console.log("#femaleSales", femaleSales);
+
+      // Sum sales for male and female
+      maleData.push({
         time: time,
-        sales_count: d3.sum(sales, (d) => d.sales_count), // Sum the sales_count for each year
-      };
+        sales_count: d3.sum(maleSales, (d) => d.sales_count),
+      });
+
+      femaleData.push({
+        time: time,
+        sales_count: d3.sum(femaleSales, (d) => d.sales_count),
+      });
     });
+
+    // // Sum sales count for each time
+    // vis.displayData = Array.from(salesByTime, ([time, sales]) => {
+    //   console.log("#time", time);
+    //   return {
+    //     time: time,
+    //     sales_count: d3.sum(sales, (d) => d.sales_count), // Sum the sales_count for each year
+    //   };
+    // });
+
+    vis.displayDataMale = maleData;
+    vis.displayDataFemale = femaleData;
 
     // Update the visualization
     vis.updateVis();
+  }
+
+  // Method to create legend for Male and Female
+  createLegend() {
+    let vis = this;
+
+    // Define legend items
+    let legendData = [
+      { label: "Male", color: "#1f78b4" },
+      { label: "Female", color: "red" },
+    ];
+
+    // Select the legend container and append an SVG
+    let legendSvg = d3
+      .select("#trends-legends")
+      .append("svg")
+      .attr("width", 150)
+      .attr("height", 60);
+
+    // Add each legend item
+    let legendItem = legendSvg
+      .selectAll(".legend-item")
+      .data(legendData)
+      .enter()
+      .append("g")
+      .attr("class", "legend-item")
+      .attr("transform", (d, i) => `translate(0, ${i * 30})`); // Position each item vertically
+
+    // Add color boxes
+    legendItem
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("fill", (d) => d.color);
+
+    // Add labels
+    legendItem
+      .append("text")
+      .attr("x", 30)
+      .attr("y", 15)
+      .style("font-size", "14px")
+      .text((d) => d.label);
   }
 
   updateVis() {
@@ -189,30 +282,61 @@ class Trends {
     ]);
     vis.x.domain(d3.extent(vis.displayData, (d) => d.time));
 
-    // draw lines
-    let lines = vis.svg.selectAll(".line").data([vis.displayData]);
+    // Update domains
+    vis.y.domain([
+      0,
+      d3.max(
+        [...vis.displayDataMale, ...vis.displayDataFemale], // Combine both male and female data to calculate max y-value
+        function (d) {
+          return d.sales_count;
+        }
+      ),
+    ]);
+    vis.x.domain(
+      d3.extent(
+        [...vis.displayDataMale, ...vis.displayDataFemale],
+        (d) => d.time
+      )
+    );
 
-    lines
+    // Draw line for Male
+    let maleLine = vis.svg.selectAll(".male-line").data([vis.displayDataMale]);
+    maleLine
       .enter()
       .append("path")
-      .attr("class", "line")
-      .merge(lines)
+      .attr("class", "male-line")
+      .merge(maleLine)
       .style("fill", "none")
-      .style("stroke", "#33a02c")
+      .style("stroke", "#1f78b4") // Color for male line (blue)
       .style("stroke-width", 2)
       .attr("d", vis.line);
 
-    lines.exit().remove();
+    maleLine.exit().remove();
+
+    // Draw line for Female
+    let femaleLine = vis.svg
+      .selectAll(".female-line")
+      .data([vis.displayDataFemale]);
+    femaleLine
+      .enter()
+      .append("path")
+      .attr("class", "female-line")
+      .merge(femaleLine)
+      .style("fill", "none")
+      .style("stroke", "red") // Color for female line (pink)
+      .style("stroke-width", 2)
+      .attr("d", vis.line);
+
+    femaleLine.exit().remove();
 
     // Update axes
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
 
     // Configure axis with explicit tick formatting
-    vis.xAxis
-      .ticks(d3.timeMonth.every(3))
-      .tickFormat(d3.timeFormat("%b\n%Y")); // Add newline between month and year
-    // rotate x ticks
+    vis.xAxis.ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")); // Add newline between month and year
+
+    // Rotate x-axis labels
     vis.svg
       .select(".x-axis")
       .selectAll("text")
