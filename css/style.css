@@ -57,3 +57,39 @@ svg {
     max-width: 100%;
 }
 
+#yearSliderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;  /* Adjust width as needed */
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between labels and slider */
+    width: 100%;
+}
+
+#yearSlider {
+    flex-grow: 1;  /* Let slider fill available space */
+}
+
+#startYearLabel, #endYearLabel {
+    font-size: 14px;
+    font-weight: bold;
+    width: 40px; /* Ensures consistent spacing */
+    text-align: center;
+}
+
+#legendContainer {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#legendSvg {
+    width: 300px; /* Adjust based on available space */
+    height: 50px;
+}

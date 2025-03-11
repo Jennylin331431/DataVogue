@@ -16,6 +16,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css" />
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+
 
     <!-- GOOGLE FONTS -->
     <link
@@ -83,6 +86,43 @@
         <h2>What is the extent of the environmental implications of fast fashion production?</h2>
         <div class="col-12">
           <div class="map-container">
+
+            <div id="yearSliderContainer">
+              <label for="yearSlider">Select Year Range:</label>
+              <div class="slider-wrapper">
+                  <span id="startYearLabel">2010</span>
+                  <div id="yearSlider"></div>
+                  <span id="endYearLabel">2024</span>
+              </div>
+            </div>  
+          
+              <div id="metricSelectionContainer">
+                <label for="metricSelection">Color by:</label>
+                <select id="metricSelection">
+                    <option value="waste">Waste Production (KG)</option>
+                    <option value="water_usage">Water Usage (Liters)</option>
+                    <option value="carbonFootprint">Carbon Footprint (MT)</option>
+                </select>
+              </div>
+
+            <div id="legendContainer">
+              <svg id="legendSvg"></svg>
+            </div>
+
+            <div id="impactText">
+              <p>
+                  "The environmental impact of fast fashion is undeniable, with the industry now responsible for 
+                  <strong>10% of the global annual carbon footprint</strong>, which is more than the emissions from all 
+                  international flights and maritime shipping combined. Beyond carbon emissions, fast fashion consumes vast 
+                  amounts of natural resources, using <strong>141 billion cubic meters of water annually</strong> and contributing 
+                  to <strong>35% of microplastics polluting our oceans</strong>" - Statista.
+              </p>
+              <p>
+                  To understand the full scope of this issue, let’s take a look at the global environmental impact of fast fashion productions 
+                  from 2010 to 2024.
+              </p>
+          </div>
+          
             <svg id="world-map"></svg>
           </div>
         </div>
@@ -111,6 +151,10 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+
+    <!-- noUiSlider JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+
 
     <!-- Load D3.js and TopoJSON -->
     <script src="https://d3js.org/d3.v7.min.js"></script>

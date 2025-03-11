@@ -9,6 +9,9 @@ class WorldMap {
         this.projection = null;
         this.path = null;
         this.svg = null;
+        this.startYear = 2010;
+        this.endYear = 2024;
+        this.selectedMetric = "waste";
     }
 
     initVis() {
@@ -34,10 +37,28 @@ class WorldMap {
 
         this.path = d3.geoPath().projection(this.projection);
 
+        d3.select("#metricSelection").on("change", (event) => {
+            this.selectedMetric = event.target.value;
+            this.updateVis();
+        });
+
         this.wrangleData();
     }
 
+    updateYearRange(startYear, endYear) {
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.wrangleData(); // Re-filter the data based on new year range
+    }
+
     wrangleData() {
+        let vis = this;
+
+        // Filter dataset based on year range
+        vis.filteredData = vis.data.filter(d => d.Year >= vis.startYear && d.Year <= vis.endYear);
+
+        vis.countryDataMap.clear();
+
         const countryNameFixes = {
             "USA": "United States of America",
             "UK": "United Kingdom",
@@ -48,7 +69,7 @@ class WorldMap {
             "Vietnam": "Viet Nam"
         };
 
-        this.data.forEach(d => {
+        vis.filteredData.forEach(d => {
             let countryName = d.Country.trim();
             if (countryNameFixes[countryName]) {
                 countryName = countryNameFixes[countryName]; // fix name if necessary
@@ -59,14 +80,14 @@ class WorldMap {
             let carbonFootprint = parseFloat(d.Carbon_Footprint_MT) || 0;
             let water_usage = parseFloat(d.Water_Usage_Liters) || 0;
 
-            if (!this.countryDataMap.has(countryName)) {
-                this.countryDataMap.set(countryName, {
+            if (!vis.countryDataMap.has(countryName)) {
+                vis.countryDataMap.set(countryName, {
                     waste: 0, carbonFootprint: 0, water_usage: 0, count: 0
                 });
             }
 
             // Accumulate sums and count
-            let countryStats = this.countryDataMap.get(countryName);
+            let countryStats = vis.countryDataMap.get(countryName);
             countryStats.waste += waste;
             countryStats.water_usage += water_usage;
             countryStats.carbonFootprint += carbonFootprint;
@@ -74,61 +95,125 @@ class WorldMap {
         });
 
         // Ensure USA & UK are included
-        this.countryDataMap.set("United States of America", this.countryDataMap.get("United States of America") || { waste: 0, water_usage: 0, carbonFootprint: 0, count: 0 });
-        this.countryDataMap.set("United Kingdom", this.countryDataMap.get("United Kingdom") || { waste: 0, water_usage: 0, carbonFootprint: 0, count: 0 });
+        vis.countryDataMap.set("United States of America", vis.countryDataMap.get("United States of America") || { waste: 0, water_usage: 0, carbonFootprint: 0, count: 0 });
+        vis.countryDataMap.set("United Kingdom", vis.countryDataMap.get("United Kingdom") || { waste: 0, water_usage: 0, carbonFootprint: 0, count: 0 });
 
-        this.updateVis();
+
+        vis.updateVis();
+        
     }
 
+    updateLegend(colorScale, minValue, maxValue) {
+        let vis = this;
+    
+        // Select or create legend SVG
+        let legendSvg = d3.select("#legendSvg");
+        legendSvg.selectAll("*").remove(); // Clear previous legend
+    
+        let legendWidth = 300;
+        let legendHeight = 20;
+    
+        // Define linear gradient
+        let defs = legendSvg.append("defs");
+        let gradient = defs.append("linearGradient")
+            .attr("id", "gradientColor")
+            .attr("x1", "0%")
+            .attr("x2", "100%")
+            .attr("y1", "0%")
+            .attr("y2", "0%");
+    
+        // Create color stops based on the scale
+        let stops = d3.range(0, 1.1, 0.2);
+        stops.forEach((t) => {
+            gradient.append("stop")
+                .attr("offset", `${t * 100}%`)
+                .attr("stop-color", colorScale(minValue + t * (maxValue - minValue)));
+        });
+    
+        // Append gradient bar
+        legendSvg.append("rect")
+            .attr("x", 0)
+            .attr("y", 10)
+            .attr("width", legendWidth)
+            .attr("height", legendHeight)
+            .style("fill", "url(#gradientColor)");
+    
+        // Scale for legend axis
+        let legendScale = d3.scaleLinear()
+            .domain([minValue, maxValue])
+            .range([0, legendWidth]);
+    
+        let legendAxis = d3.axisBottom(legendScale)
+            .ticks(5)
+            .tickFormat(d => d3.format(".2s")(d));
+    
+        // Append axis
+        legendSvg.append("g")
+            .attr("transform", `translate(0, ${legendHeight + 10})`)
+            .call(legendAxis);
+    }
+    
+
     updateVis() {
+        let vis = this;
+    
         Promise.all([
             d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
         ]).then(([world]) => {
             const countries = topojson.feature(world, world.objects.countries).features;
-
-            // Draw Countries
-            this.svg.append("g")
-                .selectAll("path")
+    
+            // Compute min & max values for selected metric
+            let minValue = d3.min([...vis.countryDataMap.values()], d => d[vis.selectedMetric] / d.count || 0);
+            let maxValue = d3.max([...vis.countryDataMap.values()], d => d[vis.selectedMetric] / d.count || 0);
+    
+            // Define color scale
+            let colorScale = d3.scaleSequential(d3.interpolateReds)
+                .domain([minValue, maxValue]);
+    
+            // Update country colors
+            vis.svg.selectAll("path")
                 .data(countries)
                 .join("path")
-                .attr("d", this.path)
-                .attr("fill", d => this.countryDataMap.has(d.properties.name) ? "red" : "#ccc")
+                .attr("d", vis.path)
+                .attr("fill", d => {
+                    let countryStats = vis.countryDataMap.get(d.properties.name);
+                    return countryStats ? colorScale(countryStats[vis.selectedMetric] / countryStats.count || 0) : "#ccc";
+                })
                 .attr("stroke", "#333")
                 .on("mouseover", (event, d) => {
                     let countryName = d.properties.name;
-                    let stats = this.countryDataMap.get(countryName);
-
-                    this.tooltip.transition().duration(200).style("opacity", 1);
-
+                    let stats = vis.countryDataMap.get(countryName);
+    
+                    vis.tooltip.transition().duration(200).style("opacity", 1);
+    
                     if (stats) {
-                        // Calculate averages
                         let avgWaste = stats.waste / stats.count;
                         let avgWaterUsage = stats.water_usage / stats.count;
                         let avgCarbonFootprint = stats.carbonFootprint / stats.count;
-
-                        // Format numbers with commas and no decimals
-                        this.tooltip.html(
+    
+                        vis.tooltip.html(
                             `<strong>${countryName}</strong><br>
                             Waste: ${avgWaste.toLocaleString(undefined, { maximumFractionDigits: 0 })} KG<br>
                             Water Usage: ${avgWaterUsage.toLocaleString(undefined, { maximumFractionDigits: 0 })} Liters<br>
                             Carbon Footprint: ${avgCarbonFootprint.toLocaleString(undefined, { maximumFractionDigits: 0 })} MT (megatonnes)`
                         );
                     } else {
-                        // If no data, show "data not collected"
-                        this.tooltip.html(
-                            `<strong>${countryName}</strong><br>Data Not Collected`
-                        );
+                        vis.tooltip.html(`<strong>${countryName}</strong><br>Data Not Collected`);
                     }
-
-                    this.tooltip.style("left", (event.pageX + 10) + "px")
+    
+                    vis.tooltip.style("left", (event.pageX + 10) + "px")
                                .style("top", (event.pageY - 10) + "px");
-
+    
                     d3.select(event.currentTarget).style("stroke", "black");
                 })
                 .on("mouseout", (event) => {
-                    this.tooltip.transition().duration(200).style("opacity", 0);
+                    vis.tooltip.transition().duration(200).style("opacity", 0);
                     d3.select(event.currentTarget).style("stroke", "#333");
                 });
+    
+            // Update legend
+            vis.updateLegend(colorScale, minValue, maxValue);
+    
         }).catch(error => {
             console.error("Error loading world data:", error);
         });
