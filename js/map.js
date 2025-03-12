@@ -107,14 +107,12 @@ class WorldMap {
     updateLegend(colorScale, minValue, maxValue) {
         let vis = this;
     
-        // Select or create legend SVG
         let legendSvg = d3.select("#legendSvg");
-        legendSvg.selectAll("*").remove(); // Clear previous legend
+        legendSvg.selectAll("*").remove();
     
         let legendWidth = 300;
         let legendHeight = 20;
     
-        // Define linear gradient
         let defs = legendSvg.append("defs");
         let gradient = defs.append("linearGradient")
             .attr("id", "gradientColor")
@@ -123,7 +121,6 @@ class WorldMap {
             .attr("y1", "0%")
             .attr("y2", "0%");
     
-        // Create color stops based on the scale
         let stops = d3.range(0, 1.1, 0.2);
         stops.forEach((t) => {
             gradient.append("stop")
@@ -131,7 +128,6 @@ class WorldMap {
                 .attr("stop-color", colorScale(minValue + t * (maxValue - minValue)));
         });
     
-        // Append gradient bar
         legendSvg.append("rect")
             .attr("x", 0)
             .attr("y", 10)
@@ -139,7 +135,6 @@ class WorldMap {
             .attr("height", legendHeight)
             .style("fill", "url(#gradientColor)");
     
-        // Scale for legend axis
         let legendScale = d3.scaleLinear()
             .domain([minValue, maxValue])
             .range([0, legendWidth]);
@@ -148,7 +143,6 @@ class WorldMap {
             .ticks(5)
             .tickFormat(d => d3.format(".2s")(d));
     
-        // Append axis
         legendSvg.append("g")
             .attr("transform", `translate(0, ${legendHeight + 10})`)
             .call(legendAxis);
@@ -206,7 +200,6 @@ class WorldMap {
                         vis.tooltip.style("left", (event.pageX + 10) + "px")
                                    .style("top", (event.pageY - 10) + "px");
     
-                        // Generate embedded bar chart in tooltip
                         vis.createTooltipBarChart();
                     } else {
                         vis.tooltip.html(`<strong>${countryName}</strong><br>Data Not Collected`);
@@ -221,12 +214,12 @@ class WorldMap {
                     let posX = event.pageX + 15;
                     let posY = event.pageY + 15;
 
-                    // Prevent tooltip from going outside the right edge
+                    // prevent tooltip from going outside the right edge
                     if (posX + tooltipWidth > window.innerWidth) {
                         posX = event.pageX - tooltipWidth - 15;
                     }
 
-                    // Prevent tooltip from going outside the bottom edge
+                    // prevent tooltip from going outside the bottom edge
                     if (posY + tooltipHeight > window.innerHeight) {
                         posY = event.pageY - tooltipHeight - 15;
                     }
@@ -239,18 +232,16 @@ class WorldMap {
                     d3.select(event.currentTarget).style("stroke", "#333");
                 });
     
-            // Update legend
             vis.updateLegend(colorScale, minValue, maxValue);
         }).catch(error => {
             console.error("Error loading world data:", error);
         });
     }
     
-    // Create an embedded bar chart inside the tooltip
+    // create an embedded bar chart inside the tooltip
     createTooltipBarChart() {
         let vis = this;
     
-        // Prepare waste data per country
         let wasteData = [...vis.countryDataMap.entries()]
         .map(([country, stats]) => {
             let displayName = country;
@@ -258,11 +249,11 @@ class WorldMap {
             if (country === "United Kingdom") displayName = "UK";
             return { country: displayName, waste: stats.waste };
         })
-            .sort((a, b) => b.waste - a.waste) // Sort by waste production
-            .slice(0, 10); // Get top 5 highest waste-producing countries
+            .sort((a, b) => b.waste - a.waste)
+            // .slice(0, 10); // Get top 5 highest waste-producing countries
     
         let svg = d3.select("#tooltip-chart");
-        svg.selectAll("*").remove(); // Clear previous chart
+        svg.selectAll("*").remove();
     
         let width = 200, height = 130, margin = { top: 5, right: 5, bottom: 20, left: 50 };
     
@@ -275,7 +266,7 @@ class WorldMap {
             .range([0, height - margin.top - margin.bottom])
             .padding(0.1);
     
-        let colorScale = d3.scaleOrdinal(d3.schemeCategory10); // Assign different colors
+        let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
     
         let chart = svg.append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -286,9 +277,8 @@ class WorldMap {
             .attr("y", d => yScale(d.country))
             .attr("width", d => xScale(d.waste))
             .attr("height", yScale.bandwidth())
-            .attr("fill", (d, i) => colorScale(i)); // Assign a different color to each bar
+            .attr("fill", (d, i) => colorScale(i)); // asign a different color to each bar
     
-        // Add black text labels inside bars
         chart.selectAll("text")
             .data(wasteData)
             .join("text")
@@ -299,7 +289,6 @@ class WorldMap {
             .style("font-size", "10px")
             .text(d => d.waste.toLocaleString());
     
-        // Add y-axis labels with black text
         svg.append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`)
             .call(d3.axisLeft(yScale).tickSize(0).tickPadding(3))
