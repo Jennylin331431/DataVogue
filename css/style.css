@@ -13,10 +13,12 @@ body {
 
 h1 {
     margin: 20px 0;
+    color: rgb(209, 84, 105);
+
 }
 
 h4 {
-    color: purple;
+    color: rgb(179, 110, 179);
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -25,7 +27,7 @@ svg {
     height: 600px;
     display: block;
     margin: auto;
-    background-color: #f0f0f0;
+    /* background-color: #f0f0f0; */
 }
 
 .tooltip-line {
@@ -51,10 +53,21 @@ svg {
     line-height: 1.2;
   }
 
-#global-line-chart {
+  #global-line-chart {
     width: 1000px !important;
     height: 450px !important;
     max-width: 100%;
+}
+
+
+h2{
+    margin-top: 30px !important;
+    color: rgb(109, 15, 109)
+}
+
+h5{
+    margin-top: 20px;
+    color: rgb(233, 108, 233);
 }
 
 #yearSliderContainer {
@@ -100,3 +113,4 @@ svg {
     overflow: hidden;
     white-space: normal;
   }
+
