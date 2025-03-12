@@ -12,12 +12,14 @@ class WorldMap {
         this.startYear = 2010;
         this.endYear = 2024;
         this.selectedMetric = "waste";
+        this.originalWidth = 960;
+        this.originalHeight = 600;
     }
 
     initVis() {
         this.svg = d3.select(this.containerId)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("viewBox", `0 0 ${this.originalWidth} ${this.originalHeight}`)
             .classed("responsive-svg", true);
 
         // Tooltip, hidden by default
@@ -34,7 +36,7 @@ class WorldMap {
 
         this.projection = d3.geoMercator()
             .scale(150)
-            .translate([width / 1.8, height / 1.5]);
+            .translate([this.originalWidth / 1.8, this.originalHeight / 1.5]);
 
         this.path = d3.geoPath().projection(this.projection);
 
@@ -44,6 +46,28 @@ class WorldMap {
         });
 
         this.wrangleData();
+
+        window.addEventListener("resize", () => this.handleResize());
+    }
+
+    handleResize() {
+        const containerWidth = this.svg.node().getBoundingClientRect().width;
+        const containerHeight = this.svg.node().getBoundingClientRect().height;
+
+        // Reset to original dimensions if screen is large enough
+        if (containerWidth >= this.originalWidth && containerHeight >= this.originalHeight) {
+            this.projection
+                .translate([this.originalWidth / 1.8, this.originalHeight / 1.5])
+                .scale(150);
+        } else {
+            this.projection
+                .translate([containerWidth / 1.8, containerHeight / 1.5])
+                .scale(Math.min(containerWidth / 6, containerHeight / 3));
+        }
+
+        // Update paths
+        this.svg.selectAll("path")
+            .attr("d", this.path);
     }
 
     updateYearRange(startYear, endYear) {
@@ -155,7 +179,11 @@ class WorldMap {
         Promise.all([
             d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
         ]).then(([world]) => {
+            // Convert TopoJSON to GeoJSON and filter out Antarctica
             const countries = topojson.feature(world, world.objects.countries).features;
+            const filteredCountries = countries.filter(country => {
+                return country.properties.name !== "Antarctica"; // Filter out Antarctica
+            });
     
             // Compute min & max values for selected metric
             let minValue = d3.min([...vis.countryDataMap.values()], d => d[vis.selectedMetric] / d.count || 0);
@@ -167,7 +195,7 @@ class WorldMap {
     
             // Update country colors
             vis.svg.selectAll("path")
-                .data(countries)
+                .data(filteredCountries)
                 .join("path")
                 .attr("d", vis.path)
                 .attr("fill", d => {
@@ -190,9 +218,7 @@ class WorldMap {
                             <strong>${countryName}</strong><br>
                             Waste: ${avgWaste.toLocaleString()} KG<br>
                             Water Usage: ${avgWaterUsage.toLocaleString()} Liters<br>
-                            Carbon Footprint: ${avgCarbonFootprint.toLocaleString()} MT (megatonnes)
-                            <br><strong>Total Waste in KG Produced Over all Production Years</strong>
-                            <svg id="tooltip-chart" width="200" height="100"></svg>
+                            Carbon Footprint: ${avgCarbonFootprint.toLocaleString()} Megatonnes
                         `;
     
                         vis.tooltip.html(tooltipHTML);
@@ -200,7 +226,7 @@ class WorldMap {
                         vis.tooltip.style("left", (event.pageX + 10) + "px")
                                    .style("top", (event.pageY - 10) + "px");
     
-                        vis.createTooltipBarChart();
+                        // vis.createTooltipBarChart();
                     } else {
                         vis.tooltip.html(`<strong>${countryName}</strong><br>Data Not Collected`);
                     }
@@ -239,62 +265,62 @@ class WorldMap {
     }
     
     // create an embedded bar chart inside the tooltip
-    createTooltipBarChart() {
-        let vis = this;
+    // createTooltipBarChart() {
+    //     let vis = this;
     
-        let wasteData = [...vis.countryDataMap.entries()]
-        .map(([country, stats]) => {
-            let displayName = country;
-            if (country === "United States of America") displayName = "USA";
-            if (country === "United Kingdom") displayName = "UK";
-            return { country: displayName, waste: stats.waste };
-        })
-            .sort((a, b) => b.waste - a.waste)
-            // .slice(0, 10); // Get top 5 highest waste-producing countries
+    //     let wasteData = [...vis.countryDataMap.entries()]
+    //     .map(([country, stats]) => {
+    //         let displayName = country;
+    //         if (country === "United States of America") displayName = "USA";
+    //         if (country === "United Kingdom") displayName = "UK";
+    //         return { country: displayName, waste: stats.waste };
+    //     })
+    //         .sort((a, b) => b.waste - a.waste)
+    //         // .slice(0, 10); // Get top 5 highest waste-producing countries
     
-        let svg = d3.select("#tooltip-chart");
-        svg.selectAll("*").remove();
+    //     let svg = d3.select("#tooltip-chart");
+    //     svg.selectAll("*").remove();
     
-        let width = 200, height = 130, margin = { top: 5, right: 5, bottom: 20, left: 50 };
+    //     let width = 200, height = 130, margin = { top: 5, right: 5, bottom: 20, left: 50 };
     
-        let xScale = d3.scaleLinear()
-            .domain([0, d3.max(wasteData, d => d.waste)])
-            .range([0, width - margin.left - margin.right]);
+    //     let xScale = d3.scaleLinear()
+    //         .domain([0, d3.max(wasteData, d => d.waste)])
+    //         .range([0, width - margin.left - margin.right]);
     
-        let yScale = d3.scaleBand()
-            .domain(wasteData.map(d => d.country))
-            .range([0, height - margin.top - margin.bottom])
-            .padding(0.1);
+    //     let yScale = d3.scaleBand()
+    //         .domain(wasteData.map(d => d.country))
+    //         .range([0, height - margin.top - margin.bottom])
+    //         .padding(0.1);
     
-        let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+    //     let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
     
-        let chart = svg.append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+    //     let chart = svg.append("g")
+    //         .attr("transform", `translate(${margin.left},${margin.top})`);
     
-        chart.selectAll("rect")
-            .data(wasteData)
-            .join("rect")
-            .attr("y", d => yScale(d.country))
-            .attr("width", d => xScale(d.waste))
-            .attr("height", yScale.bandwidth())
-            .attr("fill", (d, i) => colorScale(i)); // asign a different color to each bar
+    //     chart.selectAll("rect")
+    //         .data(wasteData)
+    //         .join("rect")
+    //         .attr("y", d => yScale(d.country))
+    //         .attr("width", d => xScale(d.waste))
+    //         .attr("height", yScale.bandwidth())
+    //         .attr("fill", (d, i) => colorScale(i)); // asign a different color to each bar
     
-        chart.selectAll("text")
-            .data(wasteData)
-            .join("text")
-            .attr("x", d => xScale(d.waste) + 3)
-            .attr("y", d => yScale(d.country) + yScale.bandwidth() / 2)
-            .attr("dy", ".35em")
-            .style("fill", "white")
-            .style("font-size", "10px")
-            .text(d => d.waste.toLocaleString());
+    //     chart.selectAll("text")
+    //         .data(wasteData)
+    //         .join("text")
+    //         .attr("x", d => xScale(d.waste) + 3)
+    //         .attr("y", d => yScale(d.country) + yScale.bandwidth() / 2)
+    //         .attr("dy", ".35em")
+    //         .style("fill", "white")
+    //         .style("font-size", "10px")
+    //         .text(d => d.waste.toLocaleString());
     
-        svg.append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`)
-            .call(d3.axisLeft(yScale).tickSize(0).tickPadding(3))
-            .selectAll("text")
-            .style("fill", "white")
-            .style("font-size", "10px");
-    }
+    //     svg.append("g")
+    //         .attr("transform", `translate(${margin.left},${margin.top})`)
+    //         .call(d3.axisLeft(yScale).tickSize(0).tickPadding(3))
+    //         .selectAll("text")
+    //         .style("fill", "white")
+    //         .style("font-size", "10px");
+    // }
     
 }
