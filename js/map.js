@@ -16,8 +16,9 @@ class WorldMap {
 
     initVis() {
         this.svg = d3.select(this.containerId)
-            .attr("width", width)
-            .attr("height", height);
+            .attr("preserveAspectRatio", "xMidYMid meet")
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .classed("responsive-svg", true);
 
         // Tooltip, hidden by default
         this.tooltip = d3.select("body").append("div")
@@ -32,8 +33,8 @@ class WorldMap {
             .style("pointer-events", "none");
 
         this.projection = d3.geoMercator()
-            .scale(170)
-            .translate([width / 1.5, height / 1.5]);
+            .scale(150)
+            .translate([width / 1.8, height / 1.5]);
 
         this.path = d3.geoPath().projection(this.projection);
 
@@ -196,6 +197,7 @@ class WorldMap {
                             Waste: ${avgWaste.toLocaleString()} KG<br>
                             Water Usage: ${avgWaterUsage.toLocaleString()} Liters<br>
                             Carbon Footprint: ${avgCarbonFootprint.toLocaleString()} MT (megatonnes)
+                            <br><strong>Total Waste in KG Produced Over all Production Years</strong>
                             <svg id="tooltip-chart" width="200" height="100"></svg>
                         `;
     
@@ -212,6 +214,26 @@ class WorldMap {
     
                     d3.select(event.currentTarget).style("stroke", "black");
                 })
+                .on("mousemove", (event) => {
+                    let tooltipWidth = vis.tooltip.node().offsetWidth;
+                    let tooltipHeight = vis.tooltip.node().offsetHeight;
+                    
+                    let posX = event.pageX + 15;
+                    let posY = event.pageY + 15;
+
+                    // Prevent tooltip from going outside the right edge
+                    if (posX + tooltipWidth > window.innerWidth) {
+                        posX = event.pageX - tooltipWidth - 15;
+                    }
+
+                    // Prevent tooltip from going outside the bottom edge
+                    if (posY + tooltipHeight > window.innerHeight) {
+                        posY = event.pageY - tooltipHeight - 15;
+                    }
+
+                    vis.tooltip.style("left", `${posX}px`)
+                            .style("top", `${posY}px`);
+                                })
                 .on("mouseout", (event) => {
                     vis.tooltip.transition().duration(200).style("opacity", 0);
                     d3.select(event.currentTarget).style("stroke", "#333");
@@ -273,7 +295,7 @@ class WorldMap {
             .attr("x", d => xScale(d.waste) + 3)
             .attr("y", d => yScale(d.country) + yScale.bandwidth() / 2)
             .attr("dy", ".35em")
-            .style("fill", "black")
+            .style("fill", "white")
             .style("font-size", "10px")
             .text(d => d.waste.toLocaleString());
     
@@ -282,7 +304,7 @@ class WorldMap {
             .attr("transform", `translate(${margin.left},${margin.top})`)
             .call(d3.axisLeft(yScale).tickSize(0).tickPadding(3))
             .selectAll("text")
-            .style("fill", "black")
+            .style("fill", "white")
             .style("font-size", "10px");
     }
     
