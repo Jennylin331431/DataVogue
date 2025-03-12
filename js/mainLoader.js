@@ -1,4 +1,3 @@
-let linechart;
 let trendsLineChart;
 let globalVisLineChart;
 let worldMap;
