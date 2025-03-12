@@ -1,8 +1,11 @@
 let linechart;
 let globalVisLineChart;
 let worldMap;
+let brandLineChart;
 
 let parseDate = d3.timeParse("%Y-%m");
+
+// call loadData
 loadData();
 
 function loadData() {
@@ -47,8 +50,6 @@ function loadData() {
       globalVisLineChart = new GlobalLineChart("global-line-chart", aggregatedData);
   
       globalVisLineChart.initVis();
-  
-      console.log(aggregatedData);
     }
   )
   });
@@ -66,6 +67,19 @@ function loadData() {
 
       worldMap = new WorldMap("#world-map", data);
       worldMap.initVis();
+
+    brandLineChart = new BrandLineChart("brand-vis", data)
+    brandLineChart.initVis();
   });
 }
+
+// function for category selection for globalVis 
+let selectedCategory =  document.getElementById('categorySelector').value;
+
+function categoryChange() {
+   selectedCategory =  document.getElementById('categorySelector').value;
+   globalVisLineChart.wrangleData(); 
+}
+
+
 

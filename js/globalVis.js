@@ -6,7 +6,7 @@ class GlobalLineChart{
        this.data = data;
        this.parentElement = parentElement;
        this.displayData = data;
-       this.selectedYears = [2018, 2019, 2020, 2021, 2022]; // going to change to be a filter option 
+       this.selectedYears = [2018, 2019, 2020, 2021, 2022]; 
        this.selectedMetrics = ["averageGreenhouseGasEmissions", 
                                "averagePollutantsEmitted", 
                                "averageWasteGeneration", 
@@ -93,17 +93,36 @@ class GlobalLineChart{
 
    /* Data wrangling */
    wrangleData() {
-       let vis = this;
+    let vis = this;
 
-       // Filter data based on selected years (include in next protoype)
-       // vis.displayData = vis.data.filter(d => vis.selectedYears.includes(d.year)); 
+    // Filter data based on selected years (include in next protoype)
+    // vis.displayData = vis.data.filter(d => vis.selectedYears.includes(d.year)); 
 
-       // Update scales
-       vis.xScale.domain(vis.selectedYears);
-       vis.yScale.domain([0, d3.max(vis.displayData, d => d3.max(vis.selectedMetrics.map(metric => d[metric])))]);
+    // Update based on category selected
+    if (selectedCategory == 'gasData') {
+        vis.selectedMetrics = ["averageGreenhouseGasEmissions"];
+    }
+    else if (selectedCategory == 'pollutantsData'){
+        vis.selectedMetrics = ["averagePollutantsEmitted"];
+    }
+    else if (selectedCategory == 'wasteData'){
+        vis.selectedMetrics = ["averageWasteGeneration"];
+    }
+    else if (selectedCategory == 'waterData'){
+        vis.selectedMetrics = ["averageWaterConsumption"];
+    }
+    else {
+        vis.selectedMetrics = ["averageGreenhouseGasEmissions", "averagePollutantsEmitted", "averageWasteGeneration", "averageWaterConsumption"];
+    }
 
-       vis.updateVis();
-   }
+    console.log(vis.selectedMetrics)
+
+    // Update scales
+    vis.xScale.domain(vis.selectedYears);
+    vis.yScale.domain([0, d3.max(vis.displayData, d => d3.max(vis.selectedMetrics.map(metric => d[metric])))]);
+
+    vis.updateVis();
+}
 
    /*
    * Update visualization
@@ -111,8 +130,8 @@ class GlobalLineChart{
    updateVis() {
        let vis = this;
 
-       // // Clear previous paths
-       // vis.chartsvg.selectAll("path.metric-line").remove();
+       // Clear previous paths
+       vis.chartsvg.selectAll("path.metric-line").remove();
 
        // Draw lines for selected metrics
        console.log(vis.displayData)
@@ -120,6 +139,7 @@ class GlobalLineChart{
        vis.selectedMetrics.forEach(metric => {
            vis.chartsvg.append("path")
                .datum(vis.displayData)
+               .attr("class", "metric-line")
                .attr("fill", "none")
                .attr("stroke", vis.metrics.find(m => m.key === metric)?.color || "black")
                .attr("stroke-width", 2)
@@ -155,3 +175,4 @@ class GlobalLineChart{
        });
    }
    }
+
