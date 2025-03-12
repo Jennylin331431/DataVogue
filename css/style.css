@@ -37,10 +37,12 @@ svg {
 
 #tooltip-line-chart {
   position: absolute;
-  background-color: white;
-  font-size: 10px;
-  width: 70px;
+  background-color: rgb(194, 167, 236);
+  width: 150px;
+  font-size: 14px;
   color: black; 
+  opacity: 0.7;
+  border-radius: 10%;
 }
 
 .dropdown {

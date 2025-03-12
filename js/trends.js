@@ -61,50 +61,70 @@ class Trends {
       .append("rect")
       .attr("width", vis.width + vis.margin.left + vis.margin.right)
       .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
-      .style("opacity", 0);
-    // .on("touchmouse mousemove", function (event) {
-    //   const mousePos = d3.pointer(event, this);
-    //   console.log(mousePos);
-    //   const date = vis.x.invert(mousePos[0]);
-    //   const index = d3.bisect(vis.displayData, date); // highlight-line
+      .style("opacity", 0)
+      .on("touchmouse mousemove", function (event) {
+        const mousePos = d3.pointer(event, this);
+        console.log(mousePos);
+        const date = vis.x.invert(mousePos[0]);
+        const index = d3.bisect(vis.displayDataMale, date); // highlight-line
 
-    //   // Custom Bisector - left, center, right <= bisector options
-    //   vis.xAccessor = (d) => d.time;
-    //   vis.yAccessor = (d) => d.sales_count;
+        // Custom Bisector - left, center, right <= bisector options
+        vis.xAccessor = (d) => d.time;
+        vis.yAccessor = (d) => d.sales_count;
 
-    //   const dateBisector = d3.bisector(vis.xAccessor).left;
-    //   const bisectionIndex = dateBisector(vis.displayData, date);
-    //   const hoveredIndexData = vis.displayData[bisectionIndex - 1];
+        const dateBisector = d3.bisector(vis.xAccessor).left;
+        const bisectionIndex = dateBisector(vis.displayDataMale, date);
+        const hoveredIndexMaleData = vis.displayDataMale[bisectionIndex - 1];
+        const hoveredIndexFemaleData =
+          vis.displayDataFemale[bisectionIndex - 1];
 
-    //   let xPosition = vis.x(hoveredIndexData.time);
-    //   let yPosition = vis.y(hoveredIndexData.sales_count);
+        let xPosition = vis.x(hoveredIndexMaleData.time);
+        let yPosition = vis.y(hoveredIndexMaleData.sales_count);
 
-    //   vis.tooltip
-    //     .style("display", "block")
-    //     .style("left", `${event.pageX + 15}px`)
-    //     .style("top", `${event.pageY - 30}px`);
+        let femaleData = hoveredIndexFemaleData.sales_count
+        let maleData = hoveredIndexMaleData.sales_count
 
-    //   vis.tooltip
-    //     .select(".tooltip-sales")
-    //     .text(`$${hoveredIndexData.sales_count}`);
 
-    //   const dateFormatter = d3.timeFormat("%b, %Y");
+        // Calculate the relative difference as absolute difference or percentage
+        let absoluteDifference = maleData - femaleData;
+        let percentageDifference = (absoluteDifference / femaleData) * 100;
 
-    //   vis.tooltip
-    //     .select(".tooltip-date")
-    //     .text(`${dateFormatter(hoveredIndexData.time)}`);
+        vis.tooltip
+          .style("display", "block")
+          .style("left", `${event.pageX + 15}px`)
+          .style("top", `${event.pageY - 30}px`);
 
-    //   // Update tooltip line position
-    //   vis.tooltipLine
-    //     .attr("x1", xPosition) // x position of the first end of the line
-    //     .attr("y1", 0) // y position of the first end of the line
-    //     .attr("x2", xPosition) // x position of the second end of the line
-    //     .attr("y2", vis.height)
-    //     .style("opacity", 1);
-    // })
-    // .on("mouseleave", function (event) {
-    //   vis.tooltipLine.style("opacity", 0);
-    // });
+        vis.tooltip.select(".tooltip-sales").html(`
+      <strong>Male Sales:</strong> ${maleData}<br>
+      <strong>Female Sales:</strong> ${femaleData}<br>
+      <strong>Abs Diff: </strong> ${
+        absoluteDifference >= 0 ? "+" : "-"
+      }${Math.abs(absoluteDifference)} <br>
+       <strong>Rel Diff: </strong> 
+      (${
+        absoluteDifference >= 0 ? "+" : "-"
+      }${Math.abs(percentageDifference).toFixed(2)}%)
+    
+    `);
+
+        const dateFormatter = d3.timeFormat("%Y");
+
+        vis.tooltip
+          .select(".tooltip-date")
+          .html(`<strong>Year: </strong> ${dateFormatter(hoveredIndexMaleData.time)}`);
+
+        // Update tooltip line position
+        vis.tooltipLine
+          .attr("x1", xPosition) // x position of the first end of the line
+          .attr("y1", 0) // y position of the first end of the line
+          .attr("x2", xPosition) // x position of the second end of the line
+          .attr("y2", vis.height)
+          .style("opacity", 1);
+      })
+    .on("mouseout", function (event) {
+      vis.tooltipLine.style("opacity", 0);
+      vis.tooltip.style("display", "none");
+    });
 
     // scales
     vis.x = d3.scaleTime().range([0, vis.width]);
@@ -196,7 +216,6 @@ class Trends {
       let maleSales = genderGroup.get("Male") || []; // Get male sales for this time, default to empty array
       let femaleSales = genderGroup.get("Female") || []; // Get female sales for this time, default to empty array
 
-
       // Sum sales for male and female
       maleData.push({
         time: time,
@@ -263,8 +282,6 @@ class Trends {
   updateVis() {
     let vis = this;
 
-  
-
     // Update domains
     vis.y.domain([
       0,
@@ -273,7 +290,7 @@ class Trends {
         function (d) {
           return d.sales_count;
         }
-      ) *1.1,
+      ) * 1.1,
     ]);
     vis.x.domain(
       d3.extent(
@@ -292,10 +309,7 @@ class Trends {
       .style("fill", "none")
       .style("stroke", "#1f78b4") // Color for male line (blue)
       .style("stroke-width", 2)
-      .attr("d", vis.line)
-      
-      
-      ;
+      .attr("d", vis.line);
 
     maleLine.exit().remove();
 
@@ -312,10 +326,7 @@ class Trends {
       .attr("cx", (d) => vis.x(d.time)) // X position of the circle
       .attr("cy", (d) => vis.y(d.sales_count)) // Never go below 3px from top
       .attr("r", 4) // Radius of the circle
-      .style("fill", "#1f78b4");
-  
-      
-      ; // Circle color for male
+      .style("fill", "#1f78b4"); // Circle color for male
 
     maleCircles.exit().remove();
 
@@ -345,10 +356,9 @@ class Trends {
       .attr("class", "female-circle")
       .merge(femaleCircles)
       .attr("cx", (d) => vis.x(d.time)) // X position of the circle
-      .attr("cy", d => vis.y(d.sales_count))
+      .attr("cy", (d) => vis.y(d.sales_count))
       .attr("r", 4) // Radius of the circle
-      .style("fill", "red")     
-      ; // Circle color for female
+      .style("fill", "red"); // Circle color for female
 
     femaleCircles.exit().remove();
 
