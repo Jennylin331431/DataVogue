@@ -33,7 +33,7 @@ class Trends {
   initVis() {
     let vis = this;
 
-    vis.margin = { top: 40, right: 40, bottom: 60, left: 150 };
+    vis.margin = { top: 0, right: 40, bottom: 60, left: 70 };
 
     vis.width =
       document.getElementById(vis.parentElement).getBoundingClientRect().width -
@@ -150,7 +150,7 @@ class Trends {
       .attr("class", "y-axis-label")
       .attr("transform", "rotate(-90)")
       .attr("x", -vis.height / 2)
-      .attr("y", -vis.margin.left + 100)
+      .attr("y", -vis.margin.left + 20)
       .attr("text-anchor", "middle")
       .text("Sales Count");
 
@@ -273,14 +273,7 @@ class Trends {
   updateVis() {
     let vis = this;
 
-    // Update domains
-    vis.y.domain([
-      0,
-      d3.max(vis.displayData, function (d) {
-        return d.sales_count;
-      }),
-    ]);
-    vis.x.domain(d3.extent(vis.displayData, (d) => d.time));
+  
 
     // Update domains
     vis.y.domain([
@@ -290,7 +283,7 @@ class Trends {
         function (d) {
           return d.sales_count;
         }
-      ),
+      ) *1.1,
     ]);
     vis.x.domain(
       d3.extent(
@@ -309,9 +302,32 @@ class Trends {
       .style("fill", "none")
       .style("stroke", "#1f78b4") // Color for male line (blue)
       .style("stroke-width", 2)
-      .attr("d", vis.line);
+      .attr("d", vis.line)
+      
+      
+      ;
 
     maleLine.exit().remove();
+
+    // Add circles for Male data points
+    let maleCircles = vis.svg
+      .selectAll(".male-circle")
+      .data(vis.displayDataMale);
+
+    maleCircles
+      .enter()
+      .append("circle")
+      .attr("class", "male-circle")
+      .merge(maleCircles)
+      .attr("cx", (d) => vis.x(d.time)) // X position of the circle
+      .attr("cy", (d) => vis.y(d.sales_count)) // Never go below 3px from top
+      .attr("r", 4) // Radius of the circle
+      .style("fill", "#1f78b4");
+  
+      
+      ; // Circle color for male
+
+    maleCircles.exit().remove();
 
     // Draw line for Female
     let femaleLine = vis.svg
@@ -329,12 +345,28 @@ class Trends {
 
     femaleLine.exit().remove();
 
+    // Add circles for Female data points
+    let femaleCircles = vis.svg
+      .selectAll(".female-circle")
+      .data(vis.displayDataFemale);
+    femaleCircles
+      .enter()
+      .append("circle")
+      .attr("class", "female-circle")
+      .merge(femaleCircles)
+      .attr("cx", (d) => vis.x(d.time)) // X position of the circle
+      .attr("cy", d => vis.y(d.sales_count))
+      .attr("r", 4) // Radius of the circle
+      .style("fill", "red")     
+      ; // Circle color for female
+
+    femaleCircles.exit().remove();
+
+    vis.xAxis.ticks(5).tickFormat((d) => d.getFullYear()); // Format ticks to display only the year
+
     // Update axes
     vis.svg.select(".x-axis").call(vis.xAxis);
     vis.svg.select(".y-axis").call(vis.yAxis);
-
-    // Configure axis with explicit tick formatting
-    vis.xAxis.ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")); // Add newline between month and year
 
     // Rotate x-axis labels
     vis.svg

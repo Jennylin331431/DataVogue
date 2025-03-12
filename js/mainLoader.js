@@ -83,23 +83,90 @@ function loadData() {
   });
 }
 
+// Object to store valid Pattern-Color pairs
+let validColorsForPatterns = {
+  Geometric: ["White", "Beige", "Brown", "Red", "Yellow", "Sky Blue"],
+  "Polka Dots": ["Red", "Pink", "White", "Beige", "Brown"],
+  Plain: [
+    "White",
+    "Beige",
+    "Brown",
+    "Red",
+    "Yellow",
+    "Sky Blue",
+    "Orange",
+    "Sky Blue",
+  ],
+  Heart: ["Pink", "Red"],
+  Striped: ["Orange"],
+  Floral: ["Yellow", "Sky Blue"],
+};
+
+let validPatternsForColors = {
+  White: ["Geometric", "Polka Dots", "Plain"],
+  Beige: ["Geometric", "Polka Dots", "Plain"],
+  Brown: ["Geometric", "Polka Dots", "Plain"],
+  Red: ["Geometric", "Polka Dots", "Heart"],
+  Yellow: ["Geometric", "Plain", "Floral"],
+  "Sky Blue": ["Geometric", "Plain", "Floral"],
+  Pink: ["Polka Dots", "Heart"],
+  Orange: ["Plain", "Striped"],
+};
+
 function colorChange() {
   selectedColor = document.getElementById("colorSelector").value;
+
+  // Get all options from the Color dropdown
+  const patternOptions = document.getElementById("patternSelector").options;
+
+  // Disable all options initially
+  for (let i = 0; i < patternOptions.length; i++) {
+    patternOptions[i].disabled = true;
+  }
+
+
+  // Enable only the valid options
+  if (validPatternsForColors[selectedColor]) {
+    validPatternsForColors[selectedColor].forEach((color) => {
+      for (let i = 0; i < patternOptions.length; i++) {
+        console.log("#")
+        if (patternOptions[i].value === color || patternOptions[i].value === "None") {
+          patternOptions[i].disabled = false;
+        }
+      }
+    });
+  }
+
   // update visualizations
   trendsLineChart.selectedColor = selectedColor;
   trendsLineChart.wrangleData();
 
-  console.log("#colorchange", selectedColor)
+  console.log("#colorchange", selectedColor);
 }
 
 function patternChange() {
   selectedPattern = document.getElementById("patternSelector").value;
+  console.log("#patternChange", selectedPattern);
 
-  console.log("#patternChange", selectedPattern)
+  // Get all options from the Color dropdown
+  const colorOptions = document.getElementById("colorSelector").options;
 
+  // Disable all options initially
+  for (let i = 0; i < colorOptions.length; i++) {
+    colorOptions[i].disabled = true;
+  }
 
+  // Enable only the valid options for the selected pattern
+  if (validColorsForPatterns[selectedPattern]) {
+    validColorsForPatterns[selectedPattern].forEach((color) => {
+      for (let i = 0; i < colorOptions.length; i++) {
+        if (colorOptions[i].value === color || colorOptions[i].value === "None") {
+          colorOptions[i].disabled = false;
+        }
+      }
+    });
+  }
   // update visualizations
   trendsLineChart.selectedPattern = selectedPattern;
   trendsLineChart.wrangleData();
-
 }
