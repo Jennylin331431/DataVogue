@@ -196,7 +196,6 @@ class Trends {
       let maleSales = genderGroup.get("Male") || []; // Get male sales for this time, default to empty array
       let femaleSales = genderGroup.get("Female") || []; // Get female sales for this time, default to empty array
 
-      console.log("#femaleSales", femaleSales);
 
       // Sum sales for male and female
       maleData.push({
@@ -209,15 +208,6 @@ class Trends {
         sales_count: d3.sum(femaleSales, (d) => d.sales_count),
       });
     });
-
-    // // Sum sales count for each time
-    // vis.displayData = Array.from(salesByTime, ([time, sales]) => {
-    //   console.log("#time", time);
-    //   return {
-    //     time: time,
-    //     sales_count: d3.sum(sales, (d) => d.sales_count), // Sum the sales_count for each year
-    //   };
-    // });
 
     vis.displayDataMale = maleData;
     vis.displayDataFemale = femaleData;

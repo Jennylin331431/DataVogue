@@ -91,7 +91,7 @@ function loadData() {
 
       console.log(aggregatedData);
     });
-  });
+ 
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
     csv.forEach(function (d) {
