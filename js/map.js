@@ -191,18 +191,24 @@ class WorldMap {
                         let avgWaterUsage = stats.water_usage / stats.count;
                         let avgCarbonFootprint = stats.carbonFootprint / stats.count;
     
-                        vis.tooltip.html(
-                            `<strong>${countryName}</strong><br>
-                            Waste: ${avgWaste.toLocaleString(undefined, { maximumFractionDigits: 0 })} KG<br>
-                            Water Usage: ${avgWaterUsage.toLocaleString(undefined, { maximumFractionDigits: 0 })} Liters<br>
-                            Carbon Footprint: ${avgCarbonFootprint.toLocaleString(undefined, { maximumFractionDigits: 0 })} MT (megatonnes)`
-                        );
+                        let tooltipHTML = `
+                            <strong>${countryName}</strong><br>
+                            Waste: ${avgWaste.toLocaleString()} KG<br>
+                            Water Usage: ${avgWaterUsage.toLocaleString()} Liters<br>
+                            Carbon Footprint: ${avgCarbonFootprint.toLocaleString()} MT (megatonnes)
+                            <svg id="tooltip-chart" width="200" height="100"></svg>
+                        `;
+    
+                        vis.tooltip.html(tooltipHTML);
+    
+                        vis.tooltip.style("left", (event.pageX + 10) + "px")
+                                   .style("top", (event.pageY - 10) + "px");
+    
+                        // Generate embedded bar chart in tooltip
+                        vis.createTooltipBarChart();
                     } else {
                         vis.tooltip.html(`<strong>${countryName}</strong><br>Data Not Collected`);
                     }
-    
-                    vis.tooltip.style("left", (event.pageX + 10) + "px")
-                               .style("top", (event.pageY - 10) + "px");
     
                     d3.select(event.currentTarget).style("stroke", "black");
                 })
@@ -213,9 +219,71 @@ class WorldMap {
     
             // Update legend
             vis.updateLegend(colorScale, minValue, maxValue);
-    
         }).catch(error => {
             console.error("Error loading world data:", error);
         });
     }
+    
+    // Create an embedded bar chart inside the tooltip
+    createTooltipBarChart() {
+        let vis = this;
+    
+        // Prepare waste data per country
+        let wasteData = [...vis.countryDataMap.entries()]
+        .map(([country, stats]) => {
+            let displayName = country;
+            if (country === "United States of America") displayName = "USA";
+            if (country === "United Kingdom") displayName = "UK";
+            return { country: displayName, waste: stats.waste };
+        })
+            .sort((a, b) => b.waste - a.waste) // Sort by waste production
+            .slice(0, 10); // Get top 5 highest waste-producing countries
+    
+        let svg = d3.select("#tooltip-chart");
+        svg.selectAll("*").remove(); // Clear previous chart
+    
+        let width = 200, height = 130, margin = { top: 5, right: 5, bottom: 20, left: 50 };
+    
+        let xScale = d3.scaleLinear()
+            .domain([0, d3.max(wasteData, d => d.waste)])
+            .range([0, width - margin.left - margin.right]);
+    
+        let yScale = d3.scaleBand()
+            .domain(wasteData.map(d => d.country))
+            .range([0, height - margin.top - margin.bottom])
+            .padding(0.1);
+    
+        let colorScale = d3.scaleOrdinal(d3.schemeCategory10); // Assign different colors
+    
+        let chart = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+        chart.selectAll("rect")
+            .data(wasteData)
+            .join("rect")
+            .attr("y", d => yScale(d.country))
+            .attr("width", d => xScale(d.waste))
+            .attr("height", yScale.bandwidth())
+            .attr("fill", (d, i) => colorScale(i)); // Assign a different color to each bar
+    
+        // Add black text labels inside bars
+        chart.selectAll("text")
+            .data(wasteData)
+            .join("text")
+            .attr("x", d => xScale(d.waste) + 3)
+            .attr("y", d => yScale(d.country) + yScale.bandwidth() / 2)
+            .attr("dy", ".35em")
+            .style("fill", "black")
+            .style("font-size", "10px")
+            .text(d => d.waste.toLocaleString());
+    
+        // Add y-axis labels with black text
+        svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`)
+            .call(d3.axisLeft(yScale).tickSize(0).tickPadding(3))
+            .selectAll("text")
+            .style("fill", "black")
+            .style("font-size", "10px");
+    }
+    
 }
