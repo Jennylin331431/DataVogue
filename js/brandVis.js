@@ -5,9 +5,10 @@ class BrandLineChart{
     constructor(parentElement, data){
         this.data = data;
         this.parentElement = parentElement;
+        this.years = [2018, 2019, 2020, 2021, 2022]; 
         this.displayData = data;
 
-        this.initVis;
+        this.initVis();
     }
 
      /* Initialize visualization */
@@ -21,25 +22,41 @@ class BrandLineChart{
         // SVG container
         vis.svg = d3.select("#brand-vis")
         .attr("width", vis.brandWidth + vis.brandMargin.left + vis.brandMargin.right)
-        .attr("height", vis.brandHeight + vis.brandMargin.left + vis.brandMargin.right)
-        .append("g") 
-        .attr("transform", `translate(${vis.brandMargin.left},${vis.brandMargin.top})`);
+        .attr("height", vis.brandHeight + vis.brandMargin.left + vis.brandMargin.right);
 
+        // Append the <g> element for the chart (for lines)
+        let g = vis.svg.select(".chart-g");
+        if (g.empty()) {
+            g = vis.svg.append("g")
+                .attr("class", "chart-g")
+                .attr("transform", `translate(${vis.brandMargin.left},${vis.brandMargin.top})`);
+        }
+
+        // Define scales
         vis.xScale = d3.scalePoint()
-            .domain([...new Set(vis.data.map(d => d.Year))]) 
-            .range([0, vis.brandWidth]);
+            .domain(vis.years) 
+            .range([0, vis.brandWidth])
+            .padding(0.5);
 
         vis.yScale = d3.scaleLinear()
-            .domain([0, d3.max(vis.data, d => d.Waste_Production_KG)])
+            .domain([0, d3.max(vis.data, d => d.Waste_Generation)])
             .range([vis.brandHeight, 0]);
+
+        // Define line generator
+        vis.lineGenerator = d3.line()
+            .x(d => vis.xScale(d.Year))
+            .y(d => vis.yScale(d.Waste_Generation))
+            .curve(d3.curveLinear); 
 
         // Add axes
         vis.svg.append("g")
         .attr("transform", `translate(0,${vis.brandHeight})`)
-        .call(d3.axisBottom(vis.xScale));
+        .call(d3.axisBottom(vis.xScale))
+        .attr("color", "black");
 
-            vis.svg.append("g")
-        .call(d3.axisLeft(vis.yScale));
+        vis.svg.append("g")
+        .call(d3.axisLeft(vis.yScale))
+        .attr("color", "black");
 
         // Axes abels
         vis.svg.append("text")
@@ -55,7 +72,7 @@ class BrandLineChart{
             .attr("text-anchor", "middle")
             .attr("transform", "rotate(-90)")
             .style("font-size", "14px")
-            .text("Waste Generation (kg)");
+            .text("Waste Generation");
 
         // Chart title
         vis.svg.append("text")
@@ -64,6 +81,7 @@ class BrandLineChart{
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Waste Generation over Time by Brands"); 
+    
 
         vis.wrangleData();
 
@@ -72,21 +90,43 @@ class BrandLineChart{
     /* Data wrangling */
     wrangleData(){
         let vis = this;
+    
+        // brands
+        vis.selectedBrands = ['Nike', 'Adidas', 'Urban Outfitters', 'Zara', 'Forever 21'];
 
-        let brandWaste = d3.rollups(vis.data, 
-            v => d3.mean(v, d => d.Waste_Production_KG), 
-            d => d.Brand_Name);
+        // Filter by product type
+        vis.selectedBrandsData = vis.displayData.filter((d) => d.Product_Type === selectedProductType);
 
-        brandWaste.sort((a, b) => d3.descending(a[1], b[1]));
+        console.log(vis.selectedBrandsData)
 
-        let top5 = brandWaste.slice(0, 5).map(d => d[0]);
-        let bottom5 = brandWaste.slice(-5).map(d => d[0]);
+        // Aggregate waste generation by year and brand
+        let aggregatedData = d3.rollups(vis.selectedBrandsData,
+            v => d3.sum(v, d => d.Waste_Generation),  
+            d => d.Company,
+            d => d.Production_Year
+        );
 
-        vis.displayData = vis.data.filter(d => top5.includes(d.Brand_Name) || bottom5.includes(d.Brand_Name));
+        console.log(aggregatedData)
 
-        vis.xScale.domain([...new Set(vis.displayData.map(d => d.Year))]);
-        vis.yScale.domain([0, d3.max(vis.displayData, d => d.Waste_Production_KG)]);
+        // Convert to a flat structure
+        vis.selectedBrandsData = aggregatedData.flatMap(([company, years]) => 
+            years.map(([year, totalWaste]) => ({
+                Company: company,
+                Production_Year: year,
+                Waste_Generation: totalWaste
+            }))
+        );
 
+        console.log(vis.selectedBrandsData)
+            
+        // Ensure chronological order for correct line rendering
+        vis.selectedBrandsData.sort((a, b) => d3.ascending(a.Production_Year, b.Production_Year));
+
+        // Update scales
+        vis.yScale.domain([0, d3.max(vis.selectedBrandsData, d => d.Waste_Generation)]);
+
+        console.log("Updated Data for Selected Brands:", vis.selectedBrandsData);
+    
         vis.updateVis();
     }
 
@@ -94,34 +134,54 @@ class BrandLineChart{
     updateVis(){
         let vis = this;
 
-        // remove previous lines
-        vis.svg.selectAll(".line").remove();
+       // Remove previous lines
+       vis.svg.selectAll("path.line").remove();
 
-        // get brands
-        let brands = d3.group(vis.displayData, d => d.Brand_Name);
+       // Group data by brand
+       let brands = d3.group(vis.selectedBrandsData, d => d.Company);
+       const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+       console.log(brands)
 
-        console.log(brands)
+       brands.forEach((values, brand) => {
+        
+           let brandData = values.map(d => ({
+               Year: d.Production_Year,
+               Waste_Generation: d.Waste_Generation,
+           }));
 
-        brands.forEach((values, key) => {
-            console.log(values[0]["Waste_Production_KG"])
+           // Sort data for smooth line transition
+           brandData.sort((a, b) => d3.ascending(a.Year, b.Year));
 
-            const brandData = values.map(d => ({
-                Year: d.Year,
-                Waste_Production_KG: d.Waste_Production_KG
-            }));
+           console.log(brandData)
 
-            vis.svg.append("path")
-                .datum(brandData)
-                .attr("class", "line")
-                .attr("fill", "none")
-                .attr("stroke", colorScale(key))
-                .attr("stroke-width", 2)
-                .attr("d", d3.line()
-                    .x(d => vis.xScale(d.Year))
-                    .y(d => vis.yScale(d.Waste_Production_KG)));
+           vis.svg
+               .append("path")
+               .datum(brandData)
+               .attr("class", "line")
+               .attr("fill", "none")
+               .attr("stroke", colorScale(brand))
+               .attr("stroke-width", 2)
+               .attr("d", (d) => {
+                console.log(d);  // Log path data to check its structure
+                return vis.lineGenerator(d);
+            });
+       });
+
+        // Add legend
+        vis.svg.selectAll(".legend").remove();
+        let legend = vis.svg.append("g").attr("class", "legend").attr("transform", `translate(${vis.brandWidth + 10}, 10)`);
+        vis.selectedBrands.forEach((brand, i) => {
+            legend.append("rect")
+                .attr("x", 0)
+                .attr("y", i * 20)
+                .attr("width", 12)
+                .attr("height", 12)
+                .attr("fill", colorScale(brand));
+            legend.append("text")
+                .attr("x", 20)
+                .attr("y", i * 20 + 10)
+                .text(brand);
         });
-
-    }
+   }
 }

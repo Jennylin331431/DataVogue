@@ -24,9 +24,15 @@ class GlobalLineChart{
        // SVG container
        vis.chartsvg = d3.select("#global-line-chart")
        .attr("width", vis.chartWidth + vis.chartMargin.left + vis.chartMargin.right)
-       .attr("height", vis.chartHeight + vis.chartMargin.top + vis.chartMargin.bottom)
-       .append("g") 
-       .attr("transform", `translate(${vis.chartMargin.left},${vis.chartMargin.top})`);
+       .attr("height", vis.chartHeight + vis.chartMargin.top + vis.chartMargin.bottom);
+
+       // Append the <g> element for the chart (for lines)
+       let g = vis.chartsvg.select(".chart");
+       if (g.empty()) {
+           g = vis.chartsvg.append("g")
+               .attr("class", "chart")
+               .attr("transform", `translate(${vis.chartMargin.left},${vis.chartMargin.top})`);
+       }
 
        // Define scales
        vis.xScale = d3.scalePoint()
@@ -35,7 +41,7 @@ class GlobalLineChart{
             .padding(0.5); 
            
        vis.yScale = d3.scaleLinear()
-       .domain([0, d3.max(vis.data, d => Math.max(
+        .domain([0, d3.max(vis.data, d => Math.max(
            d.averageGreenhouseGasEmissions,
            d.averagePollutantsEmitted,
            d.averageWasteGeneration,
@@ -59,9 +65,11 @@ class GlobalLineChart{
        // Add axes
        vis.chartsvg.append("g")
            .attr("transform", `translate(0,${vis.chartHeight})`)
+           .attr("color", "black")
            .call(d3.axisBottom(vis.xScale));
 
        vis.chartsvg.append("g")
+            .attr("color", "black")
            .call(d3.axisLeft(vis.yScale));
 
        // Axes abels
@@ -95,9 +103,6 @@ class GlobalLineChart{
    wrangleData() {
     let vis = this;
 
-    // Filter data based on selected years (include in next protoype)
-    // vis.displayData = vis.data.filter(d => vis.selectedYears.includes(d.year)); 
-
     // Update based on category selected
     if (selectedCategory == 'gasData') {
         vis.selectedMetrics = ["averageGreenhouseGasEmissions"];
@@ -116,10 +121,6 @@ class GlobalLineChart{
     }
 
     console.log(vis.selectedMetrics)
-
-    // Update scales
-    vis.xScale.domain(vis.selectedYears);
-    vis.yScale.domain([0, d3.max(vis.displayData, d => d3.max(vis.selectedMetrics.map(metric => d[metric])))]);
 
     vis.updateVis();
 }
@@ -147,16 +148,10 @@ class GlobalLineChart{
        });
 
        // Update axes
-       vis.chartsvg.selectAll(".x-axis").remove();
-       vis.chartsvg.append("g")
-           .attr("class", "x-axis")
-           .attr("transform", `translate(0,${vis.chartHeight})`)
-           .call(d3.axisBottom(vis.xScale));
-
-       vis.chartsvg.selectAll(".y-axis").remove();
-       vis.chartsvg.append("g")
-           .attr("class", "y-axis")
-           .call(d3.axisLeft(vis.yScale));
+       //vis.chartsvg.selectAll(".y-axis").remove();
+    //    vis.chartsvg.append("g")
+    //        .attr("class", "y-axis")
+    //        .call(d3.axisLeft(vis.yScale));
 
        // Add legend
        vis.chartsvg.selectAll(".legend").remove();
@@ -175,4 +170,3 @@ class GlobalLineChart{
        });
    }
    }
-
