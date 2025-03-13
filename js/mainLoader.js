@@ -5,6 +5,39 @@ let worldMap;
 let parseDate = d3.timeParse("%Y");
 loadData();
 
+document.addEventListener("DOMContentLoaded", function () {
+  const yearSlider = document.getElementById("yearSlider");
+  const yearLabel = document.getElementById("yearLabel");
+
+  noUiSlider.create(yearSlider, {
+      start: [2010, 2024],
+      connect: true,       // Fill the range between handles
+      range: {
+          "min": 2010,
+          "max": 2024
+      },
+      step: 1,
+      tooltips: false, // no show tooltips on handles
+      format: {
+          to: value => Math.round(value),
+          from: value => Math.round(value)
+      }
+  });
+
+  // update the displayed year range
+  yearSlider.noUiSlider.on("update", function (values) {
+    const [startYear, endYear] = values.map(Number);
+    startYearLabel.textContent = startYear; // update left label
+    endYearLabel.textContent = endYear; // update right label
+
+    // update world map visualization
+    if (worldMap) {
+        worldMap.updateYearRange(startYear, endYear);
+    }
+});
+});
+
+
 function loadData() {
   d3.csv("data/fashion_data_2018_2022.csv").then((csv) => {
     csv.forEach(function (d) {

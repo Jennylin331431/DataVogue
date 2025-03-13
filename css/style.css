@@ -253,4 +253,189 @@ background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50
  
   
 }
-  
+
+/* Container for both dropdown/legend and slider */
+#controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    padding: 0 20px;
+}
+
+/* Center Dropdown + Legend */
+#dropdown-legend-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+/* Dropdown Styling */
+#metricSelectionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+#metricSelection {
+    padding: 5px;
+    font-size: 14px;
+}
+
+/* Legend Styling */
+#legendContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+#legendSvg {
+    width: 300px;
+    height: 50px;
+}
+
+#yearSliderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+#yearSlider {
+    flex-grow: 1;
+}
+
+#startYearLabel, #endYearLabel {
+    font-size: 14px;
+    font-weight: bold;
+    width: 40px;
+    text-align: center;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.noUi-connect {
+    background: #d9534f !important;
+}
+
+#legendContainer text {
+    fill: black !important;
+}
+
+#impactText {
+    color: black !important;
+}
+
+#startYearLabel, #endYearLabel, #yearSliderContainer label {
+    color: black !important;
+    font-weight: bold;
+}
+
+#metricSelectionContainer label {
+    color: black !important;
+    font-weight: bold;
+}
+
+#map-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 20px auto;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  height: auto;
+}
+
+#world-map {
+  flex-grow: 1;
+  max-width: 65%;
+  height: auto;
+  overflow: hidden;
+}
+
+#impactText {
+  flex-basis: 30%;
+  max-width: 400px;
+  text-align: left;
+  font-size: 14px;
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 10px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+.tooltip {
+  max-width: 290px;
+  max-height: 270px;
+  overflow: hidden;
+  white-space: normal;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 900px) {
+  #controls-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+
+  #yearSliderContainer {
+      margin-left: 0;
+      margin-top: 15px;
+  }
+
+  #map-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-height: none;
+  }
+
+  #world-map {
+      max-width: 100%;
+      max-height: 60vh;
+  }
+
+  #impactText {
+    max-width: 100%;
+    text-align: center;
+    max-height: 200px;
+  } 
+}
+
+@media screen and (max-height: 600px) {
+  /* Adjustments for very short screens */
+  #world-map {
+      max-height: 50vh;
+  }
+
+  #map-container {
+      gap: 10px;
+  }
+
+  #impactText {
+    max-height: 150px;
+}
+}
