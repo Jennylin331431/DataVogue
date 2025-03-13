@@ -81,9 +81,8 @@ class Trends {
         let xPosition = vis.x(hoveredIndexMaleData.time);
         let yPosition = vis.y(hoveredIndexMaleData.sales_count);
 
-        let femaleData = hoveredIndexFemaleData.sales_count
-        let maleData = hoveredIndexMaleData.sales_count
-
+        let femaleData = hoveredIndexFemaleData.sales_count;
+        let maleData = hoveredIndexMaleData.sales_count;
 
         // Calculate the relative difference as absolute difference or percentage
         let absoluteDifference = maleData - femaleData;
@@ -111,7 +110,11 @@ class Trends {
 
         vis.tooltip
           .select(".tooltip-date")
-          .html(`<strong>Year: </strong> ${dateFormatter(hoveredIndexMaleData.time)}`);
+          .html(
+            `<strong>Year: </strong> ${dateFormatter(
+              hoveredIndexMaleData.time
+            )}`
+          );
 
         // Update tooltip line position
         vis.tooltipLine
@@ -121,10 +124,10 @@ class Trends {
           .attr("y2", vis.height)
           .style("opacity", 1);
       })
-    .on("mouseout", function (event) {
-      vis.tooltipLine.style("opacity", 0);
-      vis.tooltip.style("display", "none");
-    });
+      .on("mouseout", function (event) {
+        vis.tooltipLine.style("opacity", 0);
+        vis.tooltip.style("display", "none");
+      });
 
     // scales
     vis.x = d3.scaleTime().range([0, vis.width]);
@@ -309,6 +312,8 @@ class Trends {
       .style("fill", "none")
       .style("stroke", "#1f78b4") // Color for male line (blue)
       .style("stroke-width", 2)
+      .transition()
+      .duration(1000)
       .attr("d", vis.line);
 
     maleLine.exit().remove();
@@ -323,6 +328,8 @@ class Trends {
       .append("circle")
       .attr("class", "male-circle")
       .merge(maleCircles)
+      .transition() // Adding transition for path drawing
+      .duration(1000)
       .attr("cx", (d) => vis.x(d.time)) // X position of the circle
       .attr("cy", (d) => vis.y(d.sales_count)) // Never go below 3px from top
       .attr("r", 4) // Radius of the circle
@@ -342,6 +349,8 @@ class Trends {
       .style("fill", "none")
       .style("stroke", "red") // Color for female line (pink)
       .style("stroke-width", 2)
+      .transition() // Adding transition for path drawing
+      .duration(1000)
       .attr("d", vis.line);
 
     femaleLine.exit().remove();
@@ -355,6 +364,8 @@ class Trends {
       .append("circle")
       .attr("class", "female-circle")
       .merge(femaleCircles)
+      .transition() // Adding transition for path drawing
+      .duration(1000)
       .attr("cx", (d) => vis.x(d.time)) // X position of the circle
       .attr("cy", (d) => vis.y(d.sales_count))
       .attr("r", 4) // Radius of the circle
@@ -365,8 +376,16 @@ class Trends {
     vis.xAxis.ticks(5).tickFormat((d) => d.getFullYear()); // Format ticks to display only the year
 
     // Update axes
-    vis.svg.select(".x-axis").call(vis.xAxis);
-    vis.svg.select(".y-axis").call(vis.yAxis);
+    vis.svg
+      .select(".x-axis")
+      .transition() // Adding transition for path drawing
+      .duration(1000)
+      .call(vis.xAxis);
+    vis.svg
+      .select(".y-axis")
+      .transition() // Adding transition for path drawing
+      .duration(1000)
+      .call(vis.yAxis);
 
     // Rotate x-axis labels
     vis.svg
