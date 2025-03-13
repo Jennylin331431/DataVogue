@@ -62,6 +62,30 @@ svg {
   height: 450px !important;
 }
 
+#solution-intro-text {
+  color: #452779;
+  font-size: 24px;
+}
+
+#solution-text {
+ font-weight: 500;
+ color: #163958;
+ font-size: 40px;
+}
+
+#solution-explanation-text {
+  width: 51%;
+  font-size: 20px;
+  text-align: left;
+  padding: 22px 22px 22px 26px;
+  color:#f8f9fa;
+  margin-bottom: 15px;
+  background-color: #7db5e7;
+  border-radius: 3%;
+  max-width: 700px;
+}
+
+
 h2 {
   margin-top: 30px !important;
   color: rgb(109, 15, 109);
