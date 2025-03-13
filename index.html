@@ -226,31 +226,85 @@
           </div>
           </div>
         </div>
-      </div>
+    </div>
+    <div class="row slides slides-worldmap">
+ Jeanine Placeholder visual
+    </div>
 
-      <!-- Row for Global Info Visualization -->
-      <div class="row slides slides-global-info">
-        <h2>
-          What are the environmental impacts and detriments of fast fashion?
-        </h2>
-        <div class="col-12">
-          <div class="line-chart-container">
-            <svg id="global-line-chart"></svg>
-            <div class="legend-container"></div>
-            <div class="insight-text mt-3">
-              <strong>Insight:</strong> Placeholder: Environmental Impact
-              Insight
-            </div>
-          </div>
+      <!-- Row for Brand Sales Map -->
+     <div class = "row slides slides-brand-sales">
+      <h2>
+        How do environmental implications differ by the material type and brand?
+      </h2>
+      <div class="col-4">
+        <div class="row justify-content-center" style="height: 100%">
+          <label for="productSelector" style="color: black;">Product Material Type:</label>
+          <select id="productSelector", class="form-select align-self-center" style="width: 50%" onchange="productChange()">
+            <option value="Cotton" selected>Cotton</option>
+            <option value="Polyester">Polyester</option>
+            <option value="Wool">Wool</option>
+            <option value="Organic_Cotton">Organic Cotton</option>
+            <option value="Synthetic_Blend">Synthetic Blend</option>
+            <option value="Linen">Linen</option>
+            <option value="Recycled_Poly">Recycled Poly</option>
+            <option value="Nylon">Nylon</option>
+            <option value="Viscose">Viscose</option>
+            <option value="Tencel">Tencel</option>
+            <option value="Microfiber">Microfiber</option>
+          </select>
         </div>
       </div>
+        <div class="col-12">
+          <div class="row">
+            <!-- Column for SVG -->
+            <div class="col-md-8">
+              <div class="sales-map-container">
+                <svg id="brand-vis"></svg>
+              </div>
+            </div>
+      
+            <!-- Column for Insight -->
+            <div class="col-md-4 d-flex align-items-center">
+              <div class="insight-text">
+                <p>
+                  When considering the environmental impacts of fast fashion, its important to look at 
+                  what kinds of materials the biggest players of fast fashion use, and which materials 
+                  cause the most impact.
+                  Synthetic blends are the most common material used in fast fashion, and less than 1%
+                  of fast fashion products are recyled to make new clothes (Uniformmarket)
+                  Take a look at how different materials generate waste over time, and which brands account 
+                  for the most or least amount of waste generation!
+                </p>
+              </div>
+            </div>
+          </div>
+      </div> 
+     </div>
 
       <div class="row text-center slides slides-outro">
         <h2>Where should we go on from now?</h2>
-        <text>Placeholder: conclusion/future steps/takeaway for audience </text>
+        <div id="solution-intro-text">As we can see, the impact of the fast fashion industry is significant and cannot be overlooked. 
+          <br>Let's raise awareness!
+        </div>
+
+        <div id="solution-text">
+
+        Solution:    <strong>Slow Fashion</strong>
+        </div>
+<div id="solution-explanation-text">
+
+          Each of us has the ability to make a direct impact by:
+          
+          <ul>
+            <li>Reusing or purchasing secondhand clothing</li>
+            <li>Participating in clothing rentals</li>
+            <li>Advocating for a "wear more than once" mentality, rather than discarding items after a single use</li>
+          </ul>
+        </div>
+
       </div>
     </div>
-
+      
     <!-- Load Bootstrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -270,6 +324,7 @@
     <script src="js/trends.js"></script>
     <script src="js/map.js"></script>
     <script src="js/globalVis.js"></script>
+    <script src="js/brandVis.js"></script>
     <script src="js/mainLoader.js"></script>
   </body>
 </html>
