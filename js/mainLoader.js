@@ -126,6 +126,9 @@ function loadData() {
     globalVisLineChart.initVis();
 
     console.log(aggregatedData);
+
+    brandLineChart = new BrandLineChart("brand-vis", data)
+    brandLineChart.initVis();
   });
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
