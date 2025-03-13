@@ -63,6 +63,12 @@ svg {
   max-width: 100%;
 }
 
+#brand-vis {
+  width: 1000px !important;
+  height: 450px !important;
+  max-width: 100%;
+}
+
 h2 {
   margin-top: 30px !important;
   color: rgb(109, 15, 109);
@@ -200,6 +206,11 @@ background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50
 
 .slides-global-info {
     background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
+
+}
+
+.slides-brand-sales {
+  background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
 
 }
 

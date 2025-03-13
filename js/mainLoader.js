@@ -1,6 +1,7 @@
 let trendsLineChart;
 let globalVisLineChart;
 let worldMap;
+let brandLineChart;
 
 let parseDate = d3.timeParse("%Y");
 loadData();
@@ -125,6 +126,9 @@ function loadData() {
     globalVisLineChart.initVis();
 
     console.log(aggregatedData);
+
+    brandLineChart = new BrandLineChart("brand-vis", data)
+    brandLineChart.initVis();
   });
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
@@ -273,3 +277,22 @@ function patternChange() {
   trendsLineChart.selectedPattern = selectedPattern;
   trendsLineChart.wrangleData();
 }
+
+// function for category selection for globalVis 
+let selectedCategory =  document.getElementById('categorySelector').value;
+
+function categoryChange() {
+   selectedCategory =  document.getElementById('categorySelector').value;
+   globalVisLineChart.wrangleData(); 
+}
+
+// function for top 5 or bottom 5 brands selection for brandVis
+let selectedProductType = document.getElementById('productSelector').value;
+
+function productChange(){
+  selectedProductType = document.getElementById('productSelector').value;
+  brandLineChart.wrangleData();
+}
+
+
+
