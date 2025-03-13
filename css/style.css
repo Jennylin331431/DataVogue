@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Trebuchet MS1, Trebuchet MS, sans-serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   text-align: center;
   background-color: #f5f5f5;
 
@@ -21,6 +21,7 @@ h4 {
     color: rgb(18 58 10);
     font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 30px;
+    max-width: 400px; 
 }
 
 svg {
@@ -71,17 +72,16 @@ svg {
 h2 {
   margin-top: 30px !important;
   color: rgb(109, 15, 109);
+  margin-bottom:30px;
 }
 
 h5 {
   margin-top: 20px;
-  color: rgb(73 39 66 / 66%);
+  color: rgb(160 39 150 / 66%);
   font-size: 30px;
 }
 
 #trends-info-container {
-
-  max-width: 300px;
   padding: 30px;
 }
 /* On screens that are 992px or less, set the background color to blue */
@@ -105,14 +105,15 @@ h5 {
 }
 
 .dropdown-group > label {
-    flex: 0 0 80px; /* Fixed width for labels */
+    flex: 0 0 80px; 
     text-align: left;
     padding-right: 15px;
 }
 
 .dropdown-group > select {
     flex: 1;
-    max-width: 200px; /* Consistent dropdown width */
+    width: 200px; 
+    max-width: 200px; 
     margin: 0;
     padding: 8px;
 }
@@ -127,6 +128,23 @@ justify-content: center;
 .axis {
  color: black;
 
+}
+
+.trends-insights {
+  color:rgb(211, 35, 111);
+  font-size: 16pxs;
+}
+
+.slides-intro > div> h2 {
+  color: rgb(110 92 25 / 94%);
+}
+
+
+
+.trends-quote {
+  margin-bottom: 20px; 
+  font-size: 24px; 
+  color: rebeccapurple; 
 }
 
 
@@ -150,12 +168,16 @@ justify-content: center;
 }
 
 .slides-intro  {
-    background: linear-gradient(141deg, #a0e2f1 0%, #a7f7b5 50%, #b4f7d0 100%);
+  flex-direction: column;
+  background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50%, rgb(255, 220, 180) 100%);
+}
 
+.slides-intro-1 {
+background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50%, rgb(255, 220, 180) 100%);
 }
 
 .slides-intro-2 {
-    background: linear-gradient(141deg, #a7f7b5 0%, #f7c8e1 50%, #f7a1c4 100%);
+    background: linear-gradient(141deg,  rgb(244, 185, 120)  0%,  rgb(240, 208, 174) 50%, #f7a1c4 100%);
 
 }
 
@@ -165,7 +187,10 @@ justify-content: center;
 }
 
 .slides-title {
-    background: linear-gradient(141deg, #d1a7f7 0%, #a8c4f7 50%, #7db5e7 100%);
+    /* background: linear-gradient(141deg, #d1a7f7 0%, #a8c4f7 50%, #7db5e7 100%); */
+    background-color: rgba(253,224,192,255); 
+    flex-direction: column;
+    
 
 }
 
@@ -213,22 +238,215 @@ justify-content: center;
 
   #trends-info-container {
     margin-left: 0px;
+    display: flex; 
+    width: 100%;
+  }
 
+  .trends-quote {
+    font-size: 14px; 
   }
 
   .row {
     margin-left: 0 !important;
   }
 
+  .trends-insights {
+    font-size: 12px
+  }
 
 
 }
 
 @media screen and (min-width: 600px) {
-  .slides-intro > h4 {
+  .slides-intro-1 > h4 {
     width: 500px;
   }
  
   
 }
-  
+
+/* Container for both dropdown/legend and slider */
+#controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    padding: 0 20px;
+}
+
+/* Center Dropdown + Legend */
+#dropdown-legend-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+/* Dropdown Styling */
+#metricSelectionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+#metricSelection {
+    padding: 5px;
+    font-size: 14px;
+}
+
+/* Legend Styling */
+#legendContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+#legendSvg {
+    width: 300px;
+    height: 50px;
+}
+
+#yearSliderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+#yearSlider {
+    flex-grow: 1;
+}
+
+#startYearLabel, #endYearLabel {
+    font-size: 14px;
+    font-weight: bold;
+    width: 40px;
+    text-align: center;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.noUi-connect {
+    background: #d9534f !important;
+}
+
+#legendContainer text {
+    fill: black !important;
+}
+
+#impactText {
+    color: black !important;
+}
+
+#startYearLabel, #endYearLabel, #yearSliderContainer label {
+    color: black !important;
+    font-weight: bold;
+}
+
+#metricSelectionContainer label {
+    color: black !important;
+    font-weight: bold;
+}
+
+#map-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 20px auto;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  height: auto;
+}
+
+#world-map {
+  flex-grow: 1;
+  max-width: 65%;
+  height: auto;
+  overflow: hidden;
+}
+
+#impactText {
+  flex-basis: 30%;
+  max-width: 400px;
+  text-align: left;
+  font-size: 14px;
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 10px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+.tooltip {
+  max-width: 290px;
+  max-height: 270px;
+  overflow: hidden;
+  white-space: normal;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 900px) {
+  #controls-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+
+  #yearSliderContainer {
+      margin-left: 0;
+      margin-top: 15px;
+  }
+
+  #map-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-height: none;
+  }
+
+  #world-map {
+      max-width: 100%;
+      max-height: 60vh;
+  }
+
+  #impactText {
+    max-width: 100%;
+    text-align: center;
+    max-height: 200px;
+  } 
+}
+
+@media screen and (max-height: 600px) {
+  /* Adjustments for very short screens */
+  #world-map {
+      max-height: 50vh;
+  }
+
+  #map-container {
+      gap: 10px;
+  }
+
+  #impactText {
+    max-height: 150px;
+}
+}
