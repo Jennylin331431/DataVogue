@@ -204,6 +204,11 @@ background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50
 
 }
 
+.slides-footprint {
+  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+
+}
+
 .slides-global-info {
     background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
 
@@ -402,6 +407,7 @@ background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50
   max-height: 270px;
   overflow: hidden;
   white-space: normal;
+  color: purple;
 }
 
 /* Responsive Styles */
@@ -457,3 +463,27 @@ background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50
       height: auto;
   }
 }
+
+#controls label {
+  color: black;
+}
+#carbonText {
+  color: black !important;
+  padding: 50px;
+  text-align: center;
+}
+
+#sortButton {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+#sortButton:hover {
+  background-color: #0056b3;
+}
+
