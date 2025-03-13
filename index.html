@@ -127,8 +127,12 @@
 
     <!-- Row for Brand Sales Map -->
      <div class = "row slides slides-brand-sales">
+      <h2>
+        How do environmental implications differ by the material type and brand?
+      </h2>
       <div class="col-4">
         <div class="row justify-content-center" style="height: 100%">
+          <label for="productSelector">Product Material Type:</label>
           <select id="productSelector", class="custom-select align-self-center" style="width: 50%" onchange="productChange()">
             <option value="Cotton" selected>Cotton</option>
             <option value="Polyester">Polyester</option>
@@ -147,6 +151,9 @@
         <div class="col-12">
           <div class="sales-map-container">
             <svg id="brand-vis"></svg>
+            <div class="insight-text mt-3">
+              <strong>Insight:</strong> Placeholder: Environmental Impact by Brand and Material Type Insight
+            </div>
           </div>
         </div>
       </div> 
@@ -158,6 +165,7 @@
       </h2>
         <div class="col-4">
           <div class="row justify-content-center" style="height: 100%">
+            <label for="categorySelector">Impact Metric:</label>
               <select id='categorySelector' class="custom-select align-self-center" style="width: 50%" onchange="categoryChange()">
                   <option value="allData" selected>All </option>
                   <option value="gasData">Greenhouse Gas Emissions (average)</option>
