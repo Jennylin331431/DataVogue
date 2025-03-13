@@ -238,8 +238,8 @@
       </h2>
       <div class="col-4">
         <div class="row justify-content-center" style="height: 100%">
-          <label for="productSelector">Product Material Type:</label>
-          <select id="productSelector", class="custom-select align-self-center" style="width: 50%" onchange="productChange()">
+          <label for="productSelector" style="color: black;">Product Material Type:</label>
+          <select id="productSelector", class="form-select align-self-center" style="width: 50%" onchange="productChange()">
             <option value="Cotton" selected>Cotton</option>
             <option value="Polyester">Polyester</option>
             <option value="Wool">Wool</option>
@@ -257,14 +257,14 @@
         <div class="col-12">
           <div class="row">
             <!-- Column for SVG -->
-            <div class="col-md-10">
+            <div class="col-md-8">
               <div class="sales-map-container">
-                <svg id="brand-vis" style="width: 100%; height: auto;"></svg>
+                <svg id="brand-vis"></svg>
               </div>
             </div>
       
             <!-- Column for Insight -->
-            <div class="col-md-2 d-flex align-items-center">
+            <div class="col-md-4 d-flex align-items-center">
               <div class="insight-text">
                 <p>
                   When considering the environmental impacts of fast fashion, its important to look at 
