@@ -57,43 +57,9 @@ function loadData() {
     // let distinctPatterns = [...new Set(data.map((d) => d.pattern))];
     // let distinctColors = [...new Set(data.map((d) => d.color))];
 
-    d3.csv("data/plasticTextilesData.csv").then((data) => {
-      data.forEach((d) => {
-        d.Production_Year = +d.Production_Year;
-        d.Greenhouse_Gas_Emissions = +d.Greenhouse_Gas_Emissions;
-        d.Pollutants_Emitted = +d.Pollutants_Emitted;
-        d.Waste_Generation = +d.Waste_Generation;
-        d.Water_Consumption = +d.Water_Consumption;
-      });
-
-      // group data and calculate averages for each measure
-      aggregatedData = Array.from(
-        d3.group(data, (d) => d.Production_Year),
-        ([year, values]) => ({
-          Production_Year: year,
-          averageGreenhouseGasEmissions: d3.mean(
-            values,
-            (v) => v.Greenhouse_Gas_Emissions
-          ),
-          averagePollutantsEmitted: d3.mean(
-            values,
-            (v) => v.Pollutants_Emitted
-          ),
-          averageWasteGeneration: d3.mean(values, (v) => v.Waste_Generation),
-          averageWaterConsumption: d3.mean(values, (v) => v.Water_Consumption),
-        })
-      );
-
-      globalVisLineChart = new GlobalLineChart(
-        "global-line-chart",
-        aggregatedData
-      );
-      globalVisLineChart.initVis();
-
-      console.log(aggregatedData);
-    });
   });
 
+      
   d3.csv("data/plasticTextilesData.csv").then((data) => {
     data.forEach((d) => {
       d.Production_Year = +d.Production_Year;
@@ -103,29 +69,6 @@ function loadData() {
       d.Water_Consumption = +d.Water_Consumption;
     });
 
-    // group data and calculate averages for each measure
-    aggregatedData = Array.from(
-      d3.group(data, (d) => d.Production_Year),
-      ([year, values]) => ({
-        Production_Year: year,
-        averageGreenhouseGasEmissions: d3.mean(
-          values,
-          (v) => v.Greenhouse_Gas_Emissions
-        ),
-        averagePollutantsEmitted: d3.mean(values, (v) => v.Pollutants_Emitted),
-        averageWasteGeneration: d3.mean(values, (v) => v.Waste_Generation),
-        averageWaterConsumption: d3.mean(values, (v) => v.Water_Consumption),
-      })
-    );
-
-    globalVisLineChart = new GlobalLineChart(
-      "global-line-chart",
-      aggregatedData
-    );
-
-    globalVisLineChart.initVis();
-
-    console.log(aggregatedData);
 
     brandLineChart = new BrandLineChart("brand-vis", data)
     brandLineChart.initVis();
@@ -278,21 +221,9 @@ function patternChange() {
   trendsLineChart.wrangleData();
 }
 
-// function for category selection for globalVis 
-let selectedCategory =  document.getElementById('categorySelector').value;
-
-function categoryChange() {
-   selectedCategory =  document.getElementById('categorySelector').value;
-   globalVisLineChart.wrangleData(); 
-}
-
-// function for top 5 or bottom 5 brands selection for brandVis
 let selectedProductType = document.getElementById('productSelector').value;
 
 function productChange(){
   selectedProductType = document.getElementById('productSelector').value;
   brandLineChart.wrangleData();
 }
-
-
-

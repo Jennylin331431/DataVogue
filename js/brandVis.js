@@ -56,6 +56,7 @@ class BrandLineChart{
 
         vis.svg.append("g")
         .call(d3.axisLeft(vis.yScale))
+        .attr("transform", `translate(${vis.brandMargin.left}, 0)`)  // Fix y-axis position
         .attr("color", "black");
 
         // Axes abels
