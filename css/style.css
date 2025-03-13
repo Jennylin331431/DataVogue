@@ -147,6 +147,10 @@ justify-content: center;
   color: rebeccapurple; 
 }
 
+.insight-text {
+  color: black !important;
+}
+
 
 /* scrollable view css */
 
