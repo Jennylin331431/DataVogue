@@ -406,3 +406,10 @@ justify-content: center;
     max-height: 150px;
 }
 }
+
+@media screen and (min-width: 900px) {
+  #world-map {
+      max-width: 65%;
+      height: auto;
+  }
+}
