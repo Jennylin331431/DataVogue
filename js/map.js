@@ -27,8 +27,9 @@ class WorldMap {
             .attr("class", "tooltip")
             .style("opacity", 0)
             .style("position", "absolute")
-            .style("background", "rgba(0, 0, 0, 0.8)")
-            .style("color", "#fff")
+            .style("background", "rgb(194, 167, 236)")
+            .style("color", "black")
+            .style("font-family", "Georgia")
             .style("padding", "8px")
             .style("border-radius", "5px")
             .style("font-size", "14px")
@@ -262,65 +263,73 @@ class WorldMap {
         }).catch(error => {
             console.error("Error loading world data:", error);
         });
+        // vis.createBarChart();
     }
     
     // create an embedded bar chart inside the tooltip
-    // createTooltipBarChart() {
+    // createBarChart() {
     //     let vis = this;
-    
+
+    //     // Prepare data for the bar chart
     //     let wasteData = [...vis.countryDataMap.entries()]
-    //     .map(([country, stats]) => {
-    //         let displayName = country;
-    //         if (country === "United States of America") displayName = "USA";
-    //         if (country === "United Kingdom") displayName = "UK";
-    //         return { country: displayName, waste: stats.waste };
-    //     })
+    //         .map(([country, stats]) => {
+    //             let displayName = country;
+    //             if (country === "United States of America") displayName = "USA";
+    //             if (country === "United Kingdom") displayName = "UK";
+    //             return { country: displayName, waste: stats.waste };
+    //         })
     //         .sort((a, b) => b.waste - a.waste)
-    //         // .slice(0, 10); // Get top 5 highest waste-producing countries
-    
-    //     let svg = d3.select("#tooltip-chart");
-    //     svg.selectAll("*").remove();
-    
-    //     let width = 200, height = 130, margin = { top: 5, right: 5, bottom: 20, left: 50 };
-    
+
+    //     // Select the bar chart container
+    //     let svg = d3.select("#bar-chart");
+    //     svg.selectAll("*").remove(); // Clear previous chart
+
+    //     // Define dimensions and margins
+    //     let width = 800;
+    //     let height = 300;
+    //     let margin = { top: 20, right: 20, bottom: 40, left: 50 };
+
+    //     // Create scales
     //     let xScale = d3.scaleLinear()
     //         .domain([0, d3.max(wasteData, d => d.waste)])
     //         .range([0, width - margin.left - margin.right]);
-    
+
     //     let yScale = d3.scaleBand()
     //         .domain(wasteData.map(d => d.country))
     //         .range([0, height - margin.top - margin.bottom])
     //         .padding(0.1);
-    
-    //     let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-    
+
+    //     // Create SVG group for the chart
     //     let chart = svg.append("g")
     //         .attr("transform", `translate(${margin.left},${margin.top})`);
-    
+
+    //     // Add bars
     //     chart.selectAll("rect")
     //         .data(wasteData)
     //         .join("rect")
     //         .attr("y", d => yScale(d.country))
     //         .attr("width", d => xScale(d.waste))
     //         .attr("height", yScale.bandwidth())
-    //         .attr("fill", (d, i) => colorScale(i)); // asign a different color to each bar
-    
+    //         .attr("fill", "steelblue"); // Customize bar color
+
+    //     // Add labels
     //     chart.selectAll("text")
     //         .data(wasteData)
     //         .join("text")
-    //         .attr("x", d => xScale(d.waste) + 3)
+    //         .attr("x", d => xScale(d.waste) + 5) // Position text inside bars
     //         .attr("y", d => yScale(d.country) + yScale.bandwidth() / 2)
     //         .attr("dy", ".35em")
     //         .style("fill", "white")
-    //         .style("font-size", "10px")
+    //         .style("font-size", "12px")
     //         .text(d => d.waste.toLocaleString());
-    
-    //     svg.append("g")
-    //         .attr("transform", `translate(${margin.left},${margin.top})`)
-    //         .call(d3.axisLeft(yScale).tickSize(0).tickPadding(3))
-    //         .selectAll("text")
-    //         .style("fill", "white")
-    //         .style("font-size", "10px");
+
+    //     // Add axes
+    //     chart.append("g")
+    //         .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
+    //         .call(d3.axisBottom(xScale));
+
+    //     chart.append("g")
+    //         .call(d3.axisLeft(yScale));
     // }
     
 }

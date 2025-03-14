@@ -227,7 +227,13 @@ h5 {
 }
 
 .slides-worldmap {
+    background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+
+}
+
+.slides-footprint {
   background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+
 }
 
 .slides-global-info {
@@ -284,7 +290,7 @@ h5 {
 }
 
 /* Container for both dropdown/legend and slider */
-#controls-container {
+/* #controls-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -292,7 +298,7 @@ h5 {
   max-width: 1200px;
   margin: 0 auto 20px auto;
   padding: 0 20px;
-}
+} */
 
 /* Center Dropdown + Legend */
 #dropdown-legend-container {
@@ -423,15 +429,16 @@ h5 {
   max-height: 270px;
   overflow: hidden;
   white-space: normal;
+  color: purple;
 }
 
 /* Responsive Styles */
 @media screen and (max-width: 900px) {
-  #controls-container {
+  /* #controls-container {
     flex-direction: column;
     align-items: center;
     text-align: center;
-  }
+  } */
 
   #yearSliderContainer {
     margin-left: 0;
@@ -471,3 +478,49 @@ h5 {
     max-height: 150px;
   }
 }
+
+@media screen and (min-width: 900px) {
+  #world-map {
+      max-width: 65%;
+      height: auto;
+  }
+}
+
+#controls label {
+  color: black;
+}
+#carbonText {
+  color: black !important;
+  padding: 50px;
+  text-align: center;
+}
+
+#sortButton {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+#sortButton:hover {
+  background-color: #0056b3;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#materialSelection {
+  width: 200px;
+  margin: 10px 0;
+}
+

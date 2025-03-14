@@ -2,6 +2,7 @@ let trendsLineChart;
 let globalVisLineChart;
 let worldMap;
 let brandLineChart;
+let footPrintVis;
 
 let parseDate = d3.timeParse("%Y");
 loadData();
@@ -87,6 +88,25 @@ function loadData() {
 
     worldMap = new WorldMap("#world-map", data);
     worldMap.initVis();
+  });
+
+  d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
+    csv.forEach(function (d) {
+      d.Carbon_Footprint_MT = +d.Carbon_Footprint_MT;
+    });
+
+    data = csv;
+
+    console.log("#BigFoot data loaded", data);
+
+    footPrintVis = new BigFootCarbonViz("#bigfoot-svg", data);
+    footPrintVis.initVis();
+
+    document.getElementById("materialSelection").addEventListener("change", function () {
+      let selectedMaterial = this.value;
+      footPrintVis.selectedMaterial = selectedMaterial;
+      footPrintVis.wrangleData();
+    });
   });
 }
 

@@ -227,9 +227,44 @@
           </div>
         </div>
     </div>
-    <div class="row slides slides-worldmap">
- Jeanine Placeholder visual
-    </div>
+
+    <div class="row slides slides-footprint">
+      <h2>Which fashion materials cause the largest environmental impact?</h2>
+      <div id="carbonText">
+        <p> The fashion industry is the second-largest industrial polluter. When factoring in the entire lifecycle of a garment, from manufacturing to transportation to, 
+          ultimately, ending up in landfill, in total, 1.2 billion tonnes of carbon emissions are released by the fashion industry every year.
+        </p>
+        <p>
+          Not only is the carbon footprint of the fashion industry influenced by the amount of waste sent to landfill, CO2 emissions during the manufacturing and transportation 
+          processes, as well as water pollution from dyeing processes and microfibre pollution, also contribute to the industry’s huge carbon and environmental footprint, highlighting 
+          the drastic need for change within the industry.
+        </p>
+        <p>
+          Below shows the carbon footprint produced by each country as a result of producing clothing of the specified material type.
+        </p>
+          
+        
+      </div>
+  
+      <div id="controls">
+          <label for="materialSelection"><strong>Select Material:</strong></label>
+          <select id="materialSelection" class="form-select align-self-center">
+              <option value="Vegan Leather">Vegan Leather</option>
+              <option value="Bamboo Fabric">Bamboo Fabric</option>
+              <option value="Recycled Polyester">Recycled Polyester</option>
+              <option value="Hemp">Hemp</option>
+              <option value="Tencel">Tencel</option>
+              <option value="Organic Cotton">Organic Cotton</option>
+          </select>
+      
+          <button id="sortButton">Sort ▲▼</button>
+      </div>
+    
+      <div id="bigfoot-container">
+          <svg id="bigfoot-svg"></svg>
+      </div>
+  </div>
+
 
       <!-- Row for Brand Sales Map -->
      <div class = "row slides slides-brand-sales">
@@ -323,6 +358,7 @@
     <!-- Custom JavaScript for D3 Visualizations -->
     <script src="js/trends.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/footprintVis.js"></script>
     <script src="js/globalVis.js"></script>
     <script src="js/brandVis.js"></script>
     <script src="js/mainLoader.js"></script>
