@@ -73,6 +73,30 @@ function loadData() {
 
     brandLineChart = new BrandLineChart("brand-vis", data)
     brandLineChart.initVis();
+
+    console.log(data)
+
+    // Prepare Pie Chart Data 
+
+    let selectedBrands = [
+      "Nike",
+      "Adidas",
+      "Urban Outfitters",
+      "Zara",
+      "Forever 21",
+    ];
+
+    // Aggregate waste generation by year and brand
+    let aggregatedData = d3.rollups(
+        data,
+        (v) => d3.sum(v, (d) => d.Waste_Generation),
+        (d) => d.Company,
+        (d) => d.Production_Year
+    );
+
+    console.log(aggregatedData);
+
+    stackedPieChart = new StackedPieChart("pie-chart-container", aggregatedData)
   });
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
