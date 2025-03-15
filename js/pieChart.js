@@ -5,6 +5,7 @@ class StackedPieChart{
     constructor(parentElement, data){
         this.parentElement = parentElement;
         this.data = data;
+        this.displayData = data;
 
         this.initVis();
     }
@@ -25,19 +26,43 @@ class StackedPieChart{
             .append("g")
             .attr("transform", "translate(" + vis.pieWidth / 2 + "," + vis.pieHeight / 2 + ")");
 
-        // // Scales & Generators
-        // vis.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-        // vis.arc = d3.arc()
-        //     .innerRadius(d => vis.radiusScale(d.data.year))
-        //     .outerRadius(d => vis.radiusScale(d.data.year) + 40); // Spacing between rings
+        // Legend
+        vis.legendContainer = d3.select("#legend");
+        vis.legendContainer.html(""); 
 
-        // vis.pie = d3.pie()
-        //     .value(d => d.waste)
-        //     .sort(null);
+        let selectedBrands = [
+            "Nike",
+            "Adidas",
+            "Urban Outfitters",
+            "Zara",
+            "Forever 21",
+          ];
 
-        // vis.radiusScale = d3.scaleOrdinal()
-        //     .domain([2018, 2019, 2020, 2021, 2022])  // years
-        //     .range([80, 120, 160, 200, 240]); // ring levels 
+        vis.brandSet = new Set(selectedBrands);  
+
+        // Define colour scheme
+        vis.color = d3.scaleOrdinal(d3.schemeCategory10);
+
+         // Create Legend
+         vis.brandSet.forEach(brand => {
+            let legendItem = vis.legendContainer.append("div")
+                .attr("class", "legend-item")
+                .style("display", "flex")  // Align items horizontally
+                .style("align-items", "center")
+                .style("margin-bottom", "5px");
+        
+            legendItem.append("div")
+                .attr("class", "legend-color")
+                .style("width", "15px")  // Set rectangle width
+                .style("height", "15px") // Set rectangle height
+                .style("margin-right", "8px")  // Space between color box and text
+                .style("background-color", vis.color(brand));
+        
+            legendItem.append("span")
+                .text(brand)
+                .style("font-size", "14px")
+                .style("color", "#333");
+        });
 
         vis.wrangleData();
         
@@ -84,7 +109,7 @@ class StackedPieChart{
         // Step 1: Group data by year
         let transformedData = {};
     
-        vis.data.forEach(([brand, records]) => {
+        vis.displayData.forEach(([brand, records]) => {
             records.forEach(([year, waste]) => {
                 if (!transformedData[year]) {
                     transformedData[year] = { year, subData: [] };
@@ -109,18 +134,19 @@ class StackedPieChart{
     updateVis(){
         let vis = this;
 
+        console.log(vis.multiLevelData)
+
         // Clear existing visualization before updating
         vis.svg.selectAll("*").remove();
 
         // If no data, exit
         if (vis.multiLevelData.length === 0) return;
 
-        let pieWidth = parseInt(vis.maxRadius / vis.multiLevelData.length) - vis.multiLevelData.length;
-        let color = d3.scaleOrdinal(d3.schemeCategory10);   
+        let pieWidth = parseInt(vis.maxRadius / vis.multiLevelData.length) - vis.multiLevelData.length;   
 
         let pie = d3.pie()
             .sort(null)
-            .value(d => d.waste);  // Set waste as the value for the pie chart
+            .value(d => d.waste);  // Set waste generation as the value for the pie chart
 
         let arc = d3.arc();
 
@@ -138,14 +164,14 @@ class StackedPieChart{
 
             g.append("path")
                 .attr("d", arc)
-                .style("fill", d => color(d.data.brand));
+                .style("fill", d => vis.color(d.data.brand));
 
             g.append("text")
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")")
                 .attr("dy", ".35em")
                 .style("text-anchor", "middle")
-                .text(d => d.data.brand);
+                .style("font-size", "10px")
+                .text(d => d.data.waste);
             });
     }
 }
-

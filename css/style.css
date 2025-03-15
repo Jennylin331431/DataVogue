@@ -165,6 +165,26 @@ h5 {
   color: black; 
 }
 
+#pie-chart-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#pie-chart{
+  flex: 1; /* Allows the chart to take most of the space */
+  max-width: 75%;
+}
+
+#year-selection {
+  margin-left: 20px; /* Add spacing between chart and checkboxes */
+  white-space: nowrap;
+}
+
+#yearCheckboxes label {
+  color: black;
+}
+
 /* scrollable view css */
 
 .flex-container {

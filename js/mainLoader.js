@@ -96,7 +96,7 @@ function loadData() {
 
     console.log(aggregatedData);
 
-    stackedPieChart = new StackedPieChart("pie-chart-container", aggregatedData)
+    stackedPieChart = new StackedPieChart("pie-chart", aggregatedData)
   });
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
@@ -271,3 +271,29 @@ function productChange(){
   selectedProductType = document.getElementById('productSelector').value;
   brandLineChart.wrangleData();
 }
+
+// event listener
+d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function() {
+  const selectedYears = Array.from(document.querySelectorAll("#yearCheckboxes input[type=checkbox]:checked"))
+      .map(checkbox => checkbox.value);
+
+      // console.log(selectedYears)
+  // console.log("Type of Selected Years:", typeof selectedYears[0]);
+  // console.log(stackedPieChart.data)
+
+   // Filter the original dataset to only include selected years
+   const filteredData = stackedPieChart.data
+    .map(([brand, records]) => {
+        const filteredRecords = records.filter(([year, waste]) => {
+            return selectedYears.includes(String(year)); 
+        });
+
+        return filteredRecords.length > 0 ? [brand, filteredRecords] : null;
+    })
+    .filter(entry => entry !== null);
+
+  //console.log(filteredData);
+
+  stackedPieChart.displayData = filteredData;
+  stackedPieChart.wrangleData();
+});

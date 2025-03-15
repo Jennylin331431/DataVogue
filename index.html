@@ -322,8 +322,34 @@
           How do environmental implications differ by year and brand? 
         </h2>
           <div class="row">
-            <!-- Column for SVG -->
-            <div class="col-md-8" id="pie-chart-container"></div>
+           
+            <!-- Column for SVG and Controls -->
+            <div class="col-md-8" id="pie-chart-container">
+
+              <!-- Pie Chart -->
+              <div id="pie-chart"></div>
+            
+              <!-- Year Selection and Brand Legend -->
+              <div id="filters">
+                <!-- Year Selection -->
+                <div id="year-selection">
+                  <label for="yearCheckboxes" style="color: black;"><strong>Years:</strong></label>
+                  <div id="yearCheckboxes">
+                    <label><input type="checkbox" value="2018"> 2018</label><br>
+                    <label><input type="checkbox" value="2019"> 2019</label><br>
+                    <label><input type="checkbox" value="2020"> 2020</label><br>
+                    <label><input type="checkbox" value="2021"> 2021</label><br>
+                    <label><input type="checkbox" value="2022"> 2022</label><br>
+                  </div>
+                </div>
+            
+                <!-- Brand Legend -->
+                <div id="brand-legend">
+                  <label style="color: black;"><strong>Brands:</strong></label>
+                  <div id="legend"></div>
+                </div>
+              </div>
+            </div>
       
             <!-- Column for Insight -->
             <div class="col-md-4 d-flex align-items-center">
