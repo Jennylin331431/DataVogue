@@ -1,5 +1,3 @@
-
-
 class StackedPieChart{
 
     constructor(parentElement, data){
@@ -43,25 +41,25 @@ class StackedPieChart{
         // Define colour scheme
         vis.color = d3.scaleOrdinal(d3.schemeCategory10);
 
-         // Create Legend
-         vis.brandSet.forEach(brand => {
-            let legendItem = vis.legendContainer.append("div")
-                .attr("class", "legend-item")
-                .style("display", "flex")  // Align items horizontally
-                .style("align-items", "center")
-                .style("margin-bottom", "5px");
-        
-            legendItem.append("div")
-                .attr("class", "legend-color")
-                .style("width", "15px")  // Set rectangle width
-                .style("height", "15px") // Set rectangle height
-                .style("margin-right", "8px")  // Space between color box and text
-                .style("background-color", vis.color(brand));
-        
-            legendItem.append("span")
-                .text(brand)
-                .style("font-size", "14px")
-                .style("color", "#333");
+        // Create Legend
+        vis.brandSet.forEach(brand => {
+        let legendItem = vis.legendContainer.append("div")
+            .attr("class", "legend-item")
+            .style("display", "flex") 
+            .style("align-items", "center")
+            .style("margin-bottom", "5px");
+    
+        legendItem.append("div")
+            .attr("class", "legend-color")
+            .style("width", "15px") 
+            .style("height", "15px")
+            .style("margin-right", "8px") 
+            .style("background-color", vis.color(brand));
+    
+        legendItem.append("span")
+            .text(brand)
+            .style("font-size", "14px")
+            .style("color", "#333");
         });
 
         vis.wrangleData();
@@ -114,7 +112,7 @@ class StackedPieChart{
                 if (!transformedData[year]) {
                     transformedData[year] = { year, subData: [] };
                 }
-                transformedData[year].subData.push({ brand, waste });
+                transformedData[year].subData.push({ brand, waste, year });
             });
         });
     
@@ -138,6 +136,19 @@ class StackedPieChart{
 
         // Clear existing visualization before updating
         vis.svg.selectAll("*").remove();
+
+        // Create tooltip
+        let tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("background", "#fff")
+            .style("padding", "8px")
+            .style("border", "1px solid #ccc")
+            .style("border-radius", "4px")
+            .style("box-shadow", "0px 2px 10px rgba(0,0,0,0.2)")
+            .style("pointer-events", "none")
+            .style("opacity", 0);
+
 
         // If no data, exit
         if (vis.multiLevelData.length === 0) return;
@@ -164,7 +175,24 @@ class StackedPieChart{
 
             g.append("path")
                 .attr("d", arc)
-                .style("fill", d => vis.color(d.data.brand));
+                .style("fill", d => vis.color(d.data.brand))
+                .on("mouseover", function(event, d) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`
+                        <strong>Brand:</strong> ${d.data.brand} <br>
+                        <strong>Year:</strong> ${d.data.year} <br>
+                        <strong>Waste:</strong> ${d.data.waste}
+                    `)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                           .style("top", (event.pageY - 20) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(200).style("opacity", 0);
+                });    
 
             g.append("text")
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")")

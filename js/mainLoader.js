@@ -76,16 +76,6 @@ function loadData() {
 
     console.log(data)
 
-    // Prepare Pie Chart Data 
-
-    let selectedBrands = [
-      "Nike",
-      "Adidas",
-      "Urban Outfitters",
-      "Zara",
-      "Forever 21",
-    ];
-
     // Aggregate waste generation by year and brand
     let aggregatedData = d3.rollups(
         data,
@@ -276,10 +266,6 @@ function productChange(){
 d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function() {
   const selectedYears = Array.from(document.querySelectorAll("#yearCheckboxes input[type=checkbox]:checked"))
       .map(checkbox => checkbox.value);
-
-      // console.log(selectedYears)
-  // console.log("Type of Selected Years:", typeof selectedYears[0]);
-  // console.log(stackedPieChart.data)
 
    // Filter the original dataset to only include selected years
    const filteredData = stackedPieChart.data
