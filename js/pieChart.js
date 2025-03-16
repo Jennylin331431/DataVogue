@@ -39,7 +39,9 @@ class StackedPieChart{
         vis.brandSet = new Set(selectedBrands);  
 
         // Define colour scheme
-        vis.color = d3.scaleOrdinal(d3.schemeCategory10);
+        vis.color = d3.scaleOrdinal()
+            .domain(["Nike", "Adidas", "Urban Outfitters", "Zara", "Forever 21"])
+            .range(["#B936C2", "#4D2DCC", "#3175B5", "#2DCCA6", "#2CC22B"]);
 
         // Create Legend
         vis.brandSet.forEach(brand => {
@@ -181,7 +183,7 @@ class StackedPieChart{
                     tooltip.html(`
                         <strong>Brand:</strong> ${d.data.brand} <br>
                         <strong>Year:</strong> ${d.data.year} <br>
-                        <strong>Waste:</strong> ${d.data.waste}
+                        <strong>Waste Generation:</strong> ${d.data.waste.toLocaleString()}
                     `)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY - 20) + "px");
@@ -199,7 +201,7 @@ class StackedPieChart{
                 .attr("dy", ".35em")
                 .style("text-anchor", "middle")
                 .style("font-size", "10px")
-                .text(d => d.data.waste);
+                .text(d => Number(d.data.waste).toLocaleString());
             });
     }
 }

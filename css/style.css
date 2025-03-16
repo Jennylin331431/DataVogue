@@ -185,6 +185,18 @@ h5 {
   color: black;
 }
 
+#filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align items */
+  gap: 10px; /* Add spacing between the two sections */
+}
+
+#year-selection, #brand-legend {
+  width: 100%; /* Ensure both take full width */
+  text-align: center; /* Center the text */
+}
+
 /* scrollable view css */
 
 .flex-container {
