@@ -185,7 +185,7 @@
               <div id="dropdown-legend-container">
                   <div id="metricSelectionContainer">
                       <label for="metricSelection">Color by:</label>
-                      <select id="metricSelection">
+                      <select id="metricSelection" class="form-select align-self-center">
                           <option value="waste">Waste Production (KG)</option>
                           <option value="water_usage">Water Usage (Liters)</option>
                           <option value="carbonFootprint">Carbon Footprint (MT)</option>
@@ -209,20 +209,25 @@
 
             <div id="map-container">
               <svg id="world-map"></svg>
-              
               <div id="impactText">
-                  <p>
-                      "The environmental impact of fast fashion is undeniable, with the industry now responsible for 
-                      <strong>10% of the global annual carbon footprint</strong>, which is more than the emissions from all 
-                      international flights and maritime shipping combined. Beyond carbon emissions, fast fashion consumes vast 
-                      amounts of natural resources, using <strong>141 billion cubic meters of water annually</strong> and contributing 
-                      to <strong>35% of microplastics polluting our oceans</strong>" - Statista.
-                  </p>
-                  <p>
-                      To understand the full scope of this issue, let’s take a look at the global environmental impact of fast fashion productions 
-                      from 2010 to 2024.
-                  </p>
-              </div>
+                <p>
+                    The environmental impact of fast fashion is undeniable, with the industry now responsible for 
+                    <strong>10% of the global annual carbon footprint</strong>. Beyond carbon emissions, fast fashion consumes vast 
+                    amounts of natural resources, using <strong>141 billion cubic meters of water annually</strong> and contributing 
+                    to <strong>35% of microplastics polluting our oceans</strong>.
+                </p>
+                <p>
+                  The map on the left illustrates the global environmental impact of major fast fashion production countries. 
+                  The data for this visualization comes from 
+                  <a href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends" target="_blank">
+                      Sustainable Fashion
+                  </a>, 
+                  a Kaggle dataset that provides insights into waste production (in kilograms), water usage (in liters), and 
+                  carbon footprint (in megatonnes) associated with clothing production across various material types. 
+                  The dataset covers a time span from 2010 to 2024.
+              </p>
+              
+            </div>
           </div>
           </div>
         </div>
@@ -247,18 +252,28 @@
       </div>
   
       <div id="controls">
-          <label for="materialSelection"><strong>Select Material:</strong></label>
-          <select id="materialSelection" class="form-select align-self-center">
-              <option value="Vegan Leather">Vegan Leather</option>
-              <option value="Bamboo Fabric">Bamboo Fabric</option>
-              <option value="Recycled Polyester">Recycled Polyester</option>
-              <option value="Hemp">Hemp</option>
-              <option value="Tencel">Tencel</option>
-              <option value="Organic Cotton">Organic Cotton</option>
-          </select>
-      
-          <button id="sortButton">Sort ▲▼</button>
-      </div>
+        <div id="dropdown-container">
+            <label for="materialSelection"><strong>Select Material:</strong></label>
+            <select id="materialSelection" class="form-select align-self-center">
+                <option value="Vegan Leather">Vegan Leather</option>
+                <option value="Bamboo Fabric">Bamboo Fabric</option>
+                <option value="Recycled Polyester">Recycled Polyester</option>
+                <option value="Hemp">Hemp</option>
+                <option value="Tencel">Tencel</option>
+                <option value="Organic Cotton">Organic Cotton</option>
+            </select>
+            <button id="sortButton">Sort ▲▼</button>
+        </div>
+    
+        <div id="avg-legend-container">
+            <p id="averageCF"><strong>Average Carbon Footprint:</strong> <span id="avgCFValue"></span> MT</p>
+            <div id="legend">
+                <span class="legend-item"><span class="circle green"></span> Below Avg</span>
+                <span class="legend-item"><span class="circle red"></span> Above Avg</span>
+            </div>
+        </div>
+    </div>
+    
     
       <div id="bigfoot-container">
           <svg id="bigfoot-svg"></svg>
