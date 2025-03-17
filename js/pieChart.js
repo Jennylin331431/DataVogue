@@ -41,7 +41,7 @@ class StackedPieChart{
         // Define colour scheme
         vis.color = d3.scaleOrdinal()
             .domain(["Nike", "Adidas", "Urban Outfitters", "Zara", "Forever 21"])
-            .range(["#B936C2", "#4D2DCC", "#3175B5", "#2DCCA6", "#2CC22B"]);
+            .range(["#EFD5F2", "#D2A2F2", "#B78DF2", "#6DBFF2", "#BBDDF2"]);
 
         // Create Legend
         vis.brandSet.forEach(brand => {

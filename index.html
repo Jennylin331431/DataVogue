@@ -317,22 +317,22 @@
      </div>
 
        <!-- Row for Stacked Pie Chart -->
-       <div class = "row slides slides-pie-chart">
+       <!-- <div class = "row slides slides-pie-chart">
         <h2>
           How does waste generation differ by year and brand?
         </h2>
           <div class="row">
-           
+            -->
             <!-- Column for SVG and Controls -->
-            <div class="col-md-8" id="pie-chart-container">
+            <!-- <div class="col-md-8" id="pie-chart-container"> -->
 
               <!-- Pie Chart -->
-              <div id="pie-chart"></div>
+              <!-- <div id="pie-chart"></div> -->
             
               <!-- Year Selection and Brand Legend -->
-              <div id="filters">
+              <!-- <div id="filters"> -->
                 <!-- Year Selection -->
-                <div id="year-selection">
+                <!-- <div id="year-selection">
                   <label for="yearCheckboxes" style="color: black;"><strong>Years:</strong></label>
                   <div id="yearCheckboxes">
                     <label><input type="checkbox" value="2018"> 2018</label><br>
@@ -342,17 +342,17 @@
                     <label><input type="checkbox" value="2022"> 2022</label><br>
                   </div>
                 </div>
-            
+             -->
                 <!-- Brand Legend -->
-                <div id="brand-legend">
+                <!-- <div id="brand-legend">
                   <label style="color: black;"><strong>Brands:</strong></label>
                   <div id="legend"></div>
                 </div>
               </div>
-            </div>
+            </div> -->
       
             <!-- Column for Insight -->
-            <div class="col-md-4 d-flex align-items-center">
+            <!-- <div class="col-md-4 d-flex align-items-center">
               <div class="insight-text">
                 <p>
                   When considering the environmental impacts of fast fashion, its important to look at 
@@ -361,6 +361,55 @@
                   Synthetic blends are the most common material used in fast fashion, and less than 1%
                   of fast fashion products are recyled to make new clothes (Uniformmarket)
                   Take a look at how different materials generate waste over time, and which brands account 
+                  for the most or least amount of waste generation!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="row slides slides-pie-chart">
+          <h2>How does waste generation differ by year and brand?</h2>
+        
+          <div class="row">
+            <!-- Column for Pie Chart -->
+            <div class="col-md-5 d-flex justify-content-center">
+              <div id="pie-chart-container">
+              </div>
+            </div>
+        
+            <!-- Column for Year Selection + Brand Legend -->
+            <div class="col-md-3 d-flex flex-column align-items-center">
+              <div id="filters">
+                <!-- Year Selection -->
+                <div id="year-selection" class="text-center">
+                  <label for="yearCheckboxes" style="color: black;"><strong>Years:</strong></label>
+                  <div id="yearCheckboxes">
+                    <label><input type="checkbox" value="2018"> 2018</label><br>
+                    <label><input type="checkbox" value="2019"> 2019</label><br>
+                    <label><input type="checkbox" value="2020"> 2020</label><br>
+                    <label><input type="checkbox" value="2021"> 2021</label><br>
+                    <label><input type="checkbox" value="2022"> 2022</label><br>
+                  </div>
+                </div>
+        
+                <!-- Brand Legend -->
+                <div id="brand-legend" class="text-center mt-3">
+                  <label style="color: black;"><strong>Brands:</strong></label>
+                  <div id="legend"></div>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Column for Insight Text -->
+            <div class="col-md-4 d-flex align-items-center">
+              <div class="insight-text">
+                <p>
+                  When considering the environmental impacts of fast fashion, it’s important to consider the differences 
+                  in brands, and the changes in the impact measures over time. <br><br>
+                  An estimated 92 million tonnes of textiles waste is created globally by fast fashion out of the 100 billion produced garments 
+                  every year (Earth.Org). These are massive numbers with massive environmental damages that are necessary to understand. <br><br>
+                  Take a look at how much different brands generate waste over time, and which brands account 
                   for the most or least amount of waste generation!
                 </p>
               </div>

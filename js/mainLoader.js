@@ -86,7 +86,7 @@ function loadData() {
 
     console.log(aggregatedData);
 
-    stackedPieChart = new StackedPieChart("pie-chart", aggregatedData)
+    stackedPieChart = new StackedPieChart("pie-chart-container", aggregatedData)
   });
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
