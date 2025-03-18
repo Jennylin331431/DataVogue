@@ -136,7 +136,7 @@ class WorldMap {
         legendSvg.selectAll("*").remove();
     
         let legendWidth = 300;
-        let legendHeight = 20;
+        let legendHeight = 10;
     
         let defs = legendSvg.append("defs");
         let gradient = defs.append("linearGradient")
@@ -146,11 +146,14 @@ class WorldMap {
             .attr("y1", "0%")
             .attr("y2", "0%");
     
-        let stops = d3.range(0, 1.1, 0.2);
-        stops.forEach((t) => {
+        let numTicks = 5;  // Control number of ticks
+        let tickValues = d3.range(0, numTicks).map(i => minValue + (i / (numTicks - 1)) * (maxValue - minValue));
+        tickValues = [...new Set([minValue, ...tickValues, maxValue])];
+
+        tickValues.forEach((val, i) => {
             gradient.append("stop")
-                .attr("offset", `${t * 100}%`)
-                .attr("stop-color", colorScale(minValue + t * (maxValue - minValue)));
+                .attr("offset", `${(i / (tickValues.length - 1)) * 100}%`)
+                .attr("stop-color", colorScale(val));
         });
     
         legendSvg.append("rect")
@@ -166,12 +169,21 @@ class WorldMap {
     
         let legendAxis = d3.axisBottom(legendScale)
             .ticks(5)
-            .tickFormat(d => d3.format(".2s")(d));
+            .tickFormat(d => {
+                if (vis.selectedMetric === "water_usage") {
+                    return (d / 1e6).toFixed(3) + "M";
+                }
+                return d3.format(".0f")(d);
+            });
     
-        legendSvg.append("g")
-            .attr("transform", `translate(0, ${legendHeight + 10})`)
-            .call(legendAxis);
+            legendSvg.append("g")
+            .attr("transform", `translate(0, ${legendHeight + 15})`)
+            .call(legendAxis)
+            .selectAll("text")
+            .style("font-size", "11px")
+            .attr("dy", "5px");
     }
+    
     
 
     updateVis() {
@@ -180,10 +192,10 @@ class WorldMap {
         Promise.all([
             d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
         ]).then(([world]) => {
-            // Convert TopoJSON to GeoJSON and filter out Antarctica
+            // convert TopoJSON to GeoJSON and filter out Antarctica and greenland
             const countries = topojson.feature(world, world.objects.countries).features;
             const filteredCountries = countries.filter(country => {
-                return country.properties.name !== "Antarctica"; // Filter out Antarctica
+                return country.properties.name !== "Antarctica" && country.properties.name !== "Greenland";
             });
     
             // Compute min & max values for selected metric
@@ -207,33 +219,34 @@ class WorldMap {
                 .on("mouseover", (event, d) => {
                     let countryName = d.properties.name;
                     let stats = vis.countryDataMap.get(countryName);
-    
+                
                     vis.tooltip.transition().duration(200).style("opacity", 1);
-    
+                
                     if (stats) {
-                        let avgWaste = stats.waste / stats.count;
-                        let avgWaterUsage = stats.water_usage / stats.count;
-                        let avgCarbonFootprint = stats.carbonFootprint / stats.count;
-    
-                        let tooltipHTML = `
-                            <strong>${countryName}</strong><br>
-                            Waste: ${avgWaste.toLocaleString()} KG<br>
-                            Water Usage: ${avgWaterUsage.toLocaleString()} Liters<br>
-                            Carbon Footprint: ${avgCarbonFootprint.toLocaleString()} Megatonnes
+                        let avgWaste = Math.round(stats.waste / stats.count); // No decimals
+                        let avgWaterUsage = (stats.water_usage / stats.count / 1e6).toFixed(3); // Convert to million liters (X.YYZ format)
+                        let avgCarbonFootprint = Math.round(stats.carbonFootprint / stats.count); // No decimals
+
+                        let tooltipHTML = `<strong style="font-size: 18px;">${countryName}</strong><br>`;
+                
+                        tooltipHTML += `
+                            <strong>Waste:</strong> <span>${avgWaste.toLocaleString()} KG</span><br>
+                            <strong>Water Usage:</strong> <span>${avgWaterUsage} million liters</span><br>
+                            <strong>Carbon Footprint:</strong> <span>${avgCarbonFootprint.toLocaleString()} Megatonnes</span>
                         `;
-    
+
+                
                         vis.tooltip.html(tooltipHTML);
-    
+                
                         vis.tooltip.style("left", (event.pageX + 10) + "px")
                                    .style("top", (event.pageY - 10) + "px");
-    
-                        // vis.createTooltipBarChart();
+                
                     } else {
-                        vis.tooltip.html(`<strong>${countryName}</strong><br>Data Not Collected`);
+                        vis.tooltip.html(`<strong style="font-size: 18px;">${countryName}</strong><br>Data Not Collected`);
                     }
-    
+                
                     d3.select(event.currentTarget).style("stroke", "black");
-                })
+                })                           
                 .on("mousemove", (event) => {
                     let tooltipWidth = vis.tooltip.node().offsetWidth;
                     let tooltipHeight = vis.tooltip.node().offsetHeight;
@@ -263,73 +276,5 @@ class WorldMap {
         }).catch(error => {
             console.error("Error loading world data:", error);
         });
-        // vis.createBarChart();
     }
-    
-    // create an embedded bar chart inside the tooltip
-    // createBarChart() {
-    //     let vis = this;
-
-    //     // Prepare data for the bar chart
-    //     let wasteData = [...vis.countryDataMap.entries()]
-    //         .map(([country, stats]) => {
-    //             let displayName = country;
-    //             if (country === "United States of America") displayName = "USA";
-    //             if (country === "United Kingdom") displayName = "UK";
-    //             return { country: displayName, waste: stats.waste };
-    //         })
-    //         .sort((a, b) => b.waste - a.waste)
-
-    //     // Select the bar chart container
-    //     let svg = d3.select("#bar-chart");
-    //     svg.selectAll("*").remove(); // Clear previous chart
-
-    //     // Define dimensions and margins
-    //     let width = 800;
-    //     let height = 300;
-    //     let margin = { top: 20, right: 20, bottom: 40, left: 50 };
-
-    //     // Create scales
-    //     let xScale = d3.scaleLinear()
-    //         .domain([0, d3.max(wasteData, d => d.waste)])
-    //         .range([0, width - margin.left - margin.right]);
-
-    //     let yScale = d3.scaleBand()
-    //         .domain(wasteData.map(d => d.country))
-    //         .range([0, height - margin.top - margin.bottom])
-    //         .padding(0.1);
-
-    //     // Create SVG group for the chart
-    //     let chart = svg.append("g")
-    //         .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    //     // Add bars
-    //     chart.selectAll("rect")
-    //         .data(wasteData)
-    //         .join("rect")
-    //         .attr("y", d => yScale(d.country))
-    //         .attr("width", d => xScale(d.waste))
-    //         .attr("height", yScale.bandwidth())
-    //         .attr("fill", "steelblue"); // Customize bar color
-
-    //     // Add labels
-    //     chart.selectAll("text")
-    //         .data(wasteData)
-    //         .join("text")
-    //         .attr("x", d => xScale(d.waste) + 5) // Position text inside bars
-    //         .attr("y", d => yScale(d.country) + yScale.bandwidth() / 2)
-    //         .attr("dy", ".35em")
-    //         .style("fill", "white")
-    //         .style("font-size", "12px")
-    //         .text(d => d.waste.toLocaleString());
-
-    //     // Add axes
-    //     chart.append("g")
-    //         .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
-    //         .call(d3.axisBottom(xScale));
-
-    //     chart.append("g")
-    //         .call(d3.axisLeft(yScale));
-    // }
-    
 }

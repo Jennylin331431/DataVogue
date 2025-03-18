@@ -289,16 +289,17 @@ h5 {
   }
 }
 
-/* Container for both dropdown/legend and slider */
-/* #controls-container {
+/* WORLD MAP VIS */
+
+#controls-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto 20px auto;
   padding: 0 20px;
-} */
+}
 
 /* Center Dropdown + Legend */
 #dropdown-legend-container {
@@ -313,12 +314,14 @@ h5 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 #metricSelection {
   padding: 5px;
   font-size: 14px;
+  width: 190px;
+  margin: 10px 0;
 }
 
 /* Legend Styling */
@@ -333,6 +336,7 @@ h5 {
 #legendSvg {
   width: 300px;
   height: 50px;
+  margin-top: 0px;
 }
 
 #yearSliderContainer {
@@ -359,6 +363,8 @@ h5 {
   font-weight: bold;
   width: 40px;
   text-align: center;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .slider-wrapper {
@@ -395,7 +401,7 @@ h5 {
 #map-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 30px;
   max-width: 1200px;
   margin: 20px auto;
@@ -416,29 +422,22 @@ h5 {
   flex-basis: 30%;
   max-width: 400px;
   text-align: left;
-  font-size: 14px;
-  overflow-y: auto;
-  max-height: 300px;
+  font-size: clamp(12px, 2.5vw, 15px); /* Fluid font size */
+  overflow-y: visible;
+  max-height: none;
   padding: 10px;
   box-sizing: border-box;
   word-wrap: break-word;
-}
-
-.tooltip {
-  max-width: 290px;
-  max-height: 270px;
   overflow: hidden;
-  white-space: normal;
-  color: purple;
 }
 
 /* Responsive Styles */
 @media screen and (max-width: 900px) {
-  /* #controls-container {
+  #controls-container {
     flex-direction: column;
     align-items: center;
     text-align: center;
-  } */
+  }
 
   #yearSliderContainer {
     margin-left: 0;
@@ -447,7 +446,7 @@ h5 {
 
   #map-container {
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Center items vertically */
     gap: 20px;
     max-height: none;
   }
@@ -459,13 +458,13 @@ h5 {
 
   #impactText {
     max-width: 100%;
+    font-size: clamp(12px, 2.5vw, 14px);
+    padding: 10px 20px;
     text-align: center;
-    max-height: 200px;
   }
 }
 
-@media screen and (max-height: 600px) {
-  /* Adjustments for very short screens */
+@media screen and (max-width: 600px) {
   #world-map {
     max-height: 50vh;
   }
@@ -475,23 +474,22 @@ h5 {
   }
 
   #impactText {
-    max-height: 150px;
+    font-size: clamp(10px, 2.5vw, 12px);
+    padding: 10px;
   }
 }
 
-@media screen and (min-width: 900px) {
-  #world-map {
-      max-width: 65%;
-      height: auto;
-  }
-}
-
+/* CARBON FOTTPRINT VIS*/
 #controls label {
   color: black;
 }
 #carbonText {
   color: black !important;
-  padding: 50px;
+  /* padding: 50; */
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
 }
 
@@ -509,7 +507,7 @@ h5 {
   background-color: #0056b3;
 }
 
-#controls {
+/* #controls {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -517,10 +515,104 @@ h5 {
   text-align: center;
   margin: 0 auto;
   width: 100%;
-}
+} */
 
 #materialSelection {
   width: 200px;
   margin: 10px 0;
+}
+
+#controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+#dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#avg-legend-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+#legend {
+  display: flex;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: black !important;
+}
+
+.circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.green { background-color: green; }
+.red { background-color: red; }
+
+#avg-legend-container p{
+  color: black;
+}
+
+#bigfoot-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#bigfoot-svg {
+  width: auto;
+  height: auto;
+}
+
+#carbonText {
+  font-size: clamp(12px, 2.5vw, 15px);
+}
+
+@media screen and (max-width: 1200px) {
+  #carbonText {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #carbonText {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #carbonText {
+    font-size: 9px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #carbonText {
+    font-size: 12px;
+  }
 }
 
