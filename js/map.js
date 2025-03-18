@@ -226,9 +226,10 @@ class WorldMap {
                         let avgWaste = Math.round(stats.waste / stats.count); // No decimals
                         let avgWaterUsage = (stats.water_usage / stats.count / 1e6).toFixed(3); // Convert to million liters (X.YYZ format)
                         let avgCarbonFootprint = Math.round(stats.carbonFootprint / stats.count); // No decimals
+
+                        let tooltipHTML = `<strong style="font-size: 18px;">${countryName}</strong><br>`;
                 
-                        let tooltipHTML = `
-                            <strong>${countryName}</strong><br>
+                        tooltipHTML += `
                             <strong>Waste:</strong> <span>${avgWaste.toLocaleString()} KG</span><br>
                             <strong>Water Usage:</strong> <span>${avgWaterUsage} million liters</span><br>
                             <strong>Carbon Footprint:</strong> <span>${avgCarbonFootprint.toLocaleString()} Megatonnes</span>
@@ -241,7 +242,7 @@ class WorldMap {
                                    .style("top", (event.pageY - 10) + "px");
                 
                     } else {
-                        vis.tooltip.html(`<strong>${countryName}</strong><br>Data Not Collected`);
+                        vis.tooltip.html(`<strong style="font-size: 18px;">${countryName}</strong><br>Data Not Collected`);
                     }
                 
                     d3.select(event.currentTarget).style("stroke", "black");
