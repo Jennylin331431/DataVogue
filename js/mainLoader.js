@@ -12,18 +12,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const yearLabel = document.getElementById("yearLabel");
 
   noUiSlider.create(yearSlider, {
-      start: [2010, 2024],
-      connect: true,       // Fill the range between handles
-      range: {
-          "min": 2010,
-          "max": 2024
-      },
-      step: 1,
-      tooltips: false, // no show tooltips on handles
-      format: {
-          to: value => Math.round(value),
-          from: value => Math.round(value)
-      }
+    start: [2010, 2024],
+    connect: true, // Fill the range between handles
+    range: {
+      min: 2010,
+      max: 2024,
+    },
+    step: 1,
+    tooltips: false, // no show tooltips on handles
+    format: {
+      to: (value) => Math.round(value),
+      from: (value) => Math.round(value),
+    },
   });
 
   // update the displayed year range
@@ -34,11 +34,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // update world map visualization
     if (worldMap) {
-        worldMap.updateYearRange(startYear, endYear);
+      worldMap.updateYearRange(startYear, endYear);
     }
+  });
 });
-});
-
 
 function loadData() {
   d3.csv("data/fashion_data_2018_2022.csv").then((csv) => {
@@ -57,10 +56,8 @@ function loadData() {
     // uncomment to see the different patterns and colors available
     // let distinctPatterns = [...new Set(data.map((d) => d.pattern))];
     // let distinctColors = [...new Set(data.map((d) => d.color))];
-
   });
 
-      
   d3.csv("data/plasticTextilesData.csv").then((data) => {
     data.forEach((d) => {
       d.Production_Year = +d.Production_Year;
@@ -70,8 +67,7 @@ function loadData() {
       d.Water_Consumption = +d.Water_Consumption;
     });
 
-
-    brandLineChart = new BrandLineChart("brand-vis", data)
+    brandLineChart = new BrandLineChart("brand-vis", data);
     brandLineChart.initVis();
   });
 
@@ -102,15 +98,17 @@ function loadData() {
     footPrintVis = new BigFootCarbonViz("#bigfoot-svg", data);
     footPrintVis.initVis();
 
-    document.getElementById("materialSelection").addEventListener("change", function () {
-      let selectedMaterial = this.value;
-      footPrintVis.selectedMaterial = selectedMaterial;
-      footPrintVis.wrangleData();
-    });
+    document
+      .getElementById("materialSelection")
+      .addEventListener("change", function () {
+        let selectedMaterial = this.value;
+        footPrintVis.selectedMaterial = selectedMaterial;
+        footPrintVis.wrangleData();
+      });
   });
 }
 
-//  data available for pairs of patterns and colors 
+//  data available for pairs of patterns and colors
 let validColorsForPatterns = {
   Geometric: [
     "White",
@@ -185,6 +183,9 @@ let validPatternsForColors = {
 function colorChange() {
   selectedColor = document.getElementById("colorSelector").value;
 
+  // update tshirt color
+  updateTshirtColor(selectedColor);
+
   // Get all options from the Pattern dropdown
   const patternOptions = document.getElementById("patternSelector").options;
 
@@ -214,7 +215,8 @@ function colorChange() {
 
 function patternChange() {
   selectedPattern = document.getElementById("patternSelector").value;
-
+  // update tshirt pattern
+  updateTshirtPattern(selectedPattern);
   // Get all options from the Color dropdown
   const colorOptions = document.getElementById("colorSelector").options;
 
@@ -241,9 +243,9 @@ function patternChange() {
   trendsLineChart.wrangleData();
 }
 
-let selectedProductType = document.getElementById('productSelector').value;
+let selectedProductType = document.getElementById("productSelector").value;
 
-function productChange(){
-  selectedProductType = document.getElementById('productSelector').value;
+function productChange() {
+  selectedProductType = document.getElementById("productSelector").value;
   brandLineChart.wrangleData();
 }

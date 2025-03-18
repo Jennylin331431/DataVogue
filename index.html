@@ -16,6 +16,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/tshirt.css" />
     <!-- noUiSlider CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
 
@@ -39,7 +40,7 @@
           Global Environmental Impact of <br />
           Fast Fashion Production & Consumerism
         </h1>
-        <img src="img/title_page.jpg" alt="Fashion Produces Waste" width="450px" />
+        <img src="img/title_page.png" alt="Fashion Produces Waste" width="600px" />
       </div>
       <div class="slides slides-intro">
         <div>
@@ -72,7 +73,7 @@
         <img src="img/carbon.png" alt="Carbon Footprint" width="300px" />
       </div>
 
-      <div class="slides slides-intro-1">
+      <div class="slides slides-intro-1-1">
         <h4>
           Can you also believe that the amount of water used to manufacture
           <strong>a pair of jeans</strong> (8,000 litres) is equivalent to
@@ -86,11 +87,17 @@
       </div>
 
       <div class="slides slides-intro-2">
-        <h5>
+        <h5 style="justify-content: center;">
           Before we dive into the environmental impact of fast fashion, <br />
           let's get to know some of the trends!
+          
+         
         </h5>
+      
+
         <img src="img/trends.png" alt="Trends" width="300px" />
+
+      
       </div>
 
       <div class="row slides slides-trends" id="trends-container">
@@ -101,8 +108,20 @@
             <div class="tooltip-sales"></div>
           </div>
         </div>
+        <div id="tshirt-div">
+          <!-- 
+              Initially, the image will have the background tshirt that has transparency
+              So we can simply update the color with CSS or JavaScript dinamically
+          -->
+          <img id="tshirt-backgroundpicture" src="img/shirt.png" width="300px"/>
+
+          <div id="heart-div"></div>
+          
+      </div>
+
         <div class="col-md-4" id="trends-info-container">
           <div class="dropdown-container">
+            <span>Check out how pattern and color of clothing changes the sales!</span>
             <div class="dropdown-group">
               <label for="patternSelector">Pattern:</label>
               <select
@@ -111,7 +130,7 @@
                 id="patternSelector"
                 onchange="patternChange()"
               >
-                <option value="None">None</option>
+                <option value="None">All</option>
                 <option value="Geometric">Geometric</option>
                 <option value="Polka Dots">Polka Dots</option>
                 <option value="Plain">Plain</option>
@@ -128,7 +147,7 @@
                 id="colorSelector"
                 onchange="colorChange()"
               >
-                <option value="None">None</option>
+                <option value="None">All</option>
                 <option value="White">White</option>
                 <option value="Beige">Beige</option>
                 <option value="Brown">Brown</option>
@@ -148,8 +167,11 @@
             <div
               id="trends-legends"
               class="row"
-              style="margin-bottom: 30px"
+              style="margin-bottom: 5px;"
             ></div>
+            <div style="margin-bottom: 5px;">
+              The dataset we are analyzing comes from the sales of Zara, one of the largest fast fashion brands, and serves as a strong representative sample from 2018 to 2022.
+            </div>
             <div class="trends-insights">
               Fashion has evolved significantly, and
               <strong>
@@ -162,7 +184,8 @@
               <br />
               Now, you see men wearing colors and patterns that were once
               considered feminine—like polka dots, hearts, and yellow floral.
-            </div>
+
+                        </div>
           </div>
         </div>
         <div class="trends-quote">
@@ -355,7 +378,14 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
 
+    <!-- fabric library  -->
+
+    <script src="https://cdn.jsdelivr.net/npm/fabric@6.4.3/dist/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+
     <!-- Custom JavaScript for D3 Visualizations -->
+    <script src="js/tShirt.js"></script>
     <script src="js/trends.js"></script>
     <script src="js/map.js"></script>
     <script src="js/footprintVis.js"></script>
