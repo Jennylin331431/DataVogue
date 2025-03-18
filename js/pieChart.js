@@ -12,8 +12,8 @@ class StackedPieChart{
     initVis(){
         let vis = this;
 
-        vis.pieWidth = 500,
-        vis.pieHeight = 500,
+        vis.pieWidth = 625,
+        vis.pieHeight = 600,
         vis.maxRadius = Math.min(width, height) / 2 - 200;
 
         console.log(vis.parentElement)
@@ -22,7 +22,7 @@ class StackedPieChart{
             .attr("width", vis.pieWidth)
             .attr("height", vis.pieHeight)
             .append("g")
-            .attr("transform", "translate(" + vis.pieWidth / 2 + "," + vis.pieHeight / 2 + ")");
+            .attr("transform", "translate(" + vis.pieWidth / 2  + "," + vis.pieHeight / 2 + ")");
 
         // Legend
         vis.legendContainer = d3.select("#legend");
@@ -112,12 +112,22 @@ class StackedPieChart{
         vis.displayData.forEach(([brand, records]) => {
             records.forEach(([year, waste]) => {
                 if (!transformedData[year]) {
-                    transformedData[year] = { year, subData: [] };
+                    transformedData[year] = { year, subData: [], totalWaste: 0};
                 }
+
+                transformedData[year].totalWaste += waste;
                 transformedData[year].subData.push({ brand, waste, year });
             });
         });
-    
+
+
+        // Compute percentage of waste for each brand 
+        Object.values(transformedData).forEach(yearData => {
+            yearData.subData.forEach(d => {
+                d.percentageWaste = (d.waste / yearData.totalWaste) * 100;
+            });
+        });
+
         // Convert object to array format for easier traversal
         let formattedData = Object.values(transformedData);
     
@@ -139,6 +149,17 @@ class StackedPieChart{
         // Clear existing visualization before updating
         vis.svg.selectAll("*").remove();
 
+        // Append title
+        vis.svg.append("text")
+        .attr("class", "chart-title")
+        .attr("x", 0)  
+        .attr("y", -vis.pieHeight / 2 + 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .style("font-weight", "bold")
+        .style("fill", "rgb(109, 15, 109)")
+        .text("Percentage of Waste Generation per Brand");
+
         // Create tooltip
         let tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -159,7 +180,7 @@ class StackedPieChart{
 
         let pie = d3.pie()
             .sort(null)
-            .value(d => d.waste);  // Set waste generation as the value for the pie chart
+            .value(d => d.percentageWaste);  // Set waste generation as the value for the pie chart
 
         let arc = d3.arc();
 
@@ -200,8 +221,8 @@ class StackedPieChart{
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")")
                 .attr("dy", ".35em")
                 .style("text-anchor", "middle")
-                .style("font-size", "10px")
-                .text(d => Number(d.data.waste).toLocaleString());
+                .style("font-size", (i === 0) ? "10px" : "14px")
+                .text(d =>d.data.percentageWaste.toFixed(1) + "%");
             });
     }
 }
