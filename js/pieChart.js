@@ -151,14 +151,14 @@ class StackedPieChart{
 
         // Append title
         vis.svg.append("text")
-        .attr("class", "chart-title")
-        .attr("x", 0)  
-        .attr("y", -vis.pieHeight / 2 + 20)
-        .attr("text-anchor", "middle")
-        .style("font-size", "18px")
-        .style("font-weight", "bold")
-        .style("fill", "rgb(109, 15, 109)")
-        .text("Percentage of Waste Generation per Brand");
+            .attr("class", "chart-title")
+            .attr("x", 0)  
+            .attr("y", -vis.pieHeight / 2 + 20)
+            .attr("text-anchor", "middle")
+            .style("font-size", "18px")
+            .style("font-weight", "bold")
+            .style("fill", "rgb(109, 15, 109)")
+            .text("Percentage of Waste Generation per Brand");
 
         // Create tooltip
         let tooltip = d3.select("body").append("div")
@@ -176,7 +176,7 @@ class StackedPieChart{
         // If no data, exit
         if (vis.multiLevelData.length === 0) return;
 
-        let pieWidth = parseInt(vis.maxRadius / vis.multiLevelData.length) - vis.multiLevelData.length;   
+        let pieWidth = parseInt(vis.maxRadius / vis.multiLevelData.length) - vis.multiLevelData.length;
 
         let pie = d3.pie()
             .sort(null)
@@ -188,15 +188,22 @@ class StackedPieChart{
             let currentPieWidth = (i + 1) * pieWidth;
 
             arc.outerRadius(currentPieWidth - 1)
-            .innerRadius(i * pieWidth);
+                .innerRadius(i * pieWidth);
 
+             // Select all arc groups and bind new data
             let g = vis.svg.selectAll(".arc" + i)
-                .data(pie(levelData.subData))
-                .enter()
-                .append("g")
+                .data(pie(levelData.subData));
+
+            // Exit phase for old elements
+            g.exit().transition().duration(1000)
+                .style("opacity", 0)
+                .remove();
+
+            // Enter phase for new elements
+            let enterG = g.enter().append("g")
                 .attr("class", "arc" + i);
 
-            g.append("path")
+            enterG.append("path")
                 .attr("d", arc)
                 .style("fill", d => vis.color(d.data.brand))
                 .on("mouseover", function(event, d) {
@@ -211,18 +218,36 @@ class StackedPieChart{
                 })
                 .on("mousemove", function(event) {
                     tooltip.style("left", (event.pageX + 10) + "px")
-                           .style("top", (event.pageY - 20) + "px");
+                        .style("top", (event.pageY - 20) + "px");
                 })
                 .on("mouseout", function() {
                     tooltip.transition().duration(200).style("opacity", 0);
-                });    
+                });
 
-            g.append("text")
+            enterG.append("text")
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")")
                 .attr("dy", ".35em")
                 .style("text-anchor", "middle")
                 .style("font-size", (i === 0) ? "10px" : "14px")
-                .text(d =>d.data.percentageWaste.toFixed(1) + "%");
-            });
+                .text(d => d.data.percentageWaste.toFixed(1) + "%");
+
+            g.merge(enterG).transition().duration(1000)
+                .style("opacity", 1) 
+                .select("path")
+                .attr("d", arc)
+                .style("fill", d => vis.color(d.data.brand))
+                .attr("transform", "scale(1.05)") 
+                .transition().duration(500)
+                .attr("transform", "scale(1)"); 
+
+            g.merge(enterG).transition().duration(1000)
+                .select("text")
+                .attr("transform", d => "translate(" + arc.centroid(d) + ")")
+                .attr("dy", ".35em")
+                .style("text-anchor", "middle")
+                .style("font-size", (i === 0) ? "10px" : "14px")
+                .text(d => d.data.percentageWaste.toFixed(1) + "%");
+        });
+
     }
 }
