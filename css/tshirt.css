@@ -8,6 +8,8 @@
   --dot-color: black;
   --bg-color: white;
   --striped-base-color: black;
+  max-height: fit-content;
+  margin-top: 20px;
 }
 
 .striped {
