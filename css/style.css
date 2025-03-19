@@ -44,6 +44,7 @@ svg {
   z-index: 999;
   border-radius: 10%;
   padding: 15px;
+  display: none;
 }
 
 .dropdown {

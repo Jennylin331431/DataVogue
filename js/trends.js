@@ -46,6 +46,7 @@ class Trends {
       .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
       .style("opacity", 0)
       .on("touchmouse mousemove", function (event) {
+        vis.tooltip.style("display", "block");
         const mousePos = d3.pointer(event, this);
         console.log(mousePos);
         const date = vis.x.invert(mousePos[0]);
