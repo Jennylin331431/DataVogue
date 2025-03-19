@@ -57,7 +57,6 @@ svg {
   line-height: 1.2;
 }
 
-
 #brand-vis {
   width: 750px !important;
   height: 450px !important;
@@ -76,9 +75,9 @@ svg {
 }
 
 #solution-text {
- font-weight: 500;
- color: #163958;
- font-size: 40px;
+  font-weight: 500;
+  color: #163958;
+  font-size: 40px;
 }
 
 #solution-explanation-text {
@@ -86,13 +85,12 @@ svg {
   font-size: 20px;
   text-align: left;
   padding: 22px 22px 22px 26px;
-  color:#f8f9fa;
+  color: #f8f9fa;
   margin-bottom: 15px;
   background-color: #7db5e7;
   border-radius: 3%;
   max-width: 700px;
 }
-
 
 h2 {
   margin-top: 20px !important;
@@ -107,7 +105,7 @@ h5 {
 }
 
 #trends-info-container {
-  padding: 30px;
+  padding: 10px;
 }
 /* On screens that are 992px or less, set the background color to blue */
 
@@ -145,7 +143,8 @@ h5 {
   padding: 8px;
 }
 #trends-container {
-  justify-content: center;
+  /* justify-content: center; */
+  flex-wrap: wrap;
 }
 
 #trends-legend {
@@ -178,11 +177,18 @@ h5 {
 .trends-quote {
   font-size: 24px;
   color: rebeccapurple;
-  background-color: #d1a7f7;
-  padding: 10px;
-  width: fit-content;
-  border-radius: 5%;
   margin-top: -15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trends-quote > p {
+  width: fit-content;
+  background-color: #d1a7f7;
+  padding: 14px;
+  border-radius: 3%;
 }
 
 .col-md-4 > div {
@@ -253,6 +259,7 @@ h5 {
 .insight-text {
     text-align: center;
     max-width: 90%;
+  color: black;
 }
 
 /* scrollable view css */
@@ -299,10 +306,16 @@ h5 {
 }
 
 .slides-intro-1-1 {
-  background: linear-gradient(141deg, rgb(244, 185, 120) 0%, rgb(255, 210, 140) 50%, #d1a7f7 100%);
+  background: linear-gradient(
+    141deg,
+    rgb(244, 185, 120) 0%,
+    rgb(255, 210, 140) 50%,
+    #d1a7f7 100%
+  );
 }
 .slides-trends {
- background-color: rgba(255,213,255,255)
+  background-color: rgba(255, 213, 255, 255);
+  align-items: normal !important; 
 }
 
 .slides-outro {
@@ -320,13 +333,11 @@ h5 {
 }
 
 .slides-worldmap {
-    background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
-
+  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
 }
 
 .slides-footprint {
   background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
-
 }
 
 .slides-global-info {
@@ -369,8 +380,8 @@ h5 {
 
   .row {
     margin-left: 0 !important;
-      margin: 0; /* Reset margins */
-  padding: 0; /* Reset padding */
+    margin: 0; /* Reset margins */
+    padding: 0; /* Reset padding */
   }
 
   .trends-insights {
@@ -571,6 +582,14 @@ h5 {
   #impactText {
     font-size: clamp(10px, 2.5vw, 12px);
     padding: 10px;
+    max-height: 150px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  #world-map {
+    max-width: 65%;
+    height: auto;
   }
 }
 
@@ -592,7 +611,7 @@ h5 {
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -617,7 +636,6 @@ h5 {
   margin: 10px 0;
 }
 
-<<<<<<< HEAD
 #controls {
   display: flex;
   align-items: center;
@@ -738,12 +756,27 @@ h5 {
 .dataset-trends-text {
   font-size: 14px;
   margin-top: 100px;
-  width: 50%; 
+  width: 50%;
   justify-content: center;
 }
 
 .tooltip-date {
-  font-size: 24px; 
+  font-size: 24px;
 }
 
+/* hyperlink styling */
+a:link {
+  color: black;
+}
 
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: hotpink;
+}
+
+a:active {
+  color: hotpink;
+}
