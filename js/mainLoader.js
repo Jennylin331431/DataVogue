@@ -70,12 +70,6 @@ function loadData() {
       d.Water_Consumption = +d.Water_Consumption;
     });
 
-
-    brandLineChart = new BrandLineChart("brand-vis", data)
-    brandLineChart.initVis();
-
-    console.log(data)
-
     // Aggregate waste generation by year and brand
     let aggregatedData = d3.rollups(
         data,
@@ -253,13 +247,6 @@ function patternChange() {
   // update visualizations
   trendsLineChart.selectedPattern = selectedPattern;
   trendsLineChart.wrangleData();
-}
-
-let selectedProductType = document.getElementById('productSelector').value;
-
-function productChange(){
-  selectedProductType = document.getElementById('productSelector').value;
-  brandLineChart.wrangleData();
 }
 
 // event listener
