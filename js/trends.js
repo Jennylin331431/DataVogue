@@ -6,25 +6,8 @@ class Trends {
     this.displayData = [];
     this.filteredData = [];
 
-    // Set colors (for multiple categories if needed)
-    let colors = [
-      "#a6cee3",
-      "#1f78b4",
-      "#b2df8a",
-      "#33a02c",
-      "#fb9a99",
-      "#e31a1c",
-      "#fdbf6f",
-      "#ff7f00",
-      "#cab2d6",
-      "#6a3d9a",
-    ];
-
     this.selectedPattern = "None"; // could be '2019', '2020', etc. for filtering by year
     this.selectedColor = "None"; // could be 'Male', 'Female', or 'all'
-
-    // Set the color scale for different categories, if you plan to use categories
-    this.colorScale = d3.scaleOrdinal().range(colors);
   }
 
   /*
@@ -63,6 +46,7 @@ class Trends {
       .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
       .style("opacity", 0)
       .on("touchmouse mousemove", function (event) {
+        vis.tooltip.style("display", "block");
         const mousePos = d3.pointer(event, this);
         console.log(mousePos);
         const date = vis.x.invert(mousePos[0]);
@@ -96,7 +80,7 @@ class Trends {
         vis.tooltip.select(".tooltip-sales").html(`
       <strong>Male Sales:</strong> ${maleData}<br>
       <strong>Female Sales:</strong> ${femaleData}<br>
-      <strong>Abs Diff: </strong> ${
+      <strong>Abs Diff (M-F): </strong> ${
         absoluteDifference >= 0 ? "+" : "-"
       }${Math.abs(absoluteDifference)} <br>
        <strong>Rel Diff: </strong> 
