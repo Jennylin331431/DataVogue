@@ -12,6 +12,8 @@ class BigFootCarbonViz {
 
     initVis() {
         this.svg = d3.select("#bigfoot-svg")
+            .attr("width", "100%")
+            .attr("height", "auto")
             .attr("preserveAspectRatio", "xMidYMid meet")
             .attr("viewBox", "0 0 1500 400")
             .classed("responsive-svg", true);
@@ -90,7 +92,7 @@ class BigFootCarbonViz {
         let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
         let containerWidth = this.svg.node().getBoundingClientRect().width;
-        let spacing = 1500 / (sortedData.length + 1);
+        let spacing = containerWidth / (vis.processedData.size + 1);
 
         // mapping for country flags
         const flagUrls = {
@@ -120,12 +122,14 @@ class BigFootCarbonViz {
             .attr("opacity", 0);
 
         // append footprint emoji
-        enterGroups.append("text")
-            .attr("class", "footprint")
-            .attr("text-anchor", "middle")
-            .style("font-size", d => `${vis.footSizeScale(d[1])}px`)
-            .style("fill", (d, i) => colorScale(i))
-            .text("🦶");
+        enterGroups.append("image")
+            .attr("class", "footprint-icon")
+            .attr("x", d => -vis.footSizeScale(d[1]) / 2)
+            .attr("y", d => -vis.footSizeScale(d[1]) + 20)
+            .attr("width", d => vis.footSizeScale(d[1]))
+            .attr("height", d => vis.footSizeScale(d[1])) 
+            .attr("href", "../img/foot.png");
+
 
         // append carbon footprint value
         enterGroups.append("text")
@@ -149,7 +153,7 @@ class BigFootCarbonViz {
         enterGroups.append("text")
             .attr("class", "country-label")
             .attr("x", 5)
-            .attr("y", vis.footSizeScale(maxFootprint) - 20)
+            .attr("y", vis.footSizeScale(maxFootprint) - 40)
             .attr("text-anchor", "start")
             .style("fill", "black")
             .style("font-size", "15px")
@@ -160,9 +164,13 @@ class BigFootCarbonViz {
             .attr("opacity", 1)
             .attr("transform", (d, i) => `translate(${spacing * (i + 1)}, 150)`);
 
-        updateGroups.select(".footprint")
-            .style("font-size", d => `${vis.footSizeScale(d[1])}px`)
-            .style("fill", (d, i) => colorScale(i));
+        updateGroups.select(".footprint-icon")
+            .transition().duration(800)
+            .attr("x", d => -vis.footSizeScale(d[1]) / 2)
+            .attr("y", d => -vis.footSizeScale(d[1]) + 20)
+            .attr("width", d => vis.footSizeScale(d[1]))
+            .attr("height", d => vis.footSizeScale(d[1]));
+        
 
         updateGroups.select(".carbon-value")
             .attr("y", d => -vis.footSizeScale(d[1]) - 10)
@@ -174,6 +182,7 @@ class BigFootCarbonViz {
             .attr("href", d => flagUrls[d[0]] || "");
 
         updateGroups.select(".country-label")
+            .attr("x", 5)
             .attr("y", vis.footSizeScale(maxFootprint) - 20)
             .text(d => d[0]);
 

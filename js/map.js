@@ -13,7 +13,7 @@ class WorldMap {
         this.endYear = 2024;
         this.selectedMetric = "waste";
         this.originalWidth = 960;
-        this.originalHeight = 600;
+        this.originalHeight = 470;
     }
 
     initVis() {
@@ -230,9 +230,9 @@ class WorldMap {
                         let tooltipHTML = `<strong style="font-size: 18px;">${countryName}</strong><br>`;
                 
                         tooltipHTML += `
-                            <strong>Waste:</strong> <span>${avgWaste.toLocaleString()} KG</span><br>
-                            <strong>Water Usage:</strong> <span>${avgWaterUsage} million liters</span><br>
-                            <strong>Carbon Footprint:</strong> <span>${avgCarbonFootprint.toLocaleString()} Megatonnes</span>
+                            <strong>🗑️:</strong> <span>${avgWaste.toLocaleString()} KG</span><br>
+                            <strong>💧:</strong> <span>${avgWaterUsage} million liters</span><br>
+                            <strong>👣:</strong> <span>${avgCarbonFootprint.toLocaleString()} Megatonnes</span>
                         `;
 
                 

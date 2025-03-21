@@ -400,8 +400,8 @@ h5 {
 
 #metricSelection {
   padding: 5px;
-  font-size: 14px;
-  width: 190px;
+  font-size: 12px;
+  width: 170px;
   margin: 10px 0;
 }
 
@@ -425,6 +425,7 @@ h5 {
   flex-direction: column;
   align-items: center;
   width: 400px;
+  max-width: 100%;
 }
 
 .slider-wrapper {
@@ -435,7 +436,8 @@ h5 {
 }
 
 #yearSlider {
-  flex-grow: 1;
+  width: 100%;
+  max-width: 350px;
 }
 
 #startYearLabel,
@@ -481,35 +483,37 @@ h5 {
 
 #map-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  gap: 20px;
   max-width: 1200px;
-  margin: 20px auto;
+  margin: 0 auto;
   width: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
-  height: auto;
+  height: auto; /* Ensure height adjusts dynamically */
+  overflow: hidden; /* Prevents leakage */
 }
+
 
 #world-map {
   flex-grow: 1;
   max-width: 65%;
   height: auto;
   overflow: hidden;
+  min-width: 500px;
+  min-height: 250px;
+  max-height: 450px;
 }
 
 #impactText {
-  flex-basis: 30%;
-  max-width: 400px;
-  text-align: left;
-  font-size: clamp(12px, 2.5vw, 15px); /* Fluid font size */
-  overflow-y: visible;
-  max-height: none;
-  padding: 10px;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow: hidden;
+  color: black !important;
+  /* padding: 50; */
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-size: 14px;
 }
 
 /* Responsive Styles */
@@ -521,13 +525,16 @@ h5 {
   }
 
   #yearSliderContainer {
-    margin-left: 0;
-    margin-top: 15px;
+    width: 300px;
+  }
+
+  #yearSlider {
+    max-width: 280px;
   }
 
   #map-container {
     flex-direction: column;
-    align-items: center; /* Center items vertically */
+    align-items: center;
     gap: 20px;
     max-height: none;
   }
@@ -546,6 +553,14 @@ h5 {
 }
 
 @media screen and (max-width: 600px) {
+  #yearSliderContainer {
+    width: 250px;
+  }
+
+  #yearSlider {
+    max-width: 230px;
+  }
+
   #world-map {
     max-height: 50vh;
   }
