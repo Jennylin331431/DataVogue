@@ -215,6 +215,12 @@ class StackedPieChart{
                     `)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY - 20) + "px");
+
+                    vis.svg.selectAll("path")
+                    .transition().duration(300)
+                    .style("fill", function(data) {
+                        return data.data.brand === d.data.brand ? vis.color(d.data.brand) : "#d3d3d3";
+                    });
                 })
                 .on("mousemove", function(event) {
                     tooltip.style("left", (event.pageX + 10) + "px")
@@ -222,6 +228,11 @@ class StackedPieChart{
                 })
                 .on("mouseout", function() {
                     tooltip.transition().duration(200).style("opacity", 0);
+
+                    // Restore original colors
+                    vis.svg.selectAll("path")
+                    .transition().duration(300)
+                    .style("fill", d => vis.color(d.data.brand));
                 });
 
             enterG.append("text")
