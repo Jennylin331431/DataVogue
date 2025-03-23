@@ -19,18 +19,31 @@ class WorldMap {
     initVis() {
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
-    
-        this.dynamicWidth = screenWidth ;
-        this.dynamicHeight = Math.min(screenHeight , 960); // cap height so it never overflows
-    
+
+        this.dynamicWidth = screenWidth;
+        this.dynamicHeight = Math.min(screenHeight, 960);
+
+        // 🧠 New scale factor logic
+        let scaleFactor;
+        if (screenWidth > 1200) {
+            scaleFactor = this.dynamicWidth / 6;
+        } else if (screenWidth > 900) {
+            scaleFactor = this.dynamicWidth / 5.5;
+        } else if (screenWidth > 600) {
+            scaleFactor = this.dynamicWidth / 4,5;
+        } else {
+            scaleFactor = this.dynamicWidth / 4; // smaller screens need bigger scale
+        }
+
         this.svg = d3.select(this.containerId)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", `0 0 ${this.dynamicWidth + 100} ${this.dynamicHeight + 100}`)
+            .attr("viewBox", `0 0 ${this.dynamicWidth + 200} ${this.dynamicHeight + 200}`)
             .classed("responsive-svg", true);
-    
+
         this.projection = d3.geoMercator()
-            .scale(this.dynamicWidth / 6) // dynamic scale
+            .scale(scaleFactor)
             .translate([this.dynamicWidth / 2, this.dynamicHeight / 1.5]);
+
     
         this.path = d3.geoPath().projection(this.projection);
         
@@ -65,12 +78,23 @@ class WorldMap {
         this.dynamicHeight = Math.min(screenHeight , 960);
     
         this.svg
-            .attr("viewBox", `0 0 ${this.dynamicWidth + 100} ${this.dynamicHeight + 100}`);
+            .attr("viewBox", `0 0 ${this.dynamicWidth +200} ${this.dynamicHeight + 200}`);
     
+        let scaleFactor;
+        if (screenWidth > 1200) {
+            scaleFactor = this.dynamicWidth / 6;
+        } else if (screenWidth > 900) {
+            scaleFactor = this.dynamicWidth / 5.5;
+        } else if (screenWidth > 600) {
+            scaleFactor = this.dynamicWidth / 4.5;
+        } else {
+            scaleFactor = this.dynamicWidth / 4;
+        }
+
         this.projection
             .translate([this.dynamicWidth / 2, this.dynamicHeight / 1.5])
-            .scale(this.dynamicWidth / 6);
-    
+            .scale(scaleFactor);
+
         this.path = d3.geoPath().projection(this.projection);
     
         // Redraw countries with new projection

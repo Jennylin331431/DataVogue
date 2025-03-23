@@ -426,9 +426,9 @@ h5 {
 
 #metricSelection {
   padding: 5px;
-  font-size: 12px;
-  width: 170px;
-  margin: 10px 0;
+  font-size: 14px;
+  width: 190px;
+  margin: 12px 0;
 }
 
 /* Legend Styling */
@@ -536,7 +536,16 @@ h5 {
   height: auto;
   max-width: 100vw;
   min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+#world-map svg {
+  display: block;
+  margin: 0 auto;
+}
+
 
 
 #impactText {
