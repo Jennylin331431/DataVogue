@@ -25,7 +25,8 @@ class StackedPieChart{
             .attr("transform", "translate(" + vis.pieWidth / 2  + "," + vis.pieHeight / 2 + ")");
 
         // Legend
-        vis.legendContainer = d3.select("#brands-legend");
+
+        vis.legendContainer = d3.select("#brands-legend-items");
         vis.legendContainer.html(""); 
 
         let selectedBrands = [
