@@ -521,7 +521,7 @@ h5 {
 }
 
 
-#world-map {
+/* #world-map {
   flex-grow: 1;
   max-width: 65%;
   height: auto;
@@ -529,7 +529,15 @@ h5 {
   min-width: 500px;
   min-height: 250px;
   max-height: 450px;
+} */
+
+#world-map {
+  width: 100%;
+  height: auto;
+  max-width: 100vw;
+  min-width: 300px;
 }
+
 
 #impactText {
   color: black !important;
@@ -726,20 +734,19 @@ h5 {
 }
 
 #bigfoot-container {
+  width: 100vw;
+  overflow-x: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 1500px;
-  margin: 0 auto;
-  text-align: center;
-  overflow: hidden;
-  max-height: 300px;
 }
 
 #bigfoot-svg {
+  min-width: 100vw;  /* Always at least as wide as screen */
   width: auto;
   height: auto;
+  display: block;
+  flex-shrink: 0;
 }
 
 #carbonText {

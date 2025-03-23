@@ -1,3 +1,10 @@
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerHeight;
+const scaleFactor = Math.min(1, screenWidth / 1200);
+
+console.log(`Screen size: ${screenWidth}px wide × ${screenHeight}px tall`);
+
+
 class BigFootCarbonViz {
     constructor(containerId, data) {
         this.containerId = containerId;
@@ -12,10 +19,8 @@ class BigFootCarbonViz {
 
     initVis() {
         this.svg = d3.select("#bigfoot-svg")
-            .attr("width", "100%")
-            .attr("height", "auto")
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", "0 0 1500 400")
+            .attr("viewBox", `0 0 ${screenWidth} 400`)
             .classed("responsive-svg", true);
 
         d3.select("#materialSelection").on("change", (event) => {
@@ -43,8 +48,11 @@ class BigFootCarbonViz {
     }
 
     handleResize() {
+        const newWidth = window.innerWidth;
+        this.svg.attr("viewBox", `0 0 ${newWidth} 400`);
         this.updateVis();
     }
+    
 
     wrangleData() {
         let vis = this;
@@ -72,9 +80,9 @@ class BigFootCarbonViz {
 
     updateVis() {
         let vis = this;
-
+    
         let sortedData = [...vis.processedData.entries()];
-
+    
         if (vis.sortOrder === "asc") {
             sortedData.sort((a, b) => a[1] - b[1]);
         } else if (vis.sortOrder === "desc") {
@@ -82,19 +90,22 @@ class BigFootCarbonViz {
         } else {
             sortedData = sortedData.sort(() => Math.random() - 0.5);
         }
-
+    
+        const screenWidth = window.innerWidth;
+        const scaleFactor = Math.min(1, screenWidth / 1200);  // scale down on smaller screens
+    
         let maxFootprint = d3.max(sortedData, d => d[1]);
         let minFootprint = d3.min(sortedData, d => d[1]);
+    
         vis.footSizeScale = d3.scaleSqrt()
             .domain([minFootprint, maxFootprint])
-            .range([60, 100]);
-
+            .range([60 * scaleFactor, 100 * scaleFactor]);
+    
         let colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
+    
         let containerWidth = this.svg.node().getBoundingClientRect().width;
         let spacing = containerWidth / (vis.processedData.size + 1);
-
-        // mapping for country flags
+    
         const flagUrls = {
             "USA": "https://flagcdn.com/w40/us.png",
             "India": "https://flagcdn.com/w40/in.png",
@@ -107,87 +118,91 @@ class BigFootCarbonViz {
             "Germany": "https://flagcdn.com/w40/de.png",
             "Italy": "https://flagcdn.com/w40/it.png"
         };
-
+    
         let countryGroups = vis.svg.selectAll(".country-foot")
             .data(sortedData, d => d[0]);
-
+    
         countryGroups.exit()
             .transition().duration(500)
             .attr("opacity", 0)
             .remove();
-
+    
         let enterGroups = countryGroups.enter().append("g")
             .attr("class", "country-foot")
             .attr("transform", (d, i) => `translate(${spacing * (i + 1)}, 150)`)
             .attr("opacity", 0);
-
-        // append footprint emoji
+    
+        // Foot icon (image)
         enterGroups.append("image")
             .attr("class", "footprint-icon")
             .attr("x", d => -vis.footSizeScale(d[1]) / 2)
-            .attr("y", d => -vis.footSizeScale(d[1]) + 20)
+            .attr("y", d => -vis.footSizeScale(d[1]) + 20 * scaleFactor)
             .attr("width", d => vis.footSizeScale(d[1]))
-            .attr("height", d => vis.footSizeScale(d[1])) 
+            .attr("height", d => vis.footSizeScale(d[1]))
             .attr("href", "../img/foot.png");
-
-
-        // append carbon footprint value
+    
+        // Carbon value text
         enterGroups.append("text")
             .attr("class", "carbon-value")
-            .attr("y", d => -vis.footSizeScale(d[1]) - 10)
+            .attr("y", d => -vis.footSizeScale(d[1]) - 10 * scaleFactor)
             .attr("text-anchor", "middle")
             .style("fill", d => d[1] > vis.averageFootprint ? "red" : "green")
-            .style("font-size", "14px")
+            .style("font-size", `${14 * scaleFactor}px`)
             .text(d => d3.format(".2f")(d[1]) + " MT");
-
-        // append country flag to the left of the country name
+    
+        // Flag image
         enterGroups.append("image")
             .attr("class", "country-flag")
-            .attr("x", -25)
-            .attr("y", vis.footSizeScale(maxFootprint) - 30)
-            .attr("width", 22)
-            .attr("height", 15)
+            .attr("x", -25 * scaleFactor)
+            .attr("y", vis.footSizeScale(maxFootprint) - 50 * scaleFactor)
+            .attr("width", 22 * scaleFactor)
+            .attr("height", 15 * scaleFactor)
             .attr("href", d => flagUrls[d[0]] || "");
-
-        // append country name beside the flag
+    
+        // Country label
         enterGroups.append("text")
             .attr("class", "country-label")
-            .attr("x", 5)
-            .attr("y", vis.footSizeScale(maxFootprint) - 40)
+            .attr("x", 5 * scaleFactor)
+            .attr("y", vis.footSizeScale(maxFootprint) - 40 * scaleFactor)
             .attr("text-anchor", "start")
             .style("fill", "black")
-            .style("font-size", "15px")
+            .style("font-size", `${15 * scaleFactor}px`)
             .text(d => d[0]);
-
+    
+        // Update positions + size
         let updateGroups = countryGroups.merge(enterGroups)
             .transition().duration(800)
             .attr("opacity", 1)
             .attr("transform", (d, i) => `translate(${spacing * (i + 1)}, 150)`);
-
+    
         updateGroups.select(".footprint-icon")
-            .transition().duration(800)
             .attr("x", d => -vis.footSizeScale(d[1]) / 2)
-            .attr("y", d => -vis.footSizeScale(d[1]) + 20)
+            .attr("y", d => -vis.footSizeScale(d[1]) + 20 * scaleFactor)
             .attr("width", d => vis.footSizeScale(d[1]))
             .attr("height", d => vis.footSizeScale(d[1]));
-        
-
+    
         updateGroups.select(".carbon-value")
-            .attr("y", d => -vis.footSizeScale(d[1]) - 10)
+            .attr("y", d => -vis.footSizeScale(d[1]) - 10 * scaleFactor)
             .style("fill", d => d[1] > vis.averageFootprint ? "red" : "green")
-            .text(d => d3.format(",.2f")(d[1]) + " MT");
-
+            .style("font-size", `${14 * scaleFactor}px`)
+            .text(d => d3.format(".2f")(d[1]) + " MT");
+    
         updateGroups.select(".country-flag")
-            .attr("y", vis.footSizeScale(maxFootprint) - 30)
+            .attr("x", -25 * scaleFactor)
+            .attr("y", vis.footSizeScale(maxFootprint) - 50 * scaleFactor)
+            .attr("width", 22 * scaleFactor)
+            .attr("height", 15 * scaleFactor)
             .attr("href", d => flagUrls[d[0]] || "");
-
+    
         updateGroups.select(".country-label")
-            .attr("x", 5)
-            .attr("y", vis.footSizeScale(maxFootprint) - 20)
+            .attr("x", 5 * scaleFactor)
+            .attr("y", vis.footSizeScale(maxFootprint) - 40 * scaleFactor)
+            .style("font-size", `${15 * scaleFactor}px`)
             .text(d => d[0]);
-
+    
         let sortButtonText = "Sort ";
         sortButtonText += vis.sortOrder === "asc" ? "▲" : vis.sortOrder === "desc" ? "▼" : "▲▼";
         d3.select("#sortButton").text(sortButtonText);
     }
+    
 }
