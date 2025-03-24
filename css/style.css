@@ -188,6 +188,7 @@ h5 {
   width: 100%;
   height: auto;
   overflow: visible;
+  margin-left: auto; /* Push right */
 }
 
 #year-selection {
@@ -198,6 +199,15 @@ h5 {
 #year-selection, #brand-legend {
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#yearCheckboxes {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align */
+  gap: 5px; /* Space between checkboxes */
 }
 
 #brand-legend label {
@@ -210,6 +220,7 @@ h5 {
   color: black;
 }
 
+
 #filters {
   display: flex;
   flex-direction: column;
@@ -219,6 +230,20 @@ h5 {
   margin-top: 50px;
   text-align: center;
   overflow: visible !important;
+}
+
+.slides-pie-chart .row {
+  justify-content: center;
+}
+
+.col-md-6:first-child {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.col-md-6:last-child {
+  display: flex;
+  justify-content: flex-start;
 }
 
 #legend {
