@@ -236,7 +236,7 @@ class Trends {
     let legendSvg = d3
       .select("#trends-legends")
       .append("svg")
-      .attr("width", 150)
+      .attr("width", 100)
       .attr("height", 60);
 
     // Add each legend item
