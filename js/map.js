@@ -13,15 +13,40 @@ class WorldMap {
         this.endYear = 2024;
         this.selectedMetric = "waste";
         this.originalWidth = 960;
-        this.originalHeight = 600;
+        this.originalHeight = 470;
     }
 
     initVis() {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        this.dynamicWidth = screenWidth;
+        this.dynamicHeight = Math.min(screenHeight, 960);
+
+        // 🧠 New scale factor logic
+        let scaleFactor;
+        if (screenWidth > 1200) {
+            scaleFactor = this.dynamicWidth / 6;
+        } else if (screenWidth > 900) {
+            scaleFactor = this.dynamicWidth / 5.5;
+        } else if (screenWidth > 600) {
+            scaleFactor = this.dynamicWidth / 4,5;
+        } else {
+            scaleFactor = this.dynamicWidth / 4; // smaller screens need bigger scale
+        }
+
         this.svg = d3.select(this.containerId)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", `0 0 ${this.originalWidth} ${this.originalHeight}`)
+            .attr("viewBox", `0 0 ${this.dynamicWidth + 200} ${this.dynamicHeight + 200}`)
             .classed("responsive-svg", true);
 
+        this.projection = d3.geoMercator()
+            .scale(scaleFactor)
+            .translate([this.dynamicWidth / 2, this.dynamicHeight / 1.5]);
+
+    
+        this.path = d3.geoPath().projection(this.projection);
+        
         // Tooltip, hidden by default
         this.tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -35,41 +60,48 @@ class WorldMap {
             .style("font-size", "14px")
             .style("pointer-events", "none");
 
-        this.projection = d3.geoMercator()
-            .scale(150)
-            .translate([this.originalWidth / 1.8, this.originalHeight / 1.5]);
-
-        this.path = d3.geoPath().projection(this.projection);
-
-        d3.select("#metricSelection").on("change", (event) => {
-            this.selectedMetric = event.target.value;
-            this.updateVis();
-        });
-
-        this.wrangleData();
-
-        window.addEventListener("resize", () => this.handleResize());
+            d3.select("#metricSelection").on("change", (event) => {
+                this.selectedMetric = event.target.value;
+                this.updateVis();
+            });
+    
+            this.wrangleData();
+    
+            window.addEventListener("resize", () => this.handleResize());
     }
 
     handleResize() {
-        const containerWidth = this.svg.node().getBoundingClientRect().width;
-        const containerHeight = this.svg.node().getBoundingClientRect().height;
-
-        // Reset to original dimensions if screen is large enough
-        if (containerWidth >= this.originalWidth && containerHeight >= this.originalHeight) {
-            this.projection
-                .translate([this.originalWidth / 1.8, this.originalHeight / 1.5])
-                .scale(150);
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+    
+        this.dynamicWidth = screenWidth ;
+        this.dynamicHeight = Math.min(screenHeight , 960);
+    
+        this.svg
+            .attr("viewBox", `0 0 ${this.dynamicWidth +200} ${this.dynamicHeight + 200}`);
+    
+        let scaleFactor;
+        if (screenWidth > 1200) {
+            scaleFactor = this.dynamicWidth / 6;
+        } else if (screenWidth > 900) {
+            scaleFactor = this.dynamicWidth / 5.5;
+        } else if (screenWidth > 600) {
+            scaleFactor = this.dynamicWidth / 4.5;
         } else {
-            this.projection
-                .translate([containerWidth / 1.8, containerHeight / 1.5])
-                .scale(Math.min(containerWidth / 6, containerHeight / 3));
+            scaleFactor = this.dynamicWidth / 4;
         }
 
-        // Update paths
+        this.projection
+            .translate([this.dynamicWidth / 2, this.dynamicHeight / 1.5])
+            .scale(scaleFactor);
+
+        this.path = d3.geoPath().projection(this.projection);
+    
+        // Redraw countries with new projection
         this.svg.selectAll("path")
             .attr("d", this.path);
     }
+    
 
     updateYearRange(startYear, endYear) {
         this.startYear = startYear;
@@ -230,9 +262,9 @@ class WorldMap {
                         let tooltipHTML = `<strong style="font-size: 18px;">${countryName}</strong><br>`;
                 
                         tooltipHTML += `
-                            <strong>Waste:</strong> <span>${avgWaste.toLocaleString()} KG</span><br>
-                            <strong>Water Usage:</strong> <span>${avgWaterUsage} million liters</span><br>
-                            <strong>Carbon Footprint:</strong> <span>${avgCarbonFootprint.toLocaleString()} Megatonnes</span>
+                            <strong>🗑️:</strong> <span>${avgWaste.toLocaleString()} KG</span><br>
+                            <strong>💧:</strong> <span>${avgWaterUsage} million liters</span><br>
+                            <strong>👣:</strong> <span>${avgCarbonFootprint.toLocaleString()} Megatonnes</span>
                         `;
 
                 
