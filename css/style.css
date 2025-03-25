@@ -180,6 +180,10 @@ h5 {
   color: black; 
 }  
 
+.col-md-2 > div {
+  color: black; 
+}  
+
 #pie-chart-container {
   display: flex;
   justify-content: center;
@@ -188,48 +192,38 @@ h5 {
   width: 100%;
   height: auto;
   overflow: visible;
-  margin-left: auto; /* Push right */
-}
-
-#year-selection {
-  margin-left: 20px; /* Add spacing between chart and checkboxes */
-  white-space: nowrap;
-}
-
-#year-selection, #brand-legend {
-  width: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-#yearCheckboxes {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center align */
-  gap: 5px; /* Space between checkboxes */
+  position: relative;
+  margin-left: 50px; /* Push right */
 }
 
 #brand-legend label {
   display: block;
   width: 100%;
   margin-bottom: 5px;
+} 
+
+#yearCheckboxes label, #yearCheckboxes label input {
+  color: black !important;
 }
 
 #yearCheckboxes label {
-  color: black;
+  color: black !important;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adjust as needed */
+  margin-bottom: 2px; /* Reduce space between checkboxes */
 }
-
 
 #filters {
   display: flex;
   flex-direction: column;
   align-items: center; /* Center align items */
-  gap: 15px; /* Add spacing between the two sections */
+  gap: 10px; /* Add spacing between the two sections */
   width: 100%;
   margin-top: 50px;
   text-align: center;
   overflow: visible !important;
+  margin-left: 20px;
 }
 
 .slides-pie-chart .row {
