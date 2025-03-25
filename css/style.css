@@ -38,11 +38,13 @@ svg {
 #tooltip-line-chart {
   position: absolute;
   background-color: rgb(194, 167, 236);
-  width: 150px;
   font-size: 14px;
   color: black;
-  opacity: 0.7;
+  opacity: 0.9;
+  z-index: 999;
   border-radius: 10%;
+  padding: 15px;
+  display: none;
 }
 
 .dropdown {
@@ -55,7 +57,6 @@ svg {
   white-space: pre;
   line-height: 1.2;
 }
-
 
 #brand-vis {
   width: 750px !important;
@@ -75,9 +76,9 @@ svg {
 }
 
 #solution-text {
- font-weight: 500;
- color: #163958;
- font-size: 40px;
+  font-weight: 500;
+  color: #163958;
+  font-size: 40px;
 }
 
 #solution-explanation-text {
@@ -85,18 +86,17 @@ svg {
   font-size: 20px;
   text-align: left;
   padding: 22px 22px 22px 26px;
-  color:#f8f9fa;
+  color: #f8f9fa;
   margin-bottom: 15px;
   background-color: #7db5e7;
   border-radius: 3%;
   max-width: 700px;
 }
 
-
 h2 {
-  margin-top: 30px !important;
+  margin-top: 20px !important;
   color: rgb(109, 15, 109);
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 h5 {
@@ -106,13 +106,13 @@ h5 {
 }
 
 #trends-info-container {
-  padding: 30px;
+  padding: 10px;
 }
 /* On screens that are 992px or less, set the background color to blue */
 
 #trends-chart-container {
-  width: 800px;
-  height: 500px;
+  width: 550px;
+  height: 400px;
 }
 
 .dropdown-container {
@@ -144,7 +144,8 @@ h5 {
   padding: 8px;
 }
 #trends-container {
-  justify-content: center;
+  /* justify-content: center; */
+  flex-wrap: wrap;
 }
 
 #trends-legend {
@@ -158,6 +159,10 @@ h5 {
 .trends-insights {
   color: rgb(211, 35, 111);
   font-size: 16pxs;
+  background-color: pink;
+  border-radius: 3%;
+  padding: 10px;
+  margin-bottom: -30px;
 }
 
 .slides {
@@ -171,9 +176,20 @@ h5 {
 }
 
 .trends-quote {
-  margin-bottom: 20px;
   font-size: 24px;
   color: rebeccapurple;
+  margin-top: -15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trends-quote > p {
+  width: fit-content;
+  background-color: #d1a7f7;
+  padding: 14px;
+  border-radius: 3%;
 }
 
 .col-md-4 > div {
@@ -263,6 +279,7 @@ h5 {
 .insight-text {
     text-align: center;
     max-width: 90%;
+  color: black;
 }
 
 /* scrollable view css */
@@ -272,6 +289,8 @@ h5 {
   height: 100vh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
+  margin: 0; /* Reset margins */
+  padding: 0; /* Reset padding */
 }
 
 .slides {
@@ -282,6 +301,9 @@ h5 {
   justify-content: center;
   color: #fff;
   scroll-snap-align: start;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .slides-intro {
@@ -303,13 +325,17 @@ h5 {
   );
 }
 
-.slides-intro-2 {
+.slides-intro-1-1 {
   background: linear-gradient(
     141deg,
     rgb(244, 185, 120) 0%,
-    rgb(240, 208, 174) 50%,
-    #f7a1c4 100%
+    rgb(255, 210, 140) 50%,
+    #d1a7f7 100%
   );
+}
+.slides-trends {
+  background-color: rgba(255, 213, 255, 255);
+  align-items: normal !important; 
 }
 
 .slides-outro {
@@ -322,18 +348,16 @@ h5 {
   flex-direction: column;
 }
 
-.slides-trends {
-  background: linear-gradient(141deg, #edccef 0%, #e9b6d1 50%, #d1b5eb 100%);
+.slides-intro-2 {
+  background: linear-gradient(141deg, #d1b5eb 0%, #e9b6d1 50%, #ebcfec 100%);
 }
 
 .slides-worldmap {
-    background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
-
+  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
 }
 
 .slides-footprint {
   background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
-
 }
 
 .slides-global-info {
@@ -347,8 +371,8 @@ h5 {
 /* On screens that are 600px or less, set the background color to olive */
 @media screen and (max-width: 900px) {
   #trends-chart-container {
-    width: 550px;
-    height: 400px;
+    width: 350px;
+    height: 260px;
   }
 
   .dropdown-container {
@@ -376,6 +400,8 @@ h5 {
 
   .row {
     margin-left: 0 !important;
+    margin: 0; /* Reset margins */
+    padding: 0; /* Reset padding */
   }
 
   .trends-insights {
@@ -576,6 +602,14 @@ h5 {
   #impactText {
     font-size: clamp(10px, 2.5vw, 12px);
     padding: 10px;
+    max-height: 150px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  #world-map {
+    max-width: 65%;
+    height: auto;
   }
 }
 
@@ -597,7 +631,7 @@ h5 {
   padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -739,4 +773,30 @@ h5 {
     font-size: 12px;
   }
 }
+.dataset-trends-text {
+  font-size: 14px;
+  margin-top: 100px;
+  width: 50%;
+  justify-content: center;
+}
 
+.tooltip-date {
+  font-size: 24px;
+}
+
+/* hyperlink styling */
+a:link {
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: hotpink;
+}
+
+a:active {
+  color: hotpink;
+}
