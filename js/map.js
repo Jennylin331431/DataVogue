@@ -23,22 +23,21 @@ class WorldMap {
         this.dynamicWidth = screenWidth;
         this.dynamicHeight = Math.min(screenHeight, 960);
 
-        // 🧠 New scale factor logic
         let scaleFactor;
         if (screenWidth > 1200) {
             scaleFactor = this.dynamicWidth / 6;
         } else if (screenWidth > 900) {
             scaleFactor = this.dynamicWidth / 5.5;
         } else if (screenWidth > 600) {
-            scaleFactor = this.dynamicWidth / 4,5;
+            scaleFactor = this.dynamicWidth / 4.5;
         } else {
             scaleFactor = this.dynamicWidth / 4; // smaller screens need bigger scale
         }
 
         this.svg = d3.select(this.containerId)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", `0 0 ${this.dynamicWidth + 200} ${this.dynamicHeight + 200}`)
-            .classed("responsive-svg", true);
+            .attr("viewBox", `0 0 ${this.dynamicWidth} ${this.dynamicHeight}`)
+            .classed("responsive-svg", true)
 
         this.projection = d3.geoMercator()
             .scale(scaleFactor)
@@ -78,7 +77,7 @@ class WorldMap {
         this.dynamicHeight = Math.min(screenHeight , 960);
     
         this.svg
-            .attr("viewBox", `0 0 ${this.dynamicWidth +200} ${this.dynamicHeight + 200}`);
+            .attr("viewBox", `0 0 ${this.dynamicWidth} ${this.dynamicHeight}`);
     
         let scaleFactor;
         if (screenWidth > 1200) {
