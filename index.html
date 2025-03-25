@@ -139,7 +139,8 @@
             <div id="dropdown-container-trends">
               <div>
                 <div class="trends-instructions-text">
-                  Check out how pattern and color of clothing changes the sales by selecting pattern buttons and changing the color dropdown!
+                  Check out how pattern and color of clothing changes the sales
+                  by selecting pattern buttons and changing the color dropdown!
                   <br />
                   <div>
                     <strong>Note:</strong> certain pattern and color pairs are
@@ -268,15 +269,19 @@
           production?
         </h2>
         <div id="impactText">
-            
           <p>
-              The map visualizes the environmental impact of top fast fashion-producing countries.  
-              Data is sourced from  
-              <a href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends" target="_blank">
-                  <strong>Sustainable Fashion</strong>
-              </a>, covering <strong>waste production 🗑️</strong> (kg), <strong>water usage 💧</strong> (liters), and <strong>carbon footprint 👣</strong> (MT) from 2010 to 2024.
+            The map visualizes the environmental impact of top fast
+            fashion-producing countries. Data is sourced from
+            <a
+              href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends"
+              target="_blank"
+            >
+              <strong>Sustainable Fashion</strong> </a
+            >, covering <strong>waste production 🗑️</strong> (kg),
+            <strong>water usage 💧</strong> (liters), and
+            <strong>carbon footprint 👣</strong> (MT) from 2010 to 2024.
           </p>
-      </div>
+        </div>
         <div class="col-12">
           <div class="map-container">
             <div id="controls-container">
@@ -313,67 +318,51 @@
 
             <div id="map-container">
               <svg id="world-map"></svg>
-              <div id="impactText">
-                <p>
-                  The environmental impact of fast fashion is undeniable, with
-                  the industry now responsible for
-                  <strong>10% of the global annual carbon footprint</strong>.
-                  Beyond carbon emissions, fast fashion consumes vast amounts of
-                  natural resources, using
-                  <strong>141 billion cubic meters of water annually</strong>
-                  and contributing to
-                  <strong>35% of microplastics polluting our oceans</strong>.
-                </p>
-                <p>
-                  The map on the left illustrates the global environmental
-                  impact of major fast fashion production countries. The data
-                  for this visualization comes from
-                  <a
-                    href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends"
-                    target="_blank"
-                  >
-                    <strong>Sustainable Fashion</strong></a
-                  >, a Kaggle dataset that provides insights into
-                  <strong>waste production</strong> (in kilograms),
-                  <strong>water usage</strong> (in liters), and
-                  <strong>carbon footprint</strong> (in megatonnes) associated
-                  with clothing production across various material types. The
-                  dataset covers a time span from 2010 to 2024.
-                </p>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
-    <div class="row slides slides-footprint">
-      <h2>Which fashion materials cause the largest environmental impact?</h2>
-      <div id="carbonText">
-        <p> 
-            The fashion industry is the <strong>second-largest industrial polluter</strong>, 
-            releasing <strong>1.2 billion tonnes of carbon emissions</strong> annually. Beyond landfill waste, <strong>CO₂ emissions</strong>, <strong>water pollution</strong>, 
-            and <strong>microfibre pollution</strong> further contribute to its environmental impact.
-        </p>
-        
-        <p>
-            Below is the <strong>carbon footprint</strong> of each country based on fashion material production.
-            Data is sourced from  
-            <a href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends" target="_blank">
-                <strong>Sustainable Fashion</strong>
-            </a>, measured in <strong>megatonnes (MT)</strong>.
-        </p>
-    </div>
-    
-      <div id="controls">
-        <div id="dropdown-container">
-            <label for="materialSelection"><strong>Select Material:</strong></label>
-            <select id="materialSelection" class="form-select align-self-center">
-                <option value="Vegan Leather">Vegan Leather</option>
-                <option value="Bamboo Fabric">Bamboo Fabric</option>
-                <option value="Recycled Polyester">Recycled Polyester</option>
-                <option value="Hemp">Hemp</option>
-                <option value="Tencel">Tencel</option>
-                <option value="Organic Cotton">Organic Cotton</option>
+      <div class="row slides slides-footprint">
+        <h2>Which fashion materials cause the largest environmental impact?</h2>
+        <div id="carbonText">
+          <p>
+            The fashion industry is the
+            <strong>second-largest industrial polluter</strong>, releasing
+            <strong>1.2 billion tonnes of carbon emissions</strong> annually.
+            Beyond landfill waste, <strong>CO₂ emissions</strong>,
+            <strong>water pollution</strong>, and
+            <strong>microfibre pollution</strong> further contribute to its
+            environmental impact.
+          </p>
+
+          <p>
+            Below is the <strong>carbon footprint</strong> of each country based
+            on fashion material production. Data is sourced from
+            <a
+              href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends"
+              target="_blank"
+            >
+              <strong>Sustainable Fashion</strong> </a
+            >, measured in <strong>megatonnes (MT)</strong>.
+          </p>
+        </div>
+
+        <div id="controls">
+          <div id="dropdown-container">
+            <label for="materialSelection"
+              ><strong>Select Material:</strong></label
+            >
+            <select
+              id="materialSelection"
+              class="form-select align-self-center"
+            >
+              <option value="Vegan Leather">Vegan Leather</option>
+              <option value="Bamboo Fabric">Bamboo Fabric</option>
+              <option value="Recycled Polyester">Recycled Polyester</option>
+              <option value="Hemp">Hemp</option>
+              <option value="Tencel">Tencel</option>
+              <option value="Organic Cotton">Organic Cotton</option>
             </select>
             <button id="sortButton">Sort ▲▼</button>
           </div>
