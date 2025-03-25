@@ -25,10 +25,8 @@ h4 {
 
 svg {
   width: 100vw;
-  /* height: 600px; */
   display: block;
   margin: auto;
-  /* background-color: #f0f0f0; */
 }
 
 .tooltip-line {
@@ -108,11 +106,10 @@ h5 {
 #trends-info-container {
   padding: 10px;
 }
-/* On screens that are 992px or less, set the background color to blue */
 
 #trends-chart-container {
-  width: 550px;
-  height: 400px;
+  width: 35vw;
+  height: 50vh;
 }
 
 #dropdown-container-trends {
@@ -144,7 +141,6 @@ h5 {
 }
 
 #trends-container {
-  /* justify-content: center; */
   flex-wrap: wrap;
 }
 
@@ -354,8 +350,8 @@ h5 {
 
 @media screen and (max-width: 1200px) {
   #trends-chart-container {
-    width: 400px;
-    height: 260px;
+    width: 40vw;
+    height: 45vh;
   }
 
   #dropdown-container-trends {
@@ -393,8 +389,8 @@ h5 {
 
   .row {
     margin-left: 0 !important;
-    margin: 0; /* Reset margins */
-    padding: 0; /* Reset padding */
+    margin: 0;
+    padding: 0;
   }
 
   .trends-insights {
@@ -837,7 +833,3 @@ a:active {
   color: black;
   font-size: medium;
 }
-
-/* #colorSelector {
-  width: 450px;
-} */
