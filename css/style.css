@@ -25,10 +25,8 @@ h4 {
 
 svg {
   width: 100vw;
-  /* height: 600px; */
   display: block;
   margin: auto;
-  /* background-color: #f0f0f0; */
 }
 
 .tooltip-line {
@@ -108,24 +106,22 @@ h5 {
 #trends-info-container {
   padding: 10px;
 }
-/* On screens that are 992px or less, set the background color to blue */
 
 #trends-chart-container {
-  width: 550px;
-  height: 400px;
+  width: 35vw;
+  height: 50vh;
 }
 
-.dropdown-container {
-  display: flex;
+#dropdown-container-trends {
+  color: black;
   flex-direction: column;
   flex-wrap: wrap;
-  max-height: 200px; 
   overflow-y: auto;
 }
 
 .dropdown-group {
   display: flex;
-  padding: 10px;
+  padding: 20px 0;
   align-items: center;
   color: black;
 }
@@ -138,18 +134,19 @@ h5 {
 
 .dropdown-group > select {
   flex: 1;
-  width: 200px;
-  max-width: 200px;
+  max-width: 83%;
   margin: 0;
   padding: 8px;
+  text-align: center;
 }
+
 #trends-container {
-  /* justify-content: center; */
   flex-wrap: wrap;
 }
 
-#trends-legend {
+#trends-legends {
   padding: 10px;
+  margin-top: 25px;
 }
 
 .axis {
@@ -158,11 +155,12 @@ h5 {
 
 .trends-insights {
   color: rgb(211, 35, 111);
-  font-size: 16pxs;
+  font-size: 18px;
+  width: 85%;
   background-color: pink;
   border-radius: 3%;
-  padding: 10px;
-  margin-bottom: -30px;
+  max-height: fit-content;
+  padding: 5px 10px;
 }
 
 .slides {
@@ -193,8 +191,8 @@ h5 {
 }
 
 .col-md-4 > div {
-  color: black; 
-}  
+  color: black;
+}
 
 #pie-chart-container {
   display: flex;
@@ -211,7 +209,8 @@ h5 {
   white-space: nowrap;
 }
 
-#year-selection, #brand-legend {
+#year-selection,
+#brand-legend {
   width: 100%;
   text-align: center;
 }
@@ -246,20 +245,20 @@ h5 {
 }
 
 .legend-item {
-    display: flex;
-    gap: 5px;
+  display: flex;
+  gap: 5px;
 }
 
 .legend-color {
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    border-radius: 3px;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border-radius: 3px;
 }
 
 .insight-text {
-    text-align: center;
-    max-width: 90%;
+  text-align: center;
+  max-width: 90%;
   color: black;
 }
 
@@ -316,7 +315,7 @@ h5 {
 }
 .slides-trends {
   background-color: rgba(255, 213, 255, 255);
-  align-items: normal !important; 
+  align-items: normal !important;
 }
 
 .slides-outro {
@@ -349,44 +348,61 @@ h5 {
   background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
 }
 
-/* On screens that are 600px or less, set the background color to olive */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
   #trends-chart-container {
-    width: 350px;
-    height: 260px;
+    width: 40vw;
+    height: 45vh;
   }
 
-  .dropdown-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
-    justify-content: space-between; /* Align items to the start and end of the container */
+  #dropdown-container-trends {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: small;
   }
 
   .dropdown-group {
+    font-size: small;
     display: flex;
     align-items: center;
-    flex: 1 0 48%; /* This will ensure each dropdown takes 48% of the container width */
-    margin-right: 10px; /* Space between dropdown groups */
+    flex: 1 0 48%;
+    padding: 3px 0px;
+  }
+
+  .trends-dataset-desc {
+    font-size: small !important;
   }
 
   #trends-info-container {
     margin-left: 0px;
-    display: flex;
+    padding: 0px;
+    display: inline;
     width: 100%;
   }
 
+  .dropdown-group > select {
+    max-width: 50%;
+    font-size: small;
+  }
   .trends-quote {
     font-size: 14px;
   }
 
   .row {
     margin-left: 0 !important;
-    margin: 0; /* Reset margins */
-    padding: 0; /* Reset padding */
+    margin: 0;
+    padding: 0;
   }
 
   .trends-insights {
     font-size: 12px;
+  }
+
+  .dropdown-group > label {
+    flex: 0 !important;
+  }
+
+  .button-label {
+    font-size: small;
   }
 }
 
@@ -654,16 +670,6 @@ h5 {
   background-color: #0056b3;
 }
 
-/* #controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin: 0 auto;
-  width: 100%;
-} */
-
 #materialSelection {
   width: 200px;
   margin: 10px 0;
@@ -675,7 +681,7 @@ h5 {
   justify-content: center;
   gap: 30px;
   margin-bottom: 10px;
-  overflow: auto; 
+  overflow: auto;
   max-height: 300px;
 }
 
@@ -710,21 +716,21 @@ h5 {
 #brand-legend {
   min-width: 100%;
   display: flex;
-  flex-direction: column; 
-  align-items: center; 
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
 #brands-legend {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start; 
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
-  max-width: 250px; 
-  margin: 0 auto; 
+  max-width: 250px;
+  margin: 0 auto;
   flex-direction: column;
-  margin-left: 120px; 
+  margin-left: 120px;
 }
 
 .circle {
@@ -735,10 +741,14 @@ h5 {
   margin-right: 5px;
 }
 
-.green { background-color: green; }
-.red { background-color: red; }
+.green {
+  background-color: green;
+}
+.red {
+  background-color: red;
+}
 
-#avg-legend-container p{
+#avg-legend-container p {
   color: black;
 }
 
@@ -811,4 +821,15 @@ a:hover {
 
 a:active {
   color: hotpink;
+}
+
+.trends-insights-container {
+  justify-content: center;
+  display: flex;
+}
+
+.trends-dataset-desc {
+  padding: 0%;
+  color: black;
+  font-size: medium;
 }

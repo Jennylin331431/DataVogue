@@ -69,16 +69,18 @@ function loadData() {
 
     // Aggregate waste generation by year and brand
     let aggregatedData = d3.rollups(
-        data,
-        (v) => d3.sum(v, (d) => d.Waste_Generation),
-        (d) => d.Company,
-        (d) => d.Production_Year
+      data,
+      (v) => d3.sum(v, (d) => d.Waste_Generation),
+      (d) => d.Company,
+      (d) => d.Production_Year
     );
 
     console.log(aggregatedData);
 
-    stackedPieChart = new StackedPieChart("pie-chart-container", aggregatedData)
-   
+    stackedPieChart = new StackedPieChart(
+      "pie-chart-container",
+      aggregatedData
+    );
   });
 
   d3.csv("data/sustainable_fashion_trends.csv").then((csv) => {
@@ -190,30 +192,42 @@ let validPatternsForColors = {
   Black: ["Striped", "Plain"],
 };
 
+// Mapping from pattern names to the button class names
+let patternClassMap = {
+  Geometric: "geometric-button",
+  "Polka Dots": "polka-dots-button",
+  Plain: "plain-button",
+  Heart: "heart-button",
+  Striped: "striped-button",
+  Floral: "floral-button",
+  None: "all-button",
+};
+
 function colorChange() {
   selectedColor = document.getElementById("colorSelector").value;
 
   // update tshirt color
   updateTshirtColor(selectedColor);
 
-  // Get all options from the Pattern dropdown
-  const patternOptions = document.getElementById("patternSelector").options;
+  // Get all the pattern buttons
+  const patternButtons = document.querySelectorAll(".pattern-button");
 
-  // Disable all options initially
-  for (let i = 0; i < patternOptions.length; i++) {
-    patternOptions[i].disabled = true;
-  }
+  // Disable all buttons initially
+  patternButtons.forEach((button) => {
+    button.disabled = true;
+  });
 
-  // Enable only the valid options
+  // Enable valid pattern buttons based on selected color
   if (validPatternsForColors[selectedColor]) {
-    validPatternsForColors[selectedColor].forEach((color) => {
-      for (let i = 0; i < patternOptions.length; i++) {
-        if (
-          patternOptions[i].value === color ||
-          patternOptions[i].value === "None"
-        ) {
-          patternOptions[i].disabled = false;
-        }
+    validPatternsForColors[selectedColor].forEach((pattern) => {
+      // Use the patternClassMap to get the corresponding class
+      const buttonClass = patternClassMap[pattern];
+
+      // Find the button with that class and enable it
+      const button = document.querySelector(`.pattern-button.${buttonClass}`);
+      if (button) {
+        console.log("#button enabled", button);
+        button.disabled = false;
       }
     });
   }
@@ -223,8 +237,8 @@ function colorChange() {
   trendsLineChart.wrangleData();
 }
 
-function patternChange() {
-  selectedPattern = document.getElementById("patternSelector").value;
+function patternChange(selectedPattern) {
+  // selectedPattern = document.getElementById("patternSelector").value;
   // update tshirt pattern
   updateTshirtPattern(selectedPattern);
   // Get all options from the Color dropdown
@@ -248,26 +262,31 @@ function patternChange() {
       }
     });
   }
+
+  // set pattern as active
+  setActive(selectedPattern);
+
   // update visualizations
   trendsLineChart.selectedPattern = selectedPattern;
   trendsLineChart.wrangleData();
 }
 
 // event listener
-d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function() {
-  const selectedYears = Array.from(document.querySelectorAll("#yearCheckboxes input[type=checkbox]:checked"))
-      .map(checkbox => checkbox.value);
+d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function () {
+  const selectedYears = Array.from(
+    document.querySelectorAll("#yearCheckboxes input[type=checkbox]:checked")
+  ).map((checkbox) => checkbox.value);
 
-   // Filter the original dataset to only include selected years
-   const filteredData = stackedPieChart.data
+  // Filter the original dataset to only include selected years
+  const filteredData = stackedPieChart.data
     .map(([brand, records]) => {
-        const filteredRecords = records.filter(([year, waste]) => {
-            return selectedYears.includes(String(year)); 
-        });
+      const filteredRecords = records.filter(([year, waste]) => {
+        return selectedYears.includes(String(year));
+      });
 
-        return filteredRecords.length > 0 ? [brand, filteredRecords] : null;
+      return filteredRecords.length > 0 ? [brand, filteredRecords] : null;
     })
-    .filter(entry => entry !== null);
+    .filter((entry) => entry !== null);
 
   //console.log(filteredData);
 
@@ -280,4 +299,23 @@ let selectedProductType = document.getElementById("productSelector").value;
 function productChange() {
   selectedProductType = document.getElementById("productSelector").value;
   brandLineChart.wrangleData();
+}
+
+function setActive(selectedPattern) {
+  // Get all buttons in the button group
+  let patternButtons = document.querySelectorAll(".pattern-button");
+
+  // Remove the 'active' class from all buttons
+  patternButtons.forEach(function (button) {
+    button.classList.remove("active");
+  });
+
+  // Use the patternClassMap to get the corresponding class
+  let buttonClass = patternClassMap[selectedPattern];
+
+  // Find the button with that class and enable it
+  let activeButton = document.querySelector(`.pattern-button.${buttonClass}`);
+  if (activeButton) {
+    activeButton.classList.add("active");
+  }
 }
