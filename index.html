@@ -17,9 +17,16 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/tshirt.css" />
-    <!-- noUiSlider CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
 
+    <!-- noUiSlider CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css"
+    />
 
     <!-- GOOGLE FONTS -->
     <link
@@ -40,7 +47,11 @@
           Global Environmental Impact of <br />
           Fast Fashion Production & Consumerism
         </h1>
-        <img src="img/title_page.png" alt="Fashion Produces Waste" width="600px" />
+        <img
+          src="img/title_page.png"
+          alt="Fashion Produces Waste"
+          width="600px"
+        />
       </div>
       <div class="slides slides-intro">
         <div>
@@ -87,114 +98,169 @@
       </div>
 
       <div class="slides slides-intro-2">
-        <h5 style="justify-content: center;">
+        <h5 style="justify-content: center">
           Before we dive into the environmental impact of fast fashion, <br />
           let's get to know some of the trends!
-          
-         
         </h5>
-      
 
         <img src="img/trends.png" alt="Trends" width="300px" />
-
-      
       </div>
 
-      <div class="row slides slides-trends" id="trends-container">
-        <h2>How do the fashion trends change overtime?</h2>
-        <div class="trends-quote">
-          <p>Fashion has become a space for self-expression, free from the constraints of gendered expectations. </p></div>
-        <div id="trends-chart-container" class="col-md-8">
-          <div id="tooltip-line-chart">
-            <div class="tooltip-date"></div>
-            <div class="tooltip-sales"></div>
+      <div class="slides slides-trends" id="trends-container">
+        <h2 style="display: flex; align-items: center">
+          How do the fashion trends change overtime?
+        </h2>
+        <div class="row" style="padding-left: 3%">
+          <!-- <div class="trends-quote">
+          <p>Fashion has become a space for self-expression, free from the constraints of gendered expectations. </p></div> -->
+          <div id="trends-chart-container" class="col-md-4">
+            <div id="tooltip-line-chart">
+              <div class="tooltip-date"></div>
+              <div class="tooltip-sales"></div>
+            </div>
           </div>
-        </div>
-        <div id="tshirt-div">
-          <!-- 
+          <div class="col-md-3" style="width: fit-content; margin-left: 7px">
+            <div id="tshirt-div">
+              <!-- 
               Initially, the image will have the background tshirt that has transparency
               So we can simply update the color with CSS or JavaScript dinamically
           -->
-          <img id="tshirt-backgroundpicture" src="img/shirt.png" width="300px"/>
+              <img id="tshirt-background-pic" src="img/shirt.png" />
 
-          <div id="heart-div"></div>
-          
-      </div>
-
-        <div class="col-md-4" id="trends-info-container">
-          <div class="dropdown-container">
-            <span>Check out how pattern and color of clothing changes the sales! <br/>
-              <span style="font-size: 14px;"> <strong>Note:</strong> certain pattern and color pairs are unavailable due to limited data </span> </span>
-            <div class="dropdown-group">
-              <label for="patternSelector">Pattern:</label>
-              <select
-                name="pattern"
-                class="form-select"
-                id="patternSelector"
-                onchange="patternChange()"
-              >
-                <option value="None">All</option>
-                <option value="Geometric">Geometric</option>
-                <option value="Polka Dots">Polka Dots</option>
-                <option value="Plain">Plain</option>
-                <option value="Heart">Heart</option>
-                <option value="Striped">Striped</option>
-                <option value="Floral">Floral</option>
-              </select>
+              <div id="heart-div"></div>
             </div>
-            <div class="dropdown-group">
-              <label for="colorSelector">Color:</label>
-              <select
-                class="form-select"
-                name="color"
-                id="colorSelector"
-                onchange="colorChange()"
-              >
-                <option value="None">All</option>
-                <option value="White">White</option>
-                <option value="Beige">Beige</option>
-                <option value="Brown">Brown</option>
-                <option value="Red">Red</option>
-                <option value="Pink">Pink</option>
-                <option value="Yellow">Yellow</option>
-                <option value="Sky Blue">Sky Blue</option>
-                <option value="Black">Black</option>
-                <option value="Navy Blue">Navy Blue</option>
-                <option value="Grey">Grey</option>
-                <option value="Green">Green</option>
-
-              </select>
-            </div>
-          </div>
-          <div>
             <div
               id="trends-legends"
               class="row"
-              style="margin-bottom: 5px;"
+              style="margin-bottom: 5px"
             ></div>
-            <div style="margin-bottom: 5px;">
-              The <a href="https://www.kaggle.com/datasets/fashionworldda/fashion-trend-dataset">dataset</a> we are analyzing comes from the sales of Zara, one of the largest fast fashion brands, and serves as a strong representative sample from 2018 to 2022.
+          </div>
+          <div class="col-md-5" id="trends-info-container">
+            <div id="dropdown-container-trends">
+              <div>
+                <div class="trends-instructions-text">
+                  Check out how pattern and color of clothing changes the sales
+                  by selecting pattern buttons and changing the color dropdown!
+                  <br />
+                  <div>
+                    <strong>Note:</strong> certain pattern and color pairs are
+                    unavailable due to limited data
+                  </div>
+                </div>
+                <div class="dropdown-group">
+                  <label for="patternSelector">Pattern:</label>
+                  <div class="pattern-buttons">
+                    <div class="pattern-button-container">
+                      <button
+                        class="pattern-button geometric-button"
+                        onclick="patternChange('Geometric')"
+                      ></button>
+                      <div class="button-label">Geometric</div>
+                    </div>
+                    <div class="pattern-button-container">
+                      <button
+                        class="pattern-button polka-dots-button"
+                        onclick="patternChange('Polka Dots')"
+                      ></button>
+                      <div class="button-label">Polka Dots</div>
+                    </div>
+                    <div class="pattern-button-container">
+                      <button
+                        class="pattern-button plain-button"
+                        onclick="patternChange('Plain')"
+                      ></button>
+                      <div class="button-label">Plain</div>
+                    </div>
+                    <div class="pattern-button-container">
+                      <button
+                        class="pattern-button heart-button"
+                        onclick="patternChange('Heart')"
+                      >
+                        <i class="fa fa-heart"></i>
+                      </button>
+                      <div class="button-label">Heart</div>
+                    </div>
+                    <div class="pattern-button-container">
+                      <button
+                        class="pattern-button striped-button"
+                        onclick="patternChange('Striped')"
+                      ></button>
+                      <div class="button-label">Striped</div>
+                    </div>
+                    <div class="pattern-button-container">
+                      <button
+                        class="pattern-button floral-button"
+                        onclick="patternChange('Floral')"
+                      ></button>
+                      <div class="button-label">Floral</div>
+                    </div>
+                    <div class="reset-button-container">
+                      <button
+                        class="reset-button btn"
+                        onclick="patternChange('None')"
+                      >
+                        <img src="img/icons8-reset-48.png" id="reset-icon" />
+                        <div class="button-label">Reset</div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-group">
+                  <label for="colorSelector">Color:</label>
+                  <select
+                    class="form-select"
+                    name="color"
+                    id="colorSelector"
+                    onchange="colorChange()"
+                  >
+                    <option value="None">All</option>
+                    <option value="White">White</option>
+                    <option value="Beige">Beige</option>
+                    <option value="Brown">Brown</option>
+                    <option value="Red">Red</option>
+                    <option value="Pink">Pink</option>
+                    <option value="Yellow">Yellow</option>
+                    <option value="Sky Blue">Sky Blue</option>
+                    <option value="Black">Black</option>
+                    <option value="Navy Blue">Navy Blue</option>
+                    <option value="Grey">Grey</option>
+                    <option value="Green">Green</option>
+                  </select>
+                </div>
+              </div>
             </div>
+            <div>
+              <div class="trends-dataset-desc">
+                The
+                <a
+                  href="https://www.kaggle.com/datasets/fashionworldda/fashion-trend-dataset"
+                  >dataset</a
+                >
+                we are analyzing comes from the sales of Zara, one of the
+                largest fast fashion brands, and serves as a strong
+                representative sample from 2018 to 2022.
+              </div>
+            </div>
+          </div>
+
+          <div class="trends-insights-container">
             <div class="trends-insights">
               Fashion has evolved significantly, and
               <strong>
                 gender norms in clothing are no longer as rigid as they once
                 were.
               </strong>
+              <br />
+
               The traditional idea that "pink is for girls" and "blue is for
               boys" has been increasingly challenged.
               <br />
-              <br />
               Now, you see men wearing colors and patterns that were once
               considered feminine—like polka dots, hearts, and yellow floral.
-
-                        </div>
+            </div>
           </div>
         </div>
-       
-        </div>
-        <div>
-
+      </div>
 
       <!-- Row for World Map -->
       <div class="row slides slides-worldmap">
@@ -202,130 +268,130 @@
           What is the extent of the environmental implications of fast fashion
           production?
         </h2>
+        <div id="impactText">
+          <p>
+            The map visualizes the environmental impact of top fast
+            fashion-producing countries. Data is sourced from
+            <a
+              href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends"
+              target="_blank"
+            >
+              <strong>Sustainable Fashion</strong> </a
+            >, covering <strong>waste production 🗑️</strong> (kg),
+            <strong>water usage 💧</strong> (liters), and
+            <strong>carbon footprint 👣</strong> (MT) from 2010 to 2024.
+          </p>
+        </div>
         <div class="col-12">
           <div class="map-container">
-
             <div id="controls-container">
               <!-- Centered Dropdown + Legend -->
               <div id="dropdown-legend-container">
-                  <div id="metricSelectionContainer">
-                      <label for="metricSelection">Color by:</label>
-                      <select id="metricSelection" class="form-select align-self-center">
-                          <option value="waste">Waste Production (KG)</option>
-                          <option value="water_usage">Water Usage (Liters)</option>
-                          <option value="carbonFootprint">Carbon Footprint (MT)</option>
-                      </select>
-                  </div>
-                  <div id="legendContainer">
-                      <svg id="legendSvg"></svg>
-                  </div>
+                <div id="metricSelectionContainer">
+                  <label for="metricSelection">Color by:</label>
+                  <select
+                    id="metricSelection"
+                    class="form-select align-self-center"
+                  >
+                    <option value="waste">Waste Production (KG)</option>
+                    <option value="water_usage">Water Usage (Liters)</option>
+                    <option value="carbonFootprint">
+                      Carbon Footprint (MT)
+                    </option>
+                  </select>
+                </div>
+                <div id="legendContainer">
+                  <svg id="legendSvg"></svg>
+                </div>
               </div>
-          
+
               <!-- Slider on the Right -->
               <div id="yearSliderContainer">
-                  <label for="yearSlider">Select Year Range:</label>
-                  <div class="slider-wrapper">
-                      <span id="startYearLabel">2010</span>
-                      <div id="yearSlider"></div>
-                      <span id="endYearLabel">2024</span>
-                  </div>
+                <label for="yearSlider">Select Year Range:</label>
+                <div class="slider-wrapper">
+                  <span id="startYearLabel">2010</span>
+                  <div id="yearSlider"></div>
+                  <span id="endYearLabel">2024</span>
+                </div>
               </div>
-          </div>
+            </div>
 
             <div id="map-container">
               <svg id="world-map"></svg>
-              <div id="impactText">
-                <p>
-                    The environmental impact of fast fashion is undeniable, with the industry now responsible for 
-                    <strong>10% of the global annual carbon footprint</strong>. Beyond carbon emissions, fast fashion consumes vast 
-                    amounts of natural resources, using <strong>141 billion cubic meters of water annually</strong> and contributing 
-                    to <strong>35% of microplastics polluting our oceans</strong>.
-                </p>
-                <p>
-                  The map on the left illustrates the global environmental impact of major fast fashion production countries. 
-                  The data for this visualization comes from 
-                  <a href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends" target="_blank">
-                    <strong>Sustainable Fashion</strong></a>, 
-                  a Kaggle dataset that provides insights into <strong>waste production</strong> (in kilograms), <strong>water usage</strong> (in liters), and 
-                  <strong>carbon footprint</strong> (in megatonnes) associated with clothing production across various material types. 
-                  The dataset covers a time span from 2010 to 2024.
-              </p>
-              
             </div>
           </div>
-          </div>
         </div>
-    </div>
-
-    <div class="row slides slides-footprint">
-      <h2>Which fashion materials cause the largest environmental impact?</h2>
-      <div id="carbonText">
-        <p> 
-          The fashion industry is the <strong>second-largest industrial polluter</strong>. 
-          When factoring in the entire lifecycle of a garment, from manufacturing 
-          to transportation to, ultimately, <strong>ending up in landfill</strong>, 
-          in total, <strong>1.2 billion tonnes of carbon emissions</strong> are released by the 
-          fashion industry every year.
-        </p>
-        
-        <p>
-          Not only is the carbon footprint of the fashion industry influenced 
-          by the amount of <strong>waste sent to landfill</strong>, but <strong>CO₂ emissions</strong> 
-          during the manufacturing and transportation processes, 
-          as well as <strong>water pollution</strong> from dyeing processes and 
-          microfibre pollution, also contribute to the industry’s huge 
-          <strong>carbon and environmental footprint</strong>, highlighting the 
-          <strong>drastic need for change</strong> within the industry.
-        </p>
-        
-        <p>
-          Below shows the <strong>carbon footprint</strong> produced by each country as a result of 
-          producing clothing of the specified material type. The data was also collected from the 
-          <a href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends" 
-             target="_blank">
-             <strong>Sustainable Fashion</strong>
-          </a> dataset on Kaggle. Here, the carbon footprint is measured in units of <strong>megatonnes, MT</strong> (1 megaton = 1 million tonnes!).
-        </p>
-        
-          
-        
       </div>
-  
-      <div id="controls">
-        <div id="dropdown-container">
-            <label for="materialSelection"><strong>Select Material:</strong></label>
-            <select id="materialSelection" class="form-select align-self-center">
-                <option value="Vegan Leather">Vegan Leather</option>
-                <option value="Bamboo Fabric">Bamboo Fabric</option>
-                <option value="Recycled Polyester">Recycled Polyester</option>
-                <option value="Hemp">Hemp</option>
-                <option value="Tencel">Tencel</option>
-                <option value="Organic Cotton">Organic Cotton</option>
+
+      <div class="row slides slides-footprint">
+        <h2>Which fashion materials cause the largest environmental impact?</h2>
+        <div id="carbonText">
+          <p>
+            The fashion industry is the
+            <strong>second-largest industrial polluter</strong>, releasing
+            <strong>1.2 billion tonnes of carbon emissions</strong> annually.
+            Beyond landfill waste, <strong>CO₂ emissions</strong>,
+            <strong>water pollution</strong>, and
+            <strong>microfibre pollution</strong> further contribute to its
+            environmental impact.
+          </p>
+
+          <p>
+            Below is the <strong>carbon footprint</strong> of each country based
+            on fashion material production. Data is sourced from
+            <a
+              href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends"
+              target="_blank"
+            >
+              <strong>Sustainable Fashion</strong> </a
+            >, measured in <strong>megatonnes (MT)</strong>.
+          </p>
+        </div>
+
+        <div id="controls">
+          <div id="dropdown-container">
+            <label for="materialSelection"
+              ><strong>Select Material:</strong></label
+            >
+            <select
+              id="materialSelection"
+              class="form-select align-self-center"
+            >
+              <option value="Vegan Leather">Vegan Leather</option>
+              <option value="Bamboo Fabric">Bamboo Fabric</option>
+              <option value="Recycled Polyester">Recycled Polyester</option>
+              <option value="Hemp">Hemp</option>
+              <option value="Tencel">Tencel</option>
+              <option value="Organic Cotton">Organic Cotton</option>
             </select>
             <button id="sortButton">Sort ▲▼</button>
-        </div>
-    
-        <div id="avg-legend-container">
-            <p id="averageCF"><strong>Average Carbon Footprint:</strong> <span id="avgCFValue"></span> MT</p>
-            <div id="legend">
-                <span class="legend-item"><span class="circle green"></span> Below Avg</span>
-                <span class="legend-item"><span class="circle red"></span> Above Avg</span>
-            </div>
-        </div>
-    </div>
-    
-    
-      <div id="bigfoot-container">
-          <svg id="bigfoot-svg"></svg>
-      </div>
-  </div>
+          </div>
 
-  
-    
+          <div id="avg-legend-container">
+            <p id="averageCF">
+              <strong>Average Carbon Footprint:</strong>
+              <span id="avgCFValue"></span> MT
+            </p>
+            <div id="legend">
+              <span class="legend-item"
+                ><span class="circle green"></span> Below Avg</span
+              >
+              <span class="legend-item"
+                ><span class="circle red"></span> Above Avg</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div id="bigfoot-container">
+          <svg id="bigfoot-svg"></svg>
+        </div>
+      </div>
+
       <!-- Row for Stacked Pie Chart -->
       <div class="row slides slides-pie-chart">
         <h2>How does waste generation differ by year and brand?</h2>
-      
+
         <div class="row">
           <!-- Column for Pie Chart -->
           <div class="col-md-6 d-flex justify-content-center">
@@ -354,8 +420,15 @@
                   <div id="brands-legend"></div>
                 </div>
               </div>
+
+              <!-- Brand Legend -->
+              <div id="brand-legend" class="text-center mt-3">
+                <label for="brands-legend" style="color: black"
+                  ><strong>Brands:</strong></label
+                >
+                <div id="brands-legend-items"></div>
+              </div>
             </div>
-        
 
       <!-- Right Column: Insights -->
       <div class="col-md-2 d-flex align-items-center">
@@ -373,31 +446,76 @@
   </div>
 </div>
 
-
       <div class="row text-center slides slides-outro">
         <h2>Where should we go on from now?</h2>
-        <div id="solution-intro-text">As we can see, the impact of the fast fashion industry is significant and cannot be overlooked. 
-          <br>Let's raise awareness!
+        <div id="solution-intro-text">
+          As we can see, the impact of the fast fashion industry is significant
+          and cannot be overlooked. <br />Let's raise awareness!
         </div>
 
-        <div id="solution-text">
-
-        Solution:    <strong>Slow Fashion</strong>
-        </div>
-<div id="solution-explanation-text">
-
+        <div id="solution-text">Solution: <strong>Slow Fashion</strong></div>
+        <div id="solution-explanation-text">
           Each of us has the ability to make a direct impact by:
-          
+
           <ul>
             <li>Reusing or purchasing secondhand clothing</li>
             <li>Participating in clothing rentals</li>
-            <li>Advocating for a "wear more than once" mentality, rather than discarding items after a single use</li>
+            <li>
+              Advocating for a "wear more than once" mentality, rather than
+              discarding items after a single use
+            </li>
           </ul>
         </div>
-
       </div>
-    </div>
+
+      <div class="row text-center slides slides-references">
+        <h2>Our Team and Data References</h2>
       
+        <div class="team-section">
+          <h3>Meet the Team</h3>
+          <div class="team-members">
+            <div class="team-member">
+              <img src="img/foot.png" alt="Member 1" />
+              <h4>Member 1</h4>
+            </div>
+            <div class="team-member">
+              <img src="img/foot.png" alt="Member 2" />
+              <h4>Member 2</h4>
+            </div>
+            <div class="team-member">
+              <img src="img/foot.png" alt="Member 3" />
+              <h4>Member 3</h4>
+            </div>
+          </div>
+        </div>
+        
+        <div id="references-section">
+          <h3>References</h3>
+        
+          <div class="reference-subsection">
+            <h4>Articles</h4>
+            <div class="reference-item">
+              <a href="https://www.uniformmarket.com/statistics/fast-fashion-statistics" target="_blank">Environmental Impact of Fast Fashion Statistics</a>
+            </div>
+            <div class="reference-item">
+              <a href="https://carbonliteracy.com/fast-fashions-carbon-footprint/" target="_blank">Fast Fashion’s Carbon Footprint</a>
+            </div>
+            <div class="reference-item">
+              <a href="https://nielseniq.com/global/en/insights/analysis/2023/shein-zara-hm-close-up-on-the-ultra-fast-fashion-market/" target="_blank">Shein, Zara, H&M: Ultra-Fast Fashion Market</a>
+            </div>
+            <div class="reference-item">
+              <a href="https://www.greenpeace.org/africa/en/blog/54589/how-fast-fashion-is-fuelling-the-fashion-waste-crisis-in-africa/" target="_blank">Fashion Waste Crisis in Africa</a>
+            </div>
+          </div>
+        
+          <div class="reference-subsection">
+            <h4>Datasets</h4>
+            <div class="reference-item"><a href="https://www.kaggle.com/datasets/purohitgaurav/plastic-based-textiles-in-clothing-industry" target="_blank">Plastic-Based Textiles in Clothing Industry</a></div>
+            <div class="reference-item"><a href="https://www.kaggle.com/datasets/waqi786/sustainable-fashion-eco-friendly-trends" target="_blank">Sustainable Fashion: Eco-Friendly Trends</a></div>
+            <div class="reference-item"><a href="https://www.kaggle.com/datasets/fashionworldda/fashion-trend-dataset" target="_blank">Fashion Trend Dataset</a></div>
+          </div>
+        </div>
+        
     <!-- Load Bootstrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -408,7 +526,6 @@
     <!-- noUiSlider JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
 
-
     <!-- Load D3.js and TopoJSON -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
@@ -418,14 +535,12 @@
     <script src="https://cdn.jsdelivr.net/npm/fabric@6.4.3/dist/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 
-
     <!-- Custom JavaScript for D3 Visualizations -->
     <script src="js/tShirt.js"></script>
     <script src="js/trends.js"></script>
     <script src="js/map.js"></script>
     <script src="js/footprintVis.js"></script>
     <script src="js/globalVis.js"></script>
-    <script src="js/brandVis.js"></script>
     <script src="js/mainLoader.js"></script>
     <script src="js/pieChart.js"></script>
   </body>

@@ -79,10 +79,11 @@
   --c1: #e4491c;
   --c2: #003246;
   --c3: #fef0d6;
+  --bg-color: #ffffff;
+  --striped-base-color: #000000;
 }
 
 .floral {
-  /* height: 100vh; */
   margin: 0;
   background: 
     /* Group Four */ radial-gradient(
@@ -124,10 +125,204 @@
   border-image: radial-gradient(var(--c) 69%, #0000 70%) 84.5%/50%;
   clip-path: polygon(-42% 0, 50% 91%, 142% 0);
   position: absolute;
-  top: 50%; /* Adjust as necessary to position the heart correctly */
-  left: 50%; /* Center it horizontally */
-  transform: translate(-50%, -50%); /* Adjust to perfectly center */
-  width: 100px; /* Adjust the size of the heart (smaller) */
-  height: 100px; /* You can adjust this to keep the aspect ratio */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
   display: none;
+}
+
+.pattern-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pattern-button-container {
+  text-align: center;
+  font-size: small;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pattern-button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-block;
+  opacity: 1;
+  margin-bottom: 5px; /* Space between button and text */
+}
+
+.pattern-button:hover {
+  opacity: 1;
+  border-color: #000000;
+}
+
+.striped-button {
+  background: linear-gradient(
+    to bottom,
+    var(--bg-color),
+    var(--bg-color) 50%,
+    color-mix(in srgb, var(--bg-color), var(--striped-base-color) 20%) 50%,
+    color-mix(in srgb, var(--bg-color), var(--striped-base-color) 20%)
+  );
+  background-size: 45px 7px;
+}
+
+.floral-button {
+  margin: 0;
+  --c1: rgb(183, 123, 218);
+  background: radial-gradient(circle at 45% 47%, var(--c2) 8px, transparent 6px),
+    radial-gradient(circle at 12px 13px, var(--c3) 7px, transparent 6px),
+    radial-gradient(circle at 28px 13px, var(--c3) 7px, transparent 6px),
+    radial-gradient(circle at 28px 30px, var(--c3) 7px, transparent 6px),
+    radial-gradient(circle at 12px 30px, var(--c3) 7px, transparent 6px);
+  background-color: var(--c1);
+  background-size: 45px 45px;
+  border-radius: 50%;
+}
+
+.polka-dots-button {
+  background-image: radial-gradient(
+    var(--dot-color, purple) 45%,
+    transparent 30%
+  );
+  background-size: 10px 10px;
+  background-position: 0 0;
+}
+
+.heart-button {
+  background-color: transparent !important;
+}
+
+.fa-heart {
+  color: purple;
+  font-size: 35px;
+  transform: translate(-10%, 6%);
+}
+
+.pattern-button:focus {
+  border-color: #e4491c;
+  border-width: 3px;
+  opacity: 1;
+}
+
+button.pattern-button.active {
+  border-color: rgb(64, 228, 179);
+  border-width: 3px;
+  opacity: 1;
+}
+
+.reset-button-container {
+  margin-left: 15px;
+}
+
+.reset-button {
+  display: flex;
+  align-items: center;
+  background: white;
+}
+
+.reset-button:hover {
+  background: white;
+  border-color: black;
+}
+
+.geometric-button {
+  --s: 7px; /* control the size */
+  --c1: #f2c45a;
+  --c2: #5e8c6a;
+  --c3: var(--bg-color);
+
+  --_g: , var(--c1) 25%, var(--c2) 0 150deg, var(--c1) 0 240deg, #0000 0;
+  background: conic-gradient(
+        from 60deg at calc(3.866 * var(--s)),
+        var(--c2) 60deg,
+        #0000 0
+      )
+      calc(1.366 * var(--s)) calc(1.366 * var(--s)),
+    conic-gradient(
+        from 240deg at calc(0.866 * var(--s)),
+        var(--c2) 60deg,
+        #0000 0
+      )
+      calc(2.366 * var(--s)) calc(1.366 * var(--s)),
+    conic-gradient(at var(--s) var(--s), #0000 75%, var(--c1) 0)
+      calc(1.366 * var(--s)) calc(var(--s) / -2),
+    conic-gradient(
+      from 30deg at calc(-0.288 * var(--s)) 50%,
+      #0000 120deg,
+      var(--c3) 0
+    ),
+    conic-gradient(
+      from 90deg at calc(3.732 * var(--s)) calc(1.866 * var(--s)),
+      var(--c3) 120deg,
+      #0000 0
+    ),
+    conic-gradient(
+      from -30deg at calc(3.732 * var(--s)) calc(0.866 * var(--s)),
+      var(--c3) 120deg,
+      var(--c1) 0 210deg,
+      #0000 0
+    ),
+    conic-gradient(from 150deg at calc(0.866 * var(--s)) var(--_g)),
+    conic-gradient(from -30deg at calc(2.866 * var(--s)) var(--_g)) var(--c3);
+  background-size: calc(4.732 * var(--s)) calc(2.732 * var(--s));
+}
+
+/* Style for disabled buttons */
+.pattern-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #ccc;
+  pointer-events: none;
+}
+
+#reset-icon {
+  width: 40px;
+}
+
+#tshirt-background-pic {
+  width: 250px;
+}
+
+@media screen and (max-width: 1200px) {
+  #tshirt-background-pic {
+    width: 150px;
+  }
+
+  .pattern-button {
+    width: 20px;
+    height: 20px;
+  }
+
+  #reset-icon {
+    width: 15px;
+  }
+
+  #trends-instructions-text {
+    margin-bottom: 0px !important;
+  }
+
+  .fa-heart {
+    font-size: small;
+    transform: translate(-40%, 4%);
+  }
+
+  #heart-div {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+#trends-instructions-text {
+  margin-bottom: 15px;
 }
