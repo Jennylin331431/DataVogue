@@ -288,8 +288,6 @@ d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function () {
     })
     .filter((entry) => entry !== null);
 
-  //console.log(filteredData);
-
   stackedPieChart.displayData = filteredData;
   stackedPieChart.wrangleData();
 });

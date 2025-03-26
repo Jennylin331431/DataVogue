@@ -394,80 +394,49 @@
 
         <div class="row">
           <!-- Column for Pie Chart -->
-          <div class="col-md-5 d-flex justify-content-center">
-            <div id="pie-chart-container"></div>
+          <div class="col-md-6 d-flex justify-content-center">
+            <div id="pie-chart-container">
+            </div>
           </div>
-
-          <!-- Column for Year Selection + Brand Legend -->
-          <div class="col-md-3 d-flex flex-column align-items-center">
-            <div id="filters">
-              <!-- Year Selection -->
-              <div id="year-selection" class="text-center">
-                <label for="yearCheckboxes" style="color: black"
-                  ><strong>Years:</strong></label
-                >
-                <div id="yearCheckboxes">
-                  <label><input type="checkbox" value="2018" /> 2018</label
-                  ><br />
-                  <label><input type="checkbox" value="2019" /> 2019</label
-                  ><br />
-                  <label><input type="checkbox" value="2020" /> 2020</label
-                  ><br />
-                  <label><input type="checkbox" value="2021" /> 2021</label
-                  ><br />
-                  <label><input type="checkbox" value="2022" /> 2022</label
-                  ><br />
+      
+            <!-- Column for Year Selection + Brand Legend -->
+            <div class="col-md-3">
+              <div id="filters">
+                <!-- Year Selection -->
+                <div id="year-selection" class="text-center">
+                  <label for="yearCheckboxes" style="color: black;"><strong>Years:</strong></label>
+                  <div id="yearCheckboxes">
+                    <label><input type="checkbox" value="2018"> 2018</label>
+                    <label><input type="checkbox" value="2019"> 2019</label>
+                    <label><input type="checkbox" value="2020"> 2020</label>
+                    <label><input type="checkbox" value="2021"> 2021</label>
+                    <label><input type="checkbox" value="2022"> 2022</label>
+                  </div>
+                </div>
+        
+                <!-- Brand Legend -->
+                <div id="brand-legend" class="text-center mt-3">
+                  <label for="brands-legend" style="color: black;"><strong>Brands:</strong></label>
+                  <div id="brands-legend"></div>
                 </div>
               </div>
-
-              <!-- Brand Legend -->
-              <div id="brand-legend" class="text-center mt-3">
-                <label for="brands-legend" style="color: black"
-                  ><strong>Brands:</strong></label
-                >
-                <div id="brands-legend-items"></div>
-              </div>
             </div>
-          </div>
 
-          <!-- Column for Insight Text -->
-          <div class="col-md-4 d-flex align-items-center">
-            <div class="insight-text">
+      <!-- Right Column: Insights -->
+      <div class="col-md-2 d-flex align-items-center">
+          <div class="insight-text" id="insight-text">
               <p>
-                When considering the environmental impacts of fast fashion, it’s
-                important to consider the differences in brands, and the changes
-                in the impact measures over time. An estimated 92 million tonnes
-                of textiles waste is created globally by fast fashion out of the
-                100 billion produced garments every year
-                <a
-                  href="https://earth.org/fast-fashions-detrimental-effect-on-the-environment/"
-                  target="_blank"
-                >
-                  (Earth.Org).
-                </a>
-                <br /><br />
-                These are massive numbers with massive environmental damages
-                that are necessary to understand. Below shows the
-                <strong> percentage of waste generation</strong> produced by
-                each brand from the total waste generation from the years 2018
-                to 2022. The waste generation from the dataset is based on
-                clothings made from plastic-based textiles. The data was
-                collected from
-                <a
-                  href="https://www.kaggle.com/datasets/purohitgaurav/plastic-based-textiles-in-clothing-industry"
-                  target="_blank"
-                >
-                  <strong>Plastic-Based Textiles in Clothing Industry</strong>
-                </a>
-                <br /><br />
-                Take a look at how much different brands generate waste over
-                time, and which brands account for the most or least amount of
-                waste generation!
+                  An estimated 92 million tonnes of textiles waste is created globally by fast fashion out of the 100 billion produced garments 
+                  every year <a href="https://earth.org/fast-fashions-detrimental-effect-on-the-environment/" target="_blank"> (Earth.Org).</a> <br><br>
+                  The waste generation from the dataset is based on clothings made from plastic-based textiles.
+                  The data was collected from <a href="https://www.kaggle.com/datasets/purohitgaurav/plastic-based-textiles-in-clothing-industry" 
+                  target="_blank"><strong>Plastic-Based Textiles in Clothing Industry</strong></a> <br><br>
+                  Take a look at the amount of waste generated over time by different brands!
               </p>
-            </div>
           </div>
-        </div>
       </div>
+  </div>
+</div>
 
       <div class="row text-center slides slides-outro">
         <h2>Where should we go on from now?</h2>

@@ -12,21 +12,20 @@ class StackedPieChart{
     initVis(){
         let vis = this;
 
-        vis.pieWidth = 625,
-        vis.pieHeight = 600,
+        vis.pieWidth = 700;
+        vis.pieHeight = 600;
         vis.maxRadius = Math.min(width, height) / 2 - 200;
 
-        console.log(vis.parentElement)
-
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
-            .attr("width", vis.pieWidth)
-            .attr("height", vis.pieHeight)
+            .attr("class", "responsive-svg")
+            .attr("viewBox", `0 0 ${vis.pieWidth} ${vis.pieHeight}`) 
+            .attr("preserveAspectRatio", "xMidYMid meet") 
             .append("g")
-            .attr("transform", "translate(" + vis.pieWidth / 2  + "," + vis.pieHeight / 2 + ")");
+            .attr("transform", `translate(${(vis.pieWidth / 2) + 100}, ${vis.pieHeight / 2})`); 
 
         // Legend
 
-        vis.legendContainer = d3.select("#brands-legend-items");
+        vis.legendContainer = d3.select("#brands-legend");
         vis.legendContainer.html(""); 
 
         let selectedBrands = [
@@ -61,6 +60,7 @@ class StackedPieChart{
     
         legendItem.append("span")
             .text(brand)
+            .attr("class", "legend-brand-name")
             .style("font-size", "14px")
             .style("color", "#333");
         });
@@ -216,6 +216,12 @@ class StackedPieChart{
                     `)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY - 20) + "px");
+
+                    vis.svg.selectAll("path")
+                    .transition().duration(300)
+                    .style("fill", function(data) {
+                        return data.data.brand === d.data.brand ? vis.color(d.data.brand) : "#d3d3d3";
+                    });
                 })
                 .on("mousemove", function(event) {
                     tooltip.style("left", (event.pageX + 10) + "px")
@@ -223,6 +229,11 @@ class StackedPieChart{
                 })
                 .on("mouseout", function() {
                     tooltip.transition().duration(200).style("opacity", 0);
+
+                    // Restore original colors
+                    vis.svg.selectAll("path")
+                    .transition().duration(300)
+                    .style("fill", d => vis.color(d.data.brand));
                 });
 
             enterG.append("text")
@@ -230,7 +241,34 @@ class StackedPieChart{
                 .attr("dy", ".35em")
                 .style("text-anchor", "middle")
                 .style("font-size", (i === 0) ? "10px" : "14px")
-                .text(d => d.data.percentageWaste.toFixed(1) + "%");
+                .text(d => d.data.percentageWaste.toFixed(1) + "%")
+                .on("mouseover", function(event, d) {
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`
+                        <strong>Brand:</strong> ${d.data.brand} <br>
+                        <strong>Year:</strong> ${d.data.year} <br>
+                        <strong>Waste Generation:</strong> ${d.data.waste.toLocaleString()}
+                    `)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+        
+                    vis.svg.selectAll("path")
+                    .transition().duration(300)
+                    .style("fill", function(data) {
+                        return data.data.brand === d.data.brand ? vis.color(d.data.brand) : "#d3d3d3";
+                    });
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 20) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(200).style("opacity", 0); 
+        
+                    vis.svg.selectAll("path")
+                    .transition().duration(300)
+                    .style("fill", d => vis.color(d.data.brand));
+                });
 
             g.merge(enterG).transition().duration(1000)
                 .style("opacity", 1) 
