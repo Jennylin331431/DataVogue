@@ -23,22 +23,17 @@ class WorldMap {
         this.dynamicWidth = screenWidth;
         this.dynamicHeight = Math.min(screenHeight, 960);
 
-        // 🧠 New scale factor logic
-        let scaleFactor;
-        if (screenWidth > 1200) {
-            scaleFactor = this.dynamicWidth / 6;
-        } else if (screenWidth > 900) {
-            scaleFactor = this.dynamicWidth / 5.5;
-        } else if (screenWidth > 600) {
-            scaleFactor = this.dynamicWidth / 4,5;
-        } else {
-            scaleFactor = this.dynamicWidth / 4; // smaller screens need bigger scale
-        }
+        let clampedWidth = Math.max(400, Math.min(screenWidth, 1200));
+        let normalized = (clampedWidth - 400) / (1200 - 400);
+
+        let baseScale = 4.7 + (2 * normalized); 
+        let scaleFactor = this.dynamicWidth / baseScale;
+
 
         this.svg = d3.select(this.containerId)
             .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("viewBox", `0 0 ${this.dynamicWidth + 200} ${this.dynamicHeight + 200}`)
-            .classed("responsive-svg", true);
+            .attr("viewBox", `0 0 ${this.dynamicWidth} ${this.dynamicHeight}`)
+            .classed("responsive-svg", true)
 
         this.projection = d3.geoMercator()
             .scale(scaleFactor)
@@ -78,18 +73,13 @@ class WorldMap {
         this.dynamicHeight = Math.min(screenHeight , 960);
     
         this.svg
-            .attr("viewBox", `0 0 ${this.dynamicWidth +200} ${this.dynamicHeight + 200}`);
-    
-        let scaleFactor;
-        if (screenWidth > 1200) {
-            scaleFactor = this.dynamicWidth / 6;
-        } else if (screenWidth > 900) {
-            scaleFactor = this.dynamicWidth / 5.5;
-        } else if (screenWidth > 600) {
-            scaleFactor = this.dynamicWidth / 4.5;
-        } else {
-            scaleFactor = this.dynamicWidth / 4;
-        }
+            .attr("viewBox", `0 0 ${this.dynamicWidth} ${this.dynamicHeight}`);
+
+        let clampedWidth = Math.max(400, Math.min(screenWidth, 1200));
+        let normalized = (clampedWidth - 400) / (1200 - 400);
+
+        let baseScale = 4.7 + (2 * normalized); 
+        let scaleFactor = this.dynamicWidth / baseScale;
 
         this.projection
             .translate([this.dynamicWidth / 2, this.dynamicHeight / 1.5])
