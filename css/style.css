@@ -200,88 +200,6 @@ h5 {
   color: black; 
 }  
 
-#pie-chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px; /* Adjust spacing */
-  width: 100%;
-  height: auto;
-  overflow: visible;
-  position: relative;
-  margin-left: 50px; /* Push right */
-}
-
-#brand-legend label {
-  display: block;
-  width: 100%;
-  margin-bottom: 5px;
-} 
-
-#yearCheckboxes label, #yearCheckboxes label input {
-  color: black !important;
-}
-
-#yearCheckboxes label {
-  color: black !important;
-  display: flex;
-  align-items: center;
-  gap: 5px; /* Adjust as needed */
-  margin-bottom: 2px; /* Reduce space between checkboxes */
-}
-
-#filters {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center align items */
-  gap: 10px; /* Add spacing between the two sections */
-  width: 100%;
-  margin-top: 50px;
-  text-align: center;
-  overflow: visible !important;
-  margin-left: 20px;
-}
-
-.slides-pie-chart .row {
-  justify-content: center;
-}
-
-.col-md-6:first-child {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.col-md-6:last-child {
-  display: flex;
-  justify-content: flex-start;
-}
-
-#legend {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-}
-
-.legend-item {
-    display: flex;
-    gap: 5px;
-}
-
-.legend-color {
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    border-radius: 3px;
-}
-
-.insight-text {
-    text-align: center;
-    max-width: 90%;
-  color: black;
-}
-
 /* scrollable view css */
 
 .flex-container {
@@ -641,16 +559,6 @@ h5 {
   background-color: #0056b3;
 }
 
-/* #controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin: 0 auto;
-  width: 100%;
-} */
-
 #materialSelection {
   width: 200px;
   margin: 10px 0;
@@ -799,4 +707,177 @@ a:hover {
 
 a:active {
   color: hotpink;
+}
+
+
+/* PIE CHART */
+
+#pie-chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px auto; /* Adjust spacing */
+  width: 100%;
+  height: auto;
+  position: relative;
+  max-width: 100%; /* Ensure it doesn't overflow */
+  overflow: visible;
+  flex-wrap: wrap;
+}
+
+#brands-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  align-items: left;  
+  gap: 10px;
+  max-width: 200px; /* Prevent it from shrinking */
+  margin-top: 20px;
+}
+
+#brand-legend label {
+  align-items: center;
+  justify-content: center;
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+} 
+
+#yearCheckboxes label, #yearCheckboxes label input {
+  color: black !important;
+}
+
+#yearCheckboxes label {
+  color: black !important;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adjust as needed */
+  margin-bottom: 2px; /* Reduce space between checkboxes */
+}
+
+#filters {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center; /* Center align items */
+  gap: 10px; /* Add spacing between the two sections */
+  width: 100%;
+  margin-top: 50px;
+  max-width: 100%;
+  justify-content: center;
+  text-align: center;
+  margin-left: 20px;
+  overflow: visible !important;
+}
+
+.slides-pie-chart .row {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%; /* Prevents unnecessary shrinking */
+  overflow: visible; /* Allows dynamic adjustments */
+}
+
+.col-md-6:first-child {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.col-md-6:last-child {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#legend {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.legend-item {
+    display: flex;
+    gap: 5px;
+    color: black !important;
+}
+
+.legend-color {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border-radius: 3px;
+}
+
+.insight-text {
+    text-align: center;
+    max-width: 90%;
+  color: black;
+}
+
+.responsive-svg {
+  width: 100%;  
+  height: auto; 
+  max-width: 200%;  
+}
+
+
+@media screen and (max-width: 1200px) {
+  #insight-text{
+    font-size: 14px;
+  }
+
+  #filters{
+    max-width: 100%;
+    width: 100%; 
+  }
+
+  .legend-brand-name {
+    font-size: 12px !important;
+  }
+
+}
+
+@media screen and (max-width: 900px) {
+  #insight-text{
+    font-size: 12px;
+  }
+
+  #filters{
+    width: 80%;
+  }
+
+  .legend-brand-name {
+    font-size: 10px !important;
+  }
+
+}
+
+@media screen and (max-width: 600px) {
+  #insight-text{
+    font-size: 10px;
+  }
+
+  #filters{
+    width: 50%;
+  }
+
+  .legend-brand-name {
+    font-size: 8px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #insight-text{
+    font-size: 8px;
+  }
+
+  #filters{
+    width: 40%;
+  }
+
+  .legend-brand-name {
+    font-size: 6px !important;
+  }
 }

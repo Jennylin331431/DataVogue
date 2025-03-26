@@ -269,15 +269,7 @@ d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function() {
     })
     .filter(entry => entry !== null);
 
-  //console.log(filteredData);
-
   stackedPieChart.displayData = filteredData;
   stackedPieChart.wrangleData();
 });
 
-let selectedProductType = document.getElementById("productSelector").value;
-
-function productChange() {
-  selectedProductType = document.getElementById("productSelector").value;
-  brandLineChart.wrangleData();
-}
