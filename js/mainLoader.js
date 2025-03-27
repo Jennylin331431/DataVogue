@@ -310,3 +310,8 @@ function setActive(selectedPattern) {
     activeButton.classList.add("active");
   }
 }
+
+window.addEventListener("resize", function() {
+  // Reload the page when the window is resized
+  location.reload();
+});

@@ -43,6 +43,7 @@ svg {
   border-radius: 10%;
   padding: 15px;
   display: none;
+  overflow: visible;
 }
 
 .dropdown {
