@@ -909,6 +909,20 @@ a:active {
 
 /* PIE CHART */
 
+.tooltip {
+  background-color: rgb(212, 193, 243);
+  font-size: 14px;
+  color: black;
+  z-index: 999;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  border: 1px solid #ccc;
+  pointer-events: none;
+  font-family: "Georgia";
+}
+
+
 #pie-chart-container {
   display: flex;
   justify-content: center;

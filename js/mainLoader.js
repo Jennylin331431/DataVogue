@@ -292,13 +292,6 @@ d3.selectAll("#yearCheckboxes input[type=checkbox]").on("change", function () {
   stackedPieChart.wrangleData();
 });
 
-let selectedProductType = document.getElementById("productSelector").value;
-
-function productChange() {
-  selectedProductType = document.getElementById("productSelector").value;
-  brandLineChart.wrangleData();
-}
-
 function setActive(selectedPattern) {
   // Get all buttons in the button group
   let patternButtons = document.querySelectorAll(".pattern-button");
