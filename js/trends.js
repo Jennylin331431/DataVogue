@@ -70,7 +70,10 @@ class Trends {
 
         // Calculate the relative difference as absolute difference or percentage
         let absoluteDifference = maleData - femaleData;
-        let percentageDifference = (absoluteDifference / femaleData) * 100;
+        let percentageDifference =
+          femaleData == 0
+            ? "undefined"
+            : (absoluteDifference / femaleData) * 100;
 
         vis.tooltip
           .style("display", "block")
@@ -78,17 +81,21 @@ class Trends {
           .style("top", `${event.pageY - 30}px`);
 
         vis.tooltip.select(".tooltip-sales").html(`
-      <strong>Male Sales:</strong> ${maleData}<br>
-      <strong>Female Sales:</strong> ${femaleData}<br>
-      <strong>Abs Diff (M-F): </strong> ${
-        absoluteDifference >= 0 ? "+" : "-"
-      }${Math.abs(absoluteDifference)} <br>
-       <strong>Rel Diff: </strong> 
-      (${
-        absoluteDifference >= 0 ? "+" : "-"
-      }${Math.abs(percentageDifference).toFixed(2)}%)
-    
-    `);
+  <strong>Male Sales:</strong> ${maleData}<br>
+  <strong>Female Sales:</strong> ${femaleData}<br>
+  <strong>Abs Diff (M-F): </strong> ${
+    absoluteDifference >= 0 ? "+" : "-"
+  }${Math.abs(absoluteDifference)} <br>
+  <strong>Rel Diff: </strong> ${
+    percentageDifference === "undefined"
+      ? "undefined"
+      : `${absoluteDifference >= 0 ? "+" : "-"}${Math.abs(
+          percentageDifference
+        ).toFixed(2)}%`
+  }
+  <br>
+  Rel Diff = 100% * (M-F)/F 
+`);
 
         const dateFormatter = d3.timeFormat("%Y");
 

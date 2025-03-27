@@ -322,8 +322,8 @@ h5 {
   flex-direction: column;
   background: linear-gradient(
     141deg,
-    rgb(244, 185, 120) 0%,
-    rgb(255, 210, 140) 50%,
+    rgb(233, 201, 168) 0%,
+    rgb(249, 219, 171) 50%,
     rgb(255, 220, 180) 100%
   );
 }
@@ -331,22 +331,22 @@ h5 {
 .slides-intro-1 {
   background: linear-gradient(
     141deg,
-    rgb(244, 185, 120) 0%,
-    rgb(255, 210, 140) 50%,
-    rgb(255, 220, 180) 100%
+    #fff3cd 0%,
+    #e1dae7 50%,
+    rgba(255, 213, 255, 255) 100%
   );
 }
 
 .slides-intro-1-1 {
   background: linear-gradient(
     141deg,
-    rgb(244, 185, 120) 0%,
-    rgb(255, 210, 140) 50%,
-    #d1a7f7 100%
+    rgba(255, 213, 255, 255) 0%,
+    #e1c4e3 50%,
+    #c2a9db 100%
   );
 }
 .slides-trends {
-  background-color: rgba(255, 213, 255, 255);
+  background-color: #fff3cd;
   align-items: normal !important;
 }
 
@@ -365,15 +365,30 @@ h5 {
 }
 
 .slides-intro-2 {
-  background: linear-gradient(141deg, #d1b5eb 0%, #e9b6d1 50%, #ebcfec 100%);
+  background: linear-gradient(
+    141deg,
+    rgb(228 209 188) 0%,
+    rgb(245 212 160) 50%,
+    /* rgb(255, 220, 180) 100%, */ /* #d1b5eb 0%, #e9b6d1 50%, */ #fff3cd 100%
+  );
 }
 
 .slides-worldmap {
-  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+  background: linear-gradient(
+    141deg,
+    rgba(255, 213, 255, 255) 0%,
+    #dccedd 50%,
+    #dad2e2 100%
+  );
 }
 
 .slides-footprint {
-  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+  background: linear-gradient(
+    141deg,
+    rgb(240 222 240 / 24%) 0%,
+    #e1c4e3 50%,
+    #c2a9db 100%
+  );
 }
 
 .slides-global-info {
@@ -561,15 +576,22 @@ h5 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  height: auto; /* Ensure height adjusts dynamically */
+  overflow: hidden; /* Prevents leakage */
+}
+
+/* #world-map {
+  flex-grow: 1;
+  max-width: 65%;
   height: auto;
   overflow: hidden;
 }
-
+*/
 
 #world-map {
   width: 100%;
@@ -586,16 +608,6 @@ h5 {
   width: 100%;
   display: block;
 }
-
-
-#map-container, #world-map {
-  min-height: unset;  /* ✅ don't force a min-height */
-  height: auto;        /* ✅ allow shrinking */
-  overflow: hidden;    /* ✅ prevent overspill */
-}
-
-
-
 
 #impactText {
   color: black !important;
@@ -843,7 +855,6 @@ html, body {
   height: auto;
   display: block;
 }
-
 
 #carbonText {
   font-size: clamp(12px, 2.5vw, 15px);
