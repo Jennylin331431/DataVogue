@@ -794,13 +794,20 @@ html, body {
 #brands-legend {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   width: 100%;
   max-width: 250px;
   margin: 0 auto;
   flex-direction: column;
-  margin-left: 120px;
+  margin-left: 70px;
+}
+
+.legend-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left; /* Ensures everything stays centered */
 }
 
 .circle {
@@ -905,6 +912,20 @@ a:active {
 }
 
 /* PIE CHART */
+
+.tooltip {
+  background-color: rgb(212, 193, 243);
+  font-size: 14px;
+  color: black;
+  z-index: 999;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  border: 1px solid #ccc;
+  pointer-events: none;
+  font-family: "Georgia";
+}
+
 
 #pie-chart-container {
   display: flex;
