@@ -163,17 +163,9 @@ class StackedPieChart{
 
         // Create tooltip
         let tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip");
-
-            // .style("position", "absolute")
-            // .style("background", "#fff")
-            // .style("padding", "8px")
-            // .style("border", "1px solid #ccc")
-            // .style("border-radius", "4px")
-            // .style("box-shadow", "0px 2px 10px rgba(0,0,0,0.2)")
-            // .style("pointer-events", "none")
-            // .style("opacity", 0)
-            
+            .attr("class", "tooltip")
+            .style("display", "none");
+   
         // If no data, exit
         if (vis.multiLevelData.length === 0) return;
 
@@ -215,7 +207,8 @@ class StackedPieChart{
                         <strong>Waste Generation:</strong> ${d.data.waste.toLocaleString()}
                     `)
                     .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 20) + "px");
+                    .style("top", (event.pageY - 20) + "px")
+                    .style("display", "block");
 
                     vis.svg.selectAll("path")
                     .transition().duration(300)
