@@ -393,12 +393,12 @@ h5 {
   );
 }
 
-.slides-global-info {
+.slides-brand-sales {
   background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
 }
 
-.slides-brand-sales {
-  background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
+.slides-pie-chart {
+  background: linear-gradient(141deg, #c2a9db 0%, #b5c6f7 50%, #a0d2f7 100%);
 }
 
 @media screen and (max-width: 1250px) {
@@ -974,6 +974,7 @@ a:active {
   border: 1px solid #ccc;
   pointer-events: none;
   font-family: "Georgia";
+  display: none;
 }
 
 #pie-chart-container {
