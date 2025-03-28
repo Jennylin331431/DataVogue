@@ -139,7 +139,7 @@ class BigFootCarbonViz {
             .attr("y", d => -vis.footSizeScale(d[1]) + 20 * scaleFactor)
             .attr("width", d => vis.footSizeScale(d[1]))
             .attr("height", d => vis.footSizeScale(d[1]))
-            .attr("href", "../img/foot.png");
+            .attr("href", "img/foot.png");
     
         // Carbon value text
         enterGroups.append("text")
