@@ -372,13 +372,14 @@ h5 {
   background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
 }
 
-.slides-global-info {
-  background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
-}
-
 .slides-brand-sales {
   background: linear-gradient(141deg, #a0d2f7 0%, #b5c6f7 50%, #e1a9f7 100%);
 }
+
+.slides-pie-chart {
+  background: linear-gradient(141deg, #c2a9db 0%, #b5c6f7 50%, #a0d2f7 100%);
+}
+
 
 @media screen and (max-width: 1200px) {
   #trends-chart-container {
