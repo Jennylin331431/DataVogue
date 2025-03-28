@@ -112,8 +112,8 @@ svg {
   text-align: center;
   flex: 0 0 auto;
   display: flex;
-  flex-direction: column; 
-  align-items: center; 
+  flex-direction: column;
+  align-items: center;
   width: 250px;
 }
 
@@ -291,8 +291,8 @@ h5 {
 }
 
 .col-md-2 > div {
-  color: black; 
-}  
+  color: black;
+}
 
 /* scrollable view css */
 
@@ -322,8 +322,8 @@ h5 {
   flex-direction: column;
   background: linear-gradient(
     141deg,
-    rgb(244, 185, 120) 0%,
-    rgb(255, 210, 140) 50%,
+    rgb(233, 201, 168) 0%,
+    rgb(249, 219, 171) 50%,
     rgb(255, 220, 180) 100%
   );
 }
@@ -331,22 +331,22 @@ h5 {
 .slides-intro-1 {
   background: linear-gradient(
     141deg,
-    rgb(244, 185, 120) 0%,
-    rgb(255, 210, 140) 50%,
-    rgb(255, 220, 180) 100%
+    #fff3cd 0%,
+    #e1dae7 50%,
+    rgba(255, 213, 255, 255) 100%
   );
 }
 
 .slides-intro-1-1 {
   background: linear-gradient(
     141deg,
-    rgb(244, 185, 120) 0%,
-    rgb(255, 210, 140) 50%,
-    #d1a7f7 100%
+    rgba(255, 213, 255, 255) 0%,
+    #e1c4e3 50%,
+    #c2a9db 100%
   );
 }
 .slides-trends {
-  background-color: rgba(255, 213, 255, 255);
+  background-color: #fff3cd;
   align-items: normal !important;
 }
 
@@ -365,15 +365,30 @@ h5 {
 }
 
 .slides-intro-2 {
-  background: linear-gradient(141deg, #d1b5eb 0%, #e9b6d1 50%, #ebcfec 100%);
+  background: linear-gradient(
+    141deg,
+    rgb(228 209 188) 0%,
+    rgb(245 212 160) 50%,
+    #fff3cd 100%
+  );
 }
 
 .slides-worldmap {
-  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+  background: linear-gradient(
+    141deg,
+    rgba(255, 213, 255, 255) 0%,
+    #dccedd 50%,
+    #dad2e2 100%
+  );
 }
 
 .slides-footprint {
-  background: linear-gradient(141deg, #fef4b0 0%, #e1c4e3 50%, #c2a9db 100%);
+  background: linear-gradient(
+    141deg,
+    rgb(240 222 240 / 24%) 0%,
+    #e1c4e3 50%,
+    #c2a9db 100%
+  );
 }
 
 .slides-global-info {
@@ -561,7 +576,7 @@ h5 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
@@ -569,7 +584,6 @@ h5 {
   height: auto;
   overflow: hidden;
 }
-
 
 #world-map {
   width: 100%;
@@ -587,15 +601,12 @@ h5 {
   display: block;
 }
 
-
-#map-container, #world-map {
-  min-height: unset;  /* ✅ don't force a min-height */
-  height: auto;        /* ✅ allow shrinking */
-  overflow: hidden;    /* ✅ prevent overspill */
+#map-container,
+#world-map {
+  min-height: unset; /* ✅ don't force a min-height */
+  height: auto; /* ✅ allow shrinking */
+  overflow: hidden; /* ✅ prevent overspill */
 }
-
-
-
 
 #impactText {
   color: black !important;
@@ -608,10 +619,10 @@ h5 {
   font-size: 14px;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
-
 
 /* Responsive Styles */
 @media screen and (max-width: 900px) {
@@ -704,12 +715,11 @@ html, body {
   }
 }
 
-
 @media screen and (min-width: 900px) {
   #world-map {
     width: min(100vw, 100vh);
     height: 50vh;
-  }  
+  }
 }
 
 /* CARBON FOTTPRINT VIS*/
@@ -844,7 +854,6 @@ html, body {
   display: block;
 }
 
-
 #carbonText {
   font-size: clamp(12px, 2.5vw, 15px);
 }
@@ -926,7 +935,6 @@ a:active {
   font-family: "Georgia";
 }
 
-
 #pie-chart-container {
   display: flex;
   justify-content: center;
@@ -945,7 +953,7 @@ a:active {
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
-  align-items: left;  
+  align-items: left;
   gap: 10px;
   max-width: 200px; /* Prevent it from shrinking */
   margin-top: 20px;
@@ -957,9 +965,10 @@ a:active {
   display: block;
   width: 100%;
   margin-bottom: 5px;
-} 
+}
 
-#yearCheckboxes label, #yearCheckboxes label input {
+#yearCheckboxes label,
+#yearCheckboxes label input {
   color: black !important;
 }
 
@@ -1013,68 +1022,65 @@ a:active {
 }
 
 .legend-item {
-    display: flex;
-    gap: 5px;
-    color: black !important;
+  display: flex;
+  gap: 5px;
+  color: black !important;
 }
 
 .legend-color {
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    border-radius: 3px;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border-radius: 3px;
 }
 
 .insight-text {
-    text-align: center;
-    max-width: 90%;
+  text-align: center;
+  max-width: 90%;
   color: black;
 }
 
 .responsive-svg {
-  width: 100%;  
-  height: auto; 
-  max-width: 200%;  
+  width: 100%;
+  height: auto;
+  max-width: 200%;
 }
 
-
 @media screen and (max-width: 1200px) {
-  #insight-text{
+  #insight-text {
     font-size: 14px;
   }
 
-  #filters{
+  #filters {
     max-width: 100%;
-    width: 100%; 
+    width: 100%;
   }
 
   .legend-brand-name {
     font-size: 12px !important;
   }
-
 }
 
 @media screen and (max-width: 900px) {
-  #insight-text{
+  #insight-text {
     font-size: 12px;
   }
 
-  #filters{
+  #filters {
     width: 80%;
   }
 
   .legend-brand-name {
     font-size: 10px !important;
   }
-
 }
 
 @media screen and (max-width: 600px) {
-  #insight-text{
+  #insight-text {
     font-size: 10px;
   }
 
-  #filters{
+  #filters {
     width: 50%;
   }
 
@@ -1084,11 +1090,11 @@ a:active {
 }
 
 @media screen and (max-width: 400px) {
-  #insight-text{
+  #insight-text {
     font-size: 8px;
   }
 
-  #filters{
+  #filters {
     width: 40%;
   }
 
@@ -1098,11 +1104,11 @@ a:active {
 }
 
 .member-info {
-  background-color: #ebdef0; 
+  background-color: #ebdef0;
   color: #333;
   padding: 15px 20px;
   border-radius: 15px;
-  width:  100%;
+  width: 100%;
   max-width: 250px;
   margin-top: 10px;
   font-size: 16px;
@@ -1112,7 +1118,7 @@ a:active {
 }
 
 .team-section {
-  margin-top: -30px; 
+  margin-top: -30px;
 }
 
 .team-section h3 {
@@ -1124,20 +1130,20 @@ a:active {
   font-size: 22px;
 }
 
-@media (max-width: 768px) { 
+@media (max-width: 768px) {
   .team-members {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
   }
 
   .team-member {
-    width: 90%; 
-    max-width: 300px; 
+    width: 90%;
+    max-width: 300px;
   }
 
   .member-info {
-    max-width: 90%; 
-    font-size: 14px; 
+    max-width: 90%;
+    font-size: 14px;
   }
 
   .team-section h3 {
@@ -1146,12 +1152,12 @@ a:active {
   }
 
   #references-section {
-    font-size: 12px; 
+    font-size: 12px;
     padding: 10px;
   }
 
   .reference-subsection h4 {
-    font-size: 14px; 
+    font-size: 14px;
   }
 
   .reference-item a {
@@ -1159,22 +1165,22 @@ a:active {
   }
 }
 
-@media (max-width: 480px) { 
+@media (max-width: 480px) {
   .team-members {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
   }
-  
+
   .team-member {
-    width: 100%; 
+    width: 100%;
   }
   h2 {
     font-size: 22px;
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
   }
 
   .member-info {
-    padding: 10px 15px; 
+    padding: 10px 15px;
     font-size: 12px;
   }
 
@@ -1184,7 +1190,7 @@ a:active {
   }
 
   #references-section {
-    font-size: 10px; 
+    font-size: 10px;
     padding: 8px;
   }
 
