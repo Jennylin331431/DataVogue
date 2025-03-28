@@ -8,6 +8,63 @@ class Trends {
 
     this.selectedPattern = "None"; // could be '2019', '2020', etc. for filtering by year
     this.selectedColor = "None"; // could be 'Male', 'Female', or 'all'
+    window.addEventListener("resize", () => this.handleResize());
+  }
+
+  handleResize() {
+    let vis = this;
+
+    // Update the dynamicWidth and dynamicHeight based on new window size
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    if (screenWidth > 1200) {
+      // Set new dimensions
+      vis.dynamicWidth = 0.35 * screenWidth;
+      vis.dynamicHeight = 0.47 * screenHeight;
+    } else {
+      // Set new dimensions
+      vis.dynamicWidth = 0.4 * screenWidth;
+      vis.dynamicHeight = 0.45 * screenHeight;
+    }
+
+    // Recalculate the width and height in case of a resize
+    vis.width = vis.dynamicWidth - vis.margin.left - vis.margin.right;
+    vis.height = vis.dynamicHeight - vis.margin.top - vis.margin.bottom;
+
+    // Update SVG size
+    vis.svg
+      .attr("width", vis.width + vis.margin.left + vis.margin.right)
+      .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+      .append("g")
+      .attr(
+        "transform",
+        "translate(" + vis.margin.left + "," + vis.margin.top + ")"
+      );
+
+    // Update scales
+    vis.x.range([0, vis.width]);
+    vis.y.range([vis.height, 0]);
+
+    vis.tooltipSensorArea
+      .attr("width", vis.width + vis.margin.left + vis.margin.right)
+      .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+
+    // Update axis
+    vis.xAxis = d3.axisBottom(vis.x);
+    vis.yAxis = d3.axisLeft(vis.y);
+
+    // Reposition the x-axis and y-axis
+    vis.svg
+      .select(".x-axis")
+      .attr("transform", "translate(0," + vis.height + ")");
+    vis.svg.select(".y-axis").attr("transform", "translate(0,0)");
+
+    vis.xLabel
+      .attr("x", vis.width / 2)
+      .attr("y", vis.height + vis.margin.bottom);
+    // Recalculate and update the visualization with the new size
+    vis.updateVis();
   }
 
   /*
@@ -16,7 +73,7 @@ class Trends {
   initVis() {
     let vis = this;
 
-    vis.margin = { top: 0, right: 40, bottom: 60, left: 70 };
+    vis.margin = { top: 10, right: 40, bottom: 60, left: 70 };
 
     vis.width =
       document.getElementById(vis.parentElement).getBoundingClientRect().width -
@@ -40,7 +97,7 @@ class Trends {
         "translate(" + vis.margin.left + "," + vis.margin.top + ")"
       );
 
-    vis.svg
+    vis.tooltipSensorArea = vis.svg
       .append("rect")
       .attr("width", vis.width + vis.margin.left + vis.margin.right)
       .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
@@ -70,7 +127,10 @@ class Trends {
 
         // Calculate the relative difference as absolute difference or percentage
         let absoluteDifference = maleData - femaleData;
-        let percentageDifference = (absoluteDifference / femaleData) * 100;
+        let percentageDifference =
+          femaleData == 0
+            ? "undefined"
+            : (absoluteDifference / femaleData) * 100;
 
         vis.tooltip
           .style("display", "block")
@@ -78,27 +138,21 @@ class Trends {
           .style("top", `${event.pageY - 30}px`);
 
         vis.tooltip.select(".tooltip-sales").html(`
-      <strong>Male Sales:</strong> ${maleData}<br>
-      <strong>Female Sales:</strong> ${femaleData}<br>
-      <strong>Abs Diff (M-F): </strong> ${
-        absoluteDifference >= 0 ? "+" : "-"
-      }${Math.abs(absoluteDifference)} <br>
-       <strong>Rel Diff: </strong> 
-      (${
-        absoluteDifference >= 0 ? "+" : "-"
-      }${Math.abs(percentageDifference).toFixed(2)}%)
-    
-    `);
-
-        const dateFormatter = d3.timeFormat("%Y");
-
-        vis.tooltip
-          .select(".tooltip-date")
-          .html(
-            `<strong>Year: </strong> ${dateFormatter(
-              hoveredIndexMaleData.time
-            )}`
-          );
+       <strong>Male Sales:</strong> ${maleData}<br>
+  <strong>Female Sales:</strong> ${femaleData}<br>
+  <strong>Abs Diff (M-F): </strong> ${
+    absoluteDifference >= 0 ? "+" : "-"
+  }${Math.abs(absoluteDifference)} <br>
+  <strong>Rel Diff: </strong> ${
+    percentageDifference === "undefined"
+      ? "undefined"
+      : `${absoluteDifference >= 0 ? "+" : "-"}${Math.abs(
+          percentageDifference
+        ).toFixed(2)}%`
+  }
+  <br>
+  Rel Diff = 100% * (M-F)/F 
+`);
 
         // Update tooltip line position
         vis.tooltipLine
@@ -144,7 +198,7 @@ class Trends {
       .style("opacity", 1);
 
     // axis labels
-    vis.svg
+    vis.xLabel = vis.svg
       .append("text")
       .attr("class", "x-axis-label")
       .attr("x", vis.width / 2)
