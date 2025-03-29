@@ -242,7 +242,10 @@ class WorldMap {
                     let countryName = d.properties.name;
                     let stats = vis.countryDataMap.get(countryName);
                 
-                    vis.tooltip.transition().duration(200).style("opacity", 1);
+                    vis.tooltip
+                        .style("display", "block")
+                        .transition().duration(200)
+                        .style("opacity", 1);
                 
                     if (stats) {
                         let avgWaste = Math.round(stats.waste / stats.count); // No decimals
@@ -289,10 +292,15 @@ class WorldMap {
                     vis.tooltip.style("left", `${posX}px`)
                             .style("top", `${posY}px`);
                                 })
-                .on("mouseout", (event) => {
-                    vis.tooltip.transition().duration(200).style("opacity", 0);
-                    d3.select(event.currentTarget).style("stroke", "#333");
-                });
+
+                    .on("mouseout", (event) => {
+                        vis.tooltip
+                            .transition().duration(200)
+                            .style("opacity", 0)
+                            .on("end", () => vis.tooltip.style("display", "none"));
+                    
+                        d3.select(event.currentTarget).style("stroke", "#333");
+                    });
     
             vis.updateLegend(colorScale, minValue, maxValue);
         }).catch(error => {
