@@ -45,6 +45,7 @@ class WorldMap {
         // Tooltip, hidden by default
         this.tooltip = d3.select("body").append("div")
             .attr("class", "tooltip-map")
+            .style("display", "none")
             .style("opacity", 0)
             .style("position", "absolute")
             .style("background", "rgb(194, 167, 236)")
