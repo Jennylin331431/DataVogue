@@ -25,7 +25,7 @@ class StackedPieChart{
             
         // Create tooltip
         vis.tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
+            .attr("class", "tooltip-pie-chart")
             .style("display", "none");
 
         // Legend
@@ -235,9 +235,9 @@ class StackedPieChart{
 
             enterG.append("text")
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")")
-                .attr("dy", ".35em")
+                .attr("dy", i === 0 ? "0.7em" : ".35em")
                 .style("text-anchor", "middle")
-                .style("font-size", (i === 0) ? "10px" : "14px")
+                .style("font-size", (i === 0) ? "9px" : "13px")
                 .text(d => d.data.percentageWaste.toFixed(1) + "%")
                 .on("mouseover", function(event, d) {
                     vis.tooltip.transition().duration(200).style("opacity", 1);
@@ -279,9 +279,9 @@ class StackedPieChart{
             g.merge(enterG).transition().duration(1000)
                 .select("text")
                 .attr("transform", d => "translate(" + arc.centroid(d) + ")")
-                .attr("dy", ".35em")
+                .attr("dy", i === 0 ? "0.7em" : ".35em")
                 .style("text-anchor", "middle")
-                .style("font-size", (i === 0) ? "10px" : "14px")
+                .style("font-size", (i === 0) ? "9px" : "14px")
                 .text(d => d.data.percentageWaste.toFixed(1) + "%");
         });
 
