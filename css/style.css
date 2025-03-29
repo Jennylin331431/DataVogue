@@ -483,6 +483,19 @@ h5 {
   padding: 0 20px;
 }
 
+.tooltip-map {
+  position: absolute;
+  background: rgb(194, 167, 236);
+  color: black;
+  font-family: Georgia;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+
 /* Center Dropdown + Legend */
 #dropdown-legend-container {
   display: flex;
