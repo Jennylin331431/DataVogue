@@ -43,17 +43,7 @@ class WorldMap {
         this.path = d3.geoPath().projection(this.projection);
         
         // Tooltip, hidden by default
-        this.tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip-map")
-            .style("opacity", 0)
-            .style("position", "absolute")
-            .style("background", "rgb(194, 167, 236)")
-            .style("color", "black")
-            .style("font-family", "Georgia")
-            .style("padding", "8px")
-            .style("border-radius", "5px")
-            .style("font-size", "14px")
-            .style("pointer-events", "none");
+        this.tooltip = d3.select("#tooltip-map");
 
             d3.select("#metricSelection").on("change", (event) => {
                 this.selectedMetric = event.target.value;
@@ -242,7 +232,10 @@ class WorldMap {
                     let countryName = d.properties.name;
                     let stats = vis.countryDataMap.get(countryName);
                 
-                    vis.tooltip.transition().duration(200).style("opacity", 1);
+                    vis.tooltip
+                        .style("display", "block")
+                        .transition().duration(200)
+                        .style("opacity", 1);
                 
                     if (stats) {
                         let avgWaste = Math.round(stats.waste / stats.count); // No decimals
@@ -289,10 +282,15 @@ class WorldMap {
                     vis.tooltip.style("left", `${posX}px`)
                             .style("top", `${posY}px`);
                                 })
-                .on("mouseout", (event) => {
-                    vis.tooltip.transition().duration(200).style("opacity", 0);
-                    d3.select(event.currentTarget).style("stroke", "#333");
-                });
+
+                    .on("mouseout", (event) => {
+                        vis.tooltip
+                            .transition().duration(200)
+                            .style("opacity", 0)
+                            .on("end", () => vis.tooltip.style("display", "none"));
+                    
+                        d3.select(event.currentTarget).style("stroke", "#333");
+                    });
     
             vis.updateLegend(colorScale, minValue, maxValue);
         }).catch(error => {
