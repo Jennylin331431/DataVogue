@@ -43,18 +43,7 @@ class WorldMap {
         this.path = d3.geoPath().projection(this.projection);
         
         // Tooltip, hidden by default
-        this.tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip-map")
-            .style("display", "none")
-            .style("opacity", 0)
-            .style("position", "absolute")
-            .style("background", "rgb(194, 167, 236)")
-            .style("color", "black")
-            .style("font-family", "Georgia")
-            .style("padding", "8px")
-            .style("border-radius", "5px")
-            .style("font-size", "14px")
-            .style("pointer-events", "none");
+        this.tooltip = d3.select("#tooltip-map");
 
             d3.select("#metricSelection").on("change", (event) => {
                 this.selectedMetric = event.target.value;
