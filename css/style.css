@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: "Carter One", serif;
+  font-family: "Arima", serif;
   text-align: center;
   background-color: #f5f5f5;
 }
@@ -337,6 +337,7 @@ h5 {
     #e1dae7 50%,
     rgba(255, 213, 255, 255) 100%
   );
+  font-family: "Arima", serif;
 }
 
 .slides-intro-1-1 {
@@ -346,6 +347,7 @@ h5 {
     #e1c4e3 50%,
     #c2a9db 100%
   );
+  font-family: "Arima", serif;
 }
 .slides-trends {
   background-color: #fff3cd;
@@ -963,7 +965,7 @@ a:active {
 
 /* PIE CHART */
 
-.tooltip {
+.tooltip-pie-chart {
   background-color: rgb(212, 193, 243);
   font-size: 14px;
   color: black;
@@ -973,7 +975,7 @@ a:active {
   position: absolute;
   border: 1px solid #ccc;
   pointer-events: none;
-  font-family: "Georgia";
+  font-family: "Arima", serif;
   display: none;
 }
 
@@ -1181,6 +1183,7 @@ a:active {
 
 .team-section h4 {
   font-size: 22px;
+  font-family: "Arima", serif;
 }
 
 @media (max-width: 768px) {

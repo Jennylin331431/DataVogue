@@ -25,7 +25,7 @@ class StackedPieChart{
             
         // Create tooltip
         vis.tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
+            .attr("class", "tooltip-pie-chart")
             .style("display", "none");
 
         // Legend
