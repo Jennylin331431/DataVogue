@@ -24,10 +24,8 @@ class StackedPieChart{
             .attr("transform", `translate(${(vis.pieWidth / 2) + 100}, ${vis.pieHeight / 2})`);
             
         // Create tooltip
-        vis.tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip-pie-chart")
-            .style("display", "none");
-
+        vis.tooltip = d3.select("#tooltip-pie-chart");
+        
         // Legend
         vis.legendContainer = d3.select("#brands-legend");
         vis.legendContainer.html(""); 
@@ -164,11 +162,6 @@ class StackedPieChart{
             .style("font-weight", "bold")
             .style("fill", "rgb(109, 15, 109)")
             .text("Percentage of Waste Generation per Brand");
-
-        // // Create tooltip
-        // let tooltip = d3.select("body").append("div")
-        //     .attr("class", "tooltip")
-        //     .style("display", "none");
    
         // If no data, exit
         if (vis.multiLevelData.length === 0) return;
@@ -204,15 +197,17 @@ class StackedPieChart{
                 .attr("d", arc)
                 .style("fill", d => vis.color(d.data.brand))
                 .on("mouseover", function(event, d) {
-                    vis.tooltip.transition().duration(200).style("opacity", 1);
+                    vis.tooltip
+                        .style("display", "block")
+                        .transition().duration(200)
+                        .style("opacity", 1);
                     vis.tooltip.html(`
                         <strong>Brand:</strong> ${d.data.brand} <br>
                         <strong>Year:</strong> ${d.data.year} <br>
                         <strong>Waste Generation:</strong> ${d.data.waste.toLocaleString()}
                     `)
                     .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 20) + "px")
-                    .style("display", "block");
+                    .style("top", (event.pageY - 20) + "px");
 
                     vis.svg.selectAll("path")
                     .transition().duration(300)
@@ -225,7 +220,10 @@ class StackedPieChart{
                         .style("top", (event.pageY - 20) + "px");
                 })
                 .on("mouseout", function() {
-                    vis.tooltip.transition().duration(200).style("opacity", 0);
+                    vis.tooltip.
+                    transition().duration(200)
+                    .style("opacity", 0)
+                    .on("end", () => vis.tooltip.style("display", "none"));;
 
                     // Restore original colors
                     vis.svg.selectAll("path")
