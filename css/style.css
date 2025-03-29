@@ -989,7 +989,6 @@ a:active {
   border: 1px solid #ccc;
   pointer-events: none;
   font-family: "Arima", serif;
-  display: none;
 }
 
 #pie-chart-container {
