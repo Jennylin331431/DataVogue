@@ -16,9 +16,11 @@ This project is a website that follows a basic structure using HTML, CSS, and Ja
 ## 📈 Code Structure Breakdown: 
 
 ### 📙 Libraries used: 
-- Boostrap
-- d3.js
-- Google Fonts 
+- [Bootstrap](https://getbootstrap.com/)
+- [d3.js](https://d3js.org/)
+- [Google Fonts](https://fonts.google.com/)
+- [TopoJSON](https://github.com/topojson/topojson)
+- [noUiSlider](https://refreshless.com/nouislider/)
 
 ### 📁 Folders:
 
