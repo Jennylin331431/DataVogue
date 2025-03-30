@@ -1,23 +1,26 @@
-# DataVogue
+# DataVogue 👚👗 🎽 👖 
 
 ## Overview
 
-This project is a website that follows a basic structure using HTML, CSS, and JavaScript. It includes the main files and folders necessary for styling, interactivity, and the layout of the page. 
+This project is a website that follows a basic structure using HTML, CSS, and JavaScript. It includes the main files and folders necessary for styling, interactivity, and the layout of the page. The official website is hosted though GitHub.
 
-### Project Website: [Click Here](https://jennylin331431.github.io/DataVogue/)
-
-
-### Video Link: [Click Here](https://drive.google.com/file/d/15b3Csde3l0ZvJdJ9DnoRHWnf0yu59gYp/view?usp=sharing)
+### 📌 Topic: Global Environmental Impact of Fast Fashion Production & Consumerism
 
 
-### Code Structure Breakdown:
+### 📎 Project Website: [Click Here](https://jennylin331431.github.io/DataVogue/)
 
-#### Libraries used: 
+
+### 🎬 Video Link: [Click Here](https://drive.google.com/file/d/15b3Csde3l0ZvJdJ9DnoRHWnf0yu59gYp/view?usp=sharing)
+
+
+## 📈 Code Structure Breakdown: 
+
+### 📙 Libraries used: 
 - Boostrap
 - d3.js
 - Google Fonts 
 
-#### Folders:
+### 📁 Folders:
 
  **/css folder:**
 - Contains all the styles for the website.
