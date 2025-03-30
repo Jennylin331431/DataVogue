@@ -30,7 +30,7 @@ This project is a website that follows a basic structure using HTML, CSS, and Ja
 - `tshirt.css`: The stylesheet to change the style of tshirt pattern and color changes.
 
 **/data folder:**
-- Contains all the data used for the website.
+- Contains all the data used for the website. All in csv format.
 
  **/img folder:**
 - Contains all the images used for the website.
