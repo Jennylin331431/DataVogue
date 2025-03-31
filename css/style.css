@@ -1084,7 +1084,7 @@ a:active {
 }
 
 .pie-insights{
-  display: block;
+  display: inline-block;
   background-color:#D2A2F2;
   padding: 5px;
   border-radius: 3%;
