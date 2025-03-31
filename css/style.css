@@ -914,6 +914,10 @@ body {
   font-size: clamp(12px, 2.5vw, 15px);
 }
 
+.slides-footprint {
+  overflow-y: hidden;
+}
+
 @media screen and (max-width: 1200px) {
   #carbonText {
     font-size: 15px;
