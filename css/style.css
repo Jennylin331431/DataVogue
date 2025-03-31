@@ -918,6 +918,10 @@ html, body {
   overflow-x: hidden;
 }
 
+body {
+  overflow-y: hidden;
+}
+
 
 #carbonText {
   font-size: clamp(12px, 2.5vw, 15px);
