@@ -1083,6 +1083,17 @@ a:active {
   color: black;
 }
 
+.pie-insights{
+  display: block;
+  background-color:#D2A2F2;
+  padding: 5px;
+  border-radius: 3%;
+  max-height: fit-content;
+  padding: 5px 10px;
+  width: 85%;
+  text-align: center;
+}
+
 .responsive-svg {
   width: 100%;
   height: auto;
